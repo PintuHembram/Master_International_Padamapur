@@ -1,26 +1,23 @@
-import pintuComputer from "@/assets/pintucomputer.png";
+import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Input } from "@/components/ui/input";
-import { Mail, Search } from "lucide-react";
-import { useState } from "react";
+import { Search, Mail } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-const departments = ["All", "Administration", "Primary", "Upr-Primary", "Computer", "Sports", "Arts", "Dance",];
+
+const departments = ["All", "Administration", "Primary", "Secondary", "Senior Secondary", "Sports", "Arts"];
 
 const facultyData = [
-  { name: "Mrs. Ahalya Behera", role: "Principal", department: "Administration", qualification: "Ph.D., M.Ed.", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop", email: "principal@masterinternational.edu" },
-  { name: "Er. Pintu Hembram", role: "Computer HOD", department: "Administration", qualification: "Diploma, B.Tech.", image: pintuComputer, email: "pintuhembram@outlook.com" },
-  { name: "Miss. Bhagyashree Jena", role: "Head of Primary", department: "Primary", qualification: "M.A., B.Ed.", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop", email: "" },
-  { name: "Mr. Narayan Das", role: "PRT - English", department: "Primary", qualification: "B.A., B.Ed.", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop", email: "" },
-  { name: "Mr. Ranjan Kumar Sahoo", role: "Founder MIS", department: "Secondary", qualification: "M.Sc., B.Ed.", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop", email: "" },
-  { name: "Mr. Sujit Kumar Das", role: "TGT - Science", department: "Secondary", qualification: "M.Sc., B.Ed.", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop", email: "" },
-  { name: "Miss. Tapaswini Sahoo", role: "PGT - Physics", department: "Primary", qualification: "Ph.D., M.Sc.", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop", email: "physics@masterinternational.edu" },
-  { name: "Miss. Barasha Rani", role: "PGT - Chemistry", department: "Dance", qualification: "M.Sc., B.Ed.", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop", email: "" },
-  { name: "Mr. Bikash Sethi", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop", email: "" },
-  { name: "Mrs. Ranjita Mohanty", role: "Music Teacher", department: "Arts", qualification: "M.A. Music", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop", email: "" },
+  { name: "Dr. Ramesh Kumar Mishra", role: "Principal", department: "Administration", qualification: "Ph.D., M.Ed.", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop", email: "principal@masterinternational.edu" },
+  { name: "Mrs. Sunita Panda", role: "Vice Principal", department: "Administration", qualification: "M.A., B.Ed.", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop", email: "vp@masterinternational.edu" },
+  { name: "Mr. Rajesh Mohapatra", role: "Head of Primary", department: "Primary", qualification: "M.A., B.Ed.", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop", email: "" },
+  { name: "Mrs. Priya Sahoo", role: "PRT - English", department: "Primary", qualification: "B.A., B.Ed.", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop", email: "" },
+  { name: "Mr. Anil Kumar Das", role: "TGT - Mathematics", department: "Secondary", qualification: "M.Sc., B.Ed.", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop", email: "" },
+  { name: "Mrs. Laxmi Rath", role: "TGT - Science", department: "Secondary", qualification: "M.Sc., B.Ed.", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop", email: "" },
+  { name: "Dr. Suresh Nayak", role: "PGT - Physics", department: "Senior Secondary", qualification: "Ph.D., M.Sc.", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop", email: "physics@masterinternational.edu" },
+  { name: "Mrs. Mamata Behera", role: "PGT - Chemistry", department: "Senior Secondary", qualification: "M.Sc., B.Ed.", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop", email: "" },
   { name: "Mr. Bikash Sethi", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop", email: "" },
   { name: "Mrs. Ranjita Mohanty", role: "Music Teacher", department: "Arts", qualification: "M.A. Music", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop", email: "" },
 ];
-
 
 const Faculty = () => {
   const [search, setSearch] = useState("");

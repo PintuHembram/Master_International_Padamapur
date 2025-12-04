@@ -1,13 +1,13 @@
+import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, Calendar, CheckCircle, Download, FileText } from "lucide-react";
-import { useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { CheckCircle, Download, Calendar, FileText, ArrowRight } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 const steps = [
   { step: 1, title: "Fill Application", desc: "Complete the online admission form with student details" },
@@ -41,35 +41,17 @@ const Admissions = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // POST to the local admissions API
-    (async () => {
-      try {
-        const res = await fetch('/api/applications', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          toast.error(`Failed to submit: ${err.error || res.statusText}`);
-          return;
-        }
-        toast.success("Application submitted successfully! We'll contact you within 48 hours.");
-        setFormData({
-          studentName: "",
-          dob: "",
-          classApplying: "",
-          parentName: "",
-          parentPhone: "",
-          parentEmail: "",
-          address: "",
-          message: "",
-        });
-      } catch (err) {
-        console.error(err);
-        toast.error('Network error while submitting application. Make sure the admissions server is running (npm run server).');
-      }
-    })();
+    toast.success("Application submitted successfully! We'll contact you within 48 hours.");
+    setFormData({
+      studentName: "",
+      dob: "",
+      classApplying: "",
+      parentName: "",
+      parentPhone: "",
+      parentEmail: "",
+      address: "",
+      message: "",
+    });
   };
 
   return (
@@ -286,12 +268,6 @@ const Admissions = () => {
                   </Button>
                 </div>
               </form>
-              <div className="mt-4 flex gap-3">
-                <a href="/api/applications/export" className="inline-flex items-center gap-2 text-sm text-navy hover:text-gold">
-                  <Download className="w-4 h-4" />
-                  Export Applications (CSV)
-                </a>
-              </div>
             </div>
           </div>
         </div>

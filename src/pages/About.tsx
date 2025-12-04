@@ -12,10 +12,10 @@ const values = [
 ];
 
 const milestones = [
-  { year: "2010", event: "School Founded with Primary Section" },
-  { year: "2014", event: "CBSE Affiliation Received" },
-  { year: "2016", event: "New Campus Inaugurated" },
-  { year: "2018", event: "Science & Computer Labs Upgraded" },
+  { year: "1998", event: "School Founded with Primary Section" },
+  { year: "2003", event: "CBSE Affiliation Received" },
+  { year: "2010", event: "New Campus Inaugurated" },
+  { year: "2015", event: "Science & Computer Labs Upgraded" },
   { year: "2020", event: "25th Anniversary & Sports Complex" },
   { year: "2024", event: "STEM Lab & Smart Classrooms" },
 ];
@@ -35,10 +35,10 @@ const About = () => {
           <div className="max-w-3xl">
             <span className="text-gold font-semibold text-sm uppercase tracking-wider">About Us</span>
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mt-4 mb-6">
-              Building Futures Since 2014
+              Building Futures Since 1998
             </h1>
             <p className="text-white/80 text-lg">
-              For over 11 years, Master International has been at the forefront of quality 
+              For over 25 years, Master International has been at the forefront of quality 
               education in Padamapur, shaping young minds and creating responsible citizens.
             </p>
           </div>
@@ -89,7 +89,7 @@ const About = () => {
             <div>
               <span className="text-gold font-semibold text-sm uppercase tracking-wider">Principal's Message</span>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-3 mb-6">
-                Mrs. Ahalya Behera
+                Dr. Ramesh Kumar Mishra
               </h2>
               <blockquote className="text-muted-foreground text-lg leading-relaxed mb-6 border-l-4 border-gold pl-6">
                 "Education is not just about acquiring knowledge; it's about developing 
@@ -98,12 +98,12 @@ const About = () => {
                 unlimited potential waiting to be unlocked."
               </blockquote>
               <p className="text-muted-foreground mb-6">
-                With over 11 years of experience in education, Dr. Mishra has been leading 
-                Master International since 2014, transforming it into one of the most 
+                With over 30 years of experience in education, Dr. Mishra has been leading 
+                Master International since 2010, transforming it into one of the most 
                 respected institutions in the region.
               </p>
               <p className="text-sm text-muted-foreground">
-                <strong>Qualifications:</strong> B.Ed. in Education, M.Ed.
+                <strong>Qualifications:</strong> Ph.D. in Education, M.Ed., B.Ed.
               </p>
             </div>
           </div>
@@ -172,7 +172,7 @@ const About = () => {
           </p>
           <div className="inline-block bg-muted rounded-lg px-6 py-3">
             <span className="text-sm text-muted-foreground">Affiliation Number: </span>
-            <span className="font-mono font-semibold">1011700086</span>
+            <span className="font-mono font-semibold">21XXXXX</span>
           </div>
         </div>
       </section>

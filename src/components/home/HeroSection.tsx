@@ -1,12 +1,9 @@
-import heroCampus from "@/assets/School_bliding.png";
-import { Button } from "@/components/ui/button";
-import { useTypewriter } from "@/hooks/use-typewriter";
-import { ArrowRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Play } from "lucide-react";
+import heroCampus from "@/assets/hero-campus.jpg";
 
 export function HeroSection() {
-  const { displayedText, isComplete } = useTypewriter("Inspiring Excellence —", 80);
-
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background Image */}
@@ -22,7 +19,7 @@ export function HeroSection() {
 
       {/* Decorative Elements */}
       <div className="absolute top-20 right-10 w-72 h-72 bg-gold/20 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-20 left-10 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float animation-delay-2s" />
+      <div className="absolute bottom-20 left-10 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
 
       {/* Content */}
       <div className="relative container mx-auto px-4 lg:px-8 pt-24 pb-16">
@@ -35,20 +32,18 @@ export function HeroSection() {
 
           {/* Heading */}
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] mb-6 animate-fade-in-up">
-            {displayedText}
-            <span className={`${isComplete ? "opacity-0" : "opacity-100"} animate-pulse`}>|</span>
-            {" "}
+            Inspiring Excellence —{" "}
             <span className="text-gold">Mind, Body & Character</span>
           </h1>
 
           {/* Subtext */}
-          <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl animate-fade-in-up animation-delay-200ms">
+          <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             Master International, Padamapur offers a holistic CBSE education nurturing 
             young minds from Kindergarten to Class XII in a world-class learning environment.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-16 animate-fade-in-up animation-delay-400ms">
+          <div className="flex flex-col sm:flex-row gap-4 mb-16 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
             <Button variant="hero" size="xl" asChild>
               <Link to="/admissions">
                 Apply Now
@@ -64,7 +59,7 @@ export function HeroSection() {
           </div>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up animation-delay-600ms">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
             {[
               { value: "K-12", label: "Classes Offered" },
               { value: "25+", label: "Years Legacy" },

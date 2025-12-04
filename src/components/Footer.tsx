@@ -1,6 +1,5 @@
-import misLogo from "@/assets/mis-logo.png";
-import { ArrowRight, Facebook, Instagram, Mail, MapPin, Phone, Twitter, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
+import { GraduationCap, MapPin, Phone, Mail, Facebook, Twitter, Instagram, Youtube, ArrowRight } from "lucide-react";
 
 const quickLinks = [
   { name: "About Us", href: "/about" },
@@ -35,12 +34,8 @@ export function Footer() {
           {/* School Info */}
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0">
-                <img 
-                  src={misLogo} 
-                  alt="Master International School Logo" 
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-12 h-12 rounded-full bg-gold flex items-center justify-center">
+                <GraduationCap className="w-7 h-7 text-navy" />
               </div>
               <div>
                 <span className="font-display text-lg font-bold block leading-tight">
@@ -111,14 +106,14 @@ export function Footer() {
                 <MapPin className="w-5 h-5 text-gold mt-0.5 shrink-0" />
                 <span className="text-white/70 text-sm">
                   Master International School,<br />
-                  Main Road, Padamapur, Anandapur<br />
-                  Odisha, India - 768021
+                  Main Road, Padamapur,<br />
+                  Odisha, India - 768036
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-gold shrink-0" />
                 <a href="tel:+919876543210" className="text-white/70 text-sm hover:text-gold transition-colors">
-                  +91 70082 82967, +91 91148 60906
+                  +91 98765 43210
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -137,7 +132,7 @@ export function Footer() {
         <div className="container mx-auto px-4 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-white/50 text-sm text-center md:text-left">
-              © {new Date().getFullYear()} Hembram IT Solutions Pvt. Ltd . All rights reserved.
+              © {new Date().getFullYear()} Master International, Padamapur. All rights reserved.
             </p>
             <div className="flex items-center gap-6 text-sm">
               <Link to="/privacy" className="text-white/50 hover:text-gold transition-colors">
