@@ -1,6 +1,5 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { API_ENDPOINTS } from "@/config/api";
 import { Download, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -32,7 +31,7 @@ export default function AdminApplications() {
   useEffect(() => {
     if (!token) return;
     setLoading(true);
-    fetch(API_ENDPOINTS.adminApplications, { headers: { Authorization: `Bearer ${token}` } })
+    fetch('/api/admin/applications', { headers: { Authorization: `Bearer ${token}` } })
       .then((r) => {
         if (!r.ok) throw new Error('Unauthorized or server error');
         return r.json();
@@ -61,7 +60,7 @@ export default function AdminApplications() {
   const handleExport = async () => {
     if (!token) return toast.error('Not authorized');
     try {
-      const res = await fetch(API_ENDPOINTS.adminApplicationsExport, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch('/api/admin/applications/export', { headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) {
         toast.error('Export failed');
         return;
@@ -85,7 +84,7 @@ export default function AdminApplications() {
     if (!token) return toast.error('Not authorized');
     if (!confirm('Delete all applications? This cannot be undone.')) return;
     try {
-      const res = await fetch(API_ENDPOINTS.adminApplicationsDelete(), { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch('/api/admin/applications', { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) {
         toast.error('Delete failed');
         return;
@@ -102,7 +101,7 @@ export default function AdminApplications() {
     if (!token) return toast.error('Not authorized');
     if (!confirm('Delete this application?')) return;
     try {
-      const res = await fetch(API_ENDPOINTS.adminApplicationsDelete(id), { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch(`/api/admin/applications/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) {
         toast.error('Delete failed');
         return;

@@ -1,7 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { API_ENDPOINTS } from "@/config/api";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +16,7 @@ export default function AdminLogin(){
     e?.preventDefault();
     setLoading(true);
     try{
-      const res = await fetch(API_ENDPOINTS.adminLogin, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
+      const res = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
       if(!res.ok){
         const err = await res.json().catch(()=>({} as any));
         toast.error(err.error || 'Login failed');
