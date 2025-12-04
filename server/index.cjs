@@ -40,6 +40,23 @@ app.get('/api/applications', (req, res) => {
   return res.status(401).json({ error: 'Unauthorized' });
 });
 
+// Basic root status page to help when opening the server in a browser
+app.get('/', (req, res) => {
+  res.send(`
+    <html>
+      <head><title>Admissions API</title></head>
+      <body style="font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;margin:32px;">
+        <h1>Admissions API</h1>
+        <p>The API is running. Use the endpoints under <code>/api/</code>.</p>
+        <ul>
+          <li><a href="/api/applications">GET /api/applications</a> (returns 401 - admin only)</li>
+          <li><a href="/api/applications/export">GET /api/applications/export</a> (public export - 401 in this setup)</li>
+          <li><a href="/api/admin/applications">GET /api/admin/applications</a> (protected)</li>
+        </ul>
+      </body>
+    </html>
+  `);
+});
 app.post('/api/applications', (req, res) => {
   const payload = req.body || {};
   // Basic validation

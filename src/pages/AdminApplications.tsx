@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Download, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 type Application = {
@@ -22,11 +23,10 @@ export default function AdminApplications() {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState<string | null>(localStorage.getItem('adminToken'));
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const pageSize = 10;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) return;
@@ -44,27 +44,17 @@ export default function AdminApplications() {
       .finally(() => setLoading(false));
   }, [token]);
 
-  const handleLogin = async (e?: React.FormEvent) => {
-    e?.preventDefault();
-    try {
-      const res = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        toast.error(err.error || 'Login failed');
-        return;
-      }
-      const { token: t } = await res.json();
-      localStorage.setItem('adminToken', t);
-      setToken(t);
-      toast.success('Logged in');
-    } catch (err) {
-      console.error(err);
-      toast.error('Network error while logging in');
+  useEffect(() => {
+    if (!token) {
+      navigate('/admin/login');
     }
+  }, [token, navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    setToken(null);
+    toast.success('Logged out');
+    navigate('/admin/login');
   };
 
   const handleExport = async () => {
@@ -125,28 +115,7 @@ export default function AdminApplications() {
   };
 
   if (!token) {
-    return (
-      <Layout>
-        <div className="container mx-auto px-4 lg:px-8 py-24 max-w-md">
-          <h2 className="text-2xl font-bold mb-4">Admin Login</h2>
-          <p className="text-sm text-muted-foreground mb-6">Enter administrator credentials to view applications.</p>
-          <form onSubmit={handleLogin} className="bg-card rounded p-6 border border-border/50 space-y-4">
-            <div>
-              <label htmlFor="admin-username" className="text-sm font-medium">Username</label>
-              <input id="admin-username" placeholder="admin" className="w-full mt-2 p-2 border rounded" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </div>
-            <div>
-              <label htmlFor="admin-password" className="text-sm font-medium">Password</label>
-              <input id="admin-password" type="password" placeholder="••••••" className="w-full mt-2 p-2 border rounded" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </div>
-            <div className="flex items-center justify-between">
-              <Button type="submit">Login</Button>
-              <Button variant="outline" onClick={() => { setUsername(''); setPassword(''); }}>Clear</Button>
-            </div>
-          </form>
-        </div>
-      </Layout>
-    );
+    return null;
   }
 
   // client-side filtering & pagination
@@ -169,7 +138,7 @@ export default function AdminApplications() {
         <title>Admin — Applications</title>
       </Helmet>
 
-      <section className="pt-32 pb-12">
+      <section className="pt-32 pb-12 admin-bg">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
             <div className="flex items-center gap-4 w-full md:w-auto">
@@ -190,6 +159,7 @@ export default function AdminApplications() {
               <Button variant="destructive" onClick={handleDeleteAll}>
                 <Trash className="w-4 h-4 mr-2" /> Delete All
               </Button>
+              <Button variant="ghost" onClick={handleLogout}>Logout</Button>
             </div>
           </div>
 

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -20,6 +20,9 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(!!localStorage.getItem('adminToken'));
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +31,22 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === 'adminToken') {
+        setIsAdminLoggedIn(!!localStorage.getItem('adminToken'));
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    setIsAdminLoggedIn(false);
+    navigate('/admin/login');
+  };
 
   const isActive = (href: string) => location.pathname === href;
   const showAdmin = import.meta.env.DEV || import.meta.env.VITE_SHOW_ADMIN === 'true';
@@ -91,22 +110,28 @@ export function Navbar() {
                 {item.name}
               </Link>
             ))}
-            {showAdmin && (
-              <Link
-                to="/admin/applications"
-                className={cn(
-                  "px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
-                  isActive('/admin/applications')
-                    ? isScrolled
-                      ? "bg-navy/10 text-navy"
-                      : "bg-white/20 text-white"
-                    : isScrolled
-                    ? "text-foreground/70 hover:text-navy hover:bg-navy/5"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
+            {(showAdmin || isAdminLoggedIn) && (
+              <>
+                <Link
+                  to="/admin/applications"
+                  className={cn(
+                    "px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
+                    isActive('/admin/applications')
+                      ? isScrolled
+                        ? "bg-navy/10 text-navy"
+                        : "bg-white/20 text-white"
+                      : isScrolled
+                      ? "text-foreground/70 hover:text-navy hover:bg-navy/5"
+                      : "text-white/80 hover:text-white hover:bg-white/10"
+                  )}
+                >
+                  Admin
+                </Link>
+                {isAdminLoggedIn && (
+                  <button onClick={handleLogout} className={cn("px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
+                    isScrolled ? "text-foreground/80 hover:text-navy hover:bg-navy/5" : "text-white/80 hover:text-white hover:bg-white/10")}>Logout</button>
                 )}
-              >
-                Admin
-              </Link>
+              </>
             )}
           </div>
 

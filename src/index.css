@@ -186,6 +186,14 @@
     /* stylelint-disable-next-line at-rule-no-unknown */
     @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-lg;
   }
+
+  /* Admin page background (use relative path from src/) */
+  .admin-bg {
+    background-image: url('./assets/School_bliding.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 }
 
 @keyframes fadeIn {
