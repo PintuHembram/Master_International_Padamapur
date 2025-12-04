@@ -1,9 +1,12 @@
 import heroCampus from "@/assets/School_bliding.png";
 import { Button } from "@/components/ui/button";
+import { useTypewriter } from "@/hooks/use-typewriter";
 import { ArrowRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function HeroSection() {
+  const { displayedText, isComplete } = useTypewriter("Inspiring Excellence —", 80);
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background Image */}
@@ -32,7 +35,9 @@ export function HeroSection() {
 
           {/* Heading */}
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] mb-6 animate-fade-in-up">
-            Inspiring Excellence —{" "}
+            {displayedText}
+            <span className={`${isComplete ? "opacity-0" : "opacity-100"} animate-pulse`}>|</span>
+            {" "}
             <span className="text-gold">Mind, Body & Character</span>
           </h1>
 
