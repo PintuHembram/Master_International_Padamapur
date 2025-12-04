@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { API_ENDPOINTS } from "@/config/api";
 import { ArrowRight, Calendar, CheckCircle, Download, FileText } from "lucide-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -41,10 +42,10 @@ const Admissions = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // POST to the local admissions API
+    // POST to the admissions API
     (async () => {
       try {
-        const res = await fetch('/api/applications', {
+        const res = await fetch(API_ENDPOINTS.submitApplication, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),

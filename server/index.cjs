@@ -7,6 +7,12 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Log all incoming requests
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} ${req.method} ${req.path}`);
+  next();
+});
+
 app.use(cors({ origin: true }));
 app.use(bodyParser.json({ limit: '5mb' }));
 
