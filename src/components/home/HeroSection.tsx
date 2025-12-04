@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
+import heroCampus from "@/assets/School_bliding.png";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
-import heroCampus from "@/assets/hero-campus.jpg";
+import { Link } from "react-router-dom";
 
 export function HeroSection() {
   return (
