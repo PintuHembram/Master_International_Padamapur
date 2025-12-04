@@ -40,7 +40,7 @@ export function CTASection() {
           <p className="text-muted-foreground text-sm mt-8">
             Need help? Call us at{" "}
             <a href="tel:+919876543210" className="text-gold font-medium hover:underline">
-              +91 98765 43210
+              +91 70082 82967
             </a>{" "}
             or schedule a{" "}
             <Link to="/contact" className="text-gold font-medium hover:underline">

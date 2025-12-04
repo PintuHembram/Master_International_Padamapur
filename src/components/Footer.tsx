@@ -106,14 +106,14 @@ export function Footer() {
                 <MapPin className="w-5 h-5 text-gold mt-0.5 shrink-0" />
                 <span className="text-white/70 text-sm">
                   Master International School,<br />
-                  Main Road, Padamapur,<br />
-                  Odisha, India - 768036
+                  Main Road, Padamapur, Anandapur<br />
+                  Odisha, India - 768021
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-gold shrink-0" />
                 <a href="tel:+919876543210" className="text-white/70 text-sm hover:text-gold transition-colors">
-                  +91 98765 43210
+                  +91 70082 82967, +91 91148 60906
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -132,7 +132,7 @@ export function Footer() {
         <div className="container mx-auto px-4 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-white/50 text-sm text-center md:text-left">
-              © {new Date().getFullYear()} Master International, Padamapur. All rights reserved.
+              © {new Date().getFullYear()} Master International, Padamapur. Pintu Hembram. All rights reserved.
             </p>
             <div className="flex items-center gap-6 text-sm">
               <Link to="/privacy" className="text-white/50 hover:text-gold transition-colors">
