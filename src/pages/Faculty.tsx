@@ -17,7 +17,10 @@ const facultyData = [
   { name: "Miss. Barasha Rani", role: "PGT - Chemistry", department: "Dance", qualification: "M.Sc., B.Ed.", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop", email: "" },
   { name: "Mr. Bikash Sethi", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop", email: "" },
   { name: "Mrs. Ranjita Mohanty", role: "Music Teacher", department: "Arts", qualification: "M.A. Music", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop", email: "" },
+  { name: "Mr. Bikash Sethi", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop", email: "" },
+  { name: "Mrs. Ranjita Mohanty", role: "Music Teacher", department: "Arts", qualification: "M.A. Music", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop", email: "" },
 ];
+
 
 const Faculty = () => {
   const [search, setSearch] = useState("");
