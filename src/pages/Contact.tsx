@@ -1,17 +1,17 @@
-import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { toast } from "sonner";
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { toast } from "sonner";
 
 const contactInfo = [
-  { icon: MapPin, title: "Address", content: "Master International School,\nMain Road, Padamapur,\nOdisha, India - 768036" },
-  { icon: Phone, title: "Phone", content: "+91 98765 43210\n+91 98765 43211" },
+  { icon: MapPin, title: "Address", content: "Master International School,\nMain Road, Padamapur,\nAnandapur, Odisha, India - 768021" },
+  { icon: Phone, title: "Phone", content: "+91 70082 82967\n+91 91148 60906" },
   { icon: Mail, title: "Email", content: "info@masterinternational.edu\nadmissions@masterinternational.edu" },
   { icon: Clock, title: "Office Hours", content: "Monday - Friday: 8:00 AM - 4:00 PM\nSaturday: 8:00 AM - 1:00 PM" },
 ];
@@ -65,24 +65,27 @@ const Contact = () => {
                 Reach Out to Us
               </h2>
               <div className="grid sm:grid-cols-2 gap-6 mb-10">
-                {contactInfo.map((item, i) => (
-                  <div key={i} className="bg-card rounded-xl p-6 border border-border/50">
-                    <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-4">
-                      <item.icon className="w-6 h-6 text-gold" />
+                {contactInfo.map((item, i) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={i} className="bg-card rounded-xl p-6 border border-border/50">
+                      <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-4">
+                        <Icon className="w-6 h-6 text-gold" />
+                      </div>
+                      <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
+                      <p className="text-muted-foreground text-sm whitespace-pre-line">{item.content}</p>
                     </div>
-                    <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
-                    <p className="text-muted-foreground text-sm whitespace-pre-line">{item.content}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Map */}
               <div className="rounded-xl overflow-hidden border border-border/50">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29712.04574723098!2d83.0562!3d21.1233!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a213ad95c58ed41%3A0x5db96b63d5c5b80!2sPadampur%2C%20Odisha!5e0!3m2!1sen!2sin!4v1234567890"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4440.390662424938!2d86.12344007586861!3d21.23630098061673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1eaf865963e70d%3A0x258b41b1bfb7b7a0!2sMaster%20International%20School!5e1!3m2!1sen!2sus!4v1764866021350"
                   width="100%"
-                  height="300"
-                  style={{ border: 0 }}
+                    height="300"
+                    className="border-0"
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"

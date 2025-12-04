@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import misLogo from "@/assets/mis-logo.png";
 import { Button } from "@/components/ui/button";
-import { Menu, X, GraduationCap, Phone, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Menu, Phone, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -19,6 +20,9 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(!!localStorage.getItem('adminToken'));
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,7 +32,24 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === 'adminToken') {
+        setIsAdminLoggedIn(!!localStorage.getItem('adminToken'));
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    setIsAdminLoggedIn(false);
+    navigate('/admin/login');
+  };
+
   const isActive = (href: string) => location.pathname === href;
+  const showAdmin = import.meta.env.DEV || import.meta.env.VITE_SHOW_ADMIN === 'true';
 
   return (
     <header
@@ -44,13 +65,14 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className={cn(
-              "w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300",
-              isScrolled ? "bg-navy" : "bg-gold"
+              "w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 overflow-hidden",
+              isScrolled ? "bg-white" : "bg-white/95"
             )}>
-              <GraduationCap className={cn(
-                "w-7 h-7 transition-colors",
-                isScrolled ? "text-gold" : "text-navy"
-              )} />
+              <img 
+                src={misLogo} 
+                alt="Master International School Logo" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="flex flex-col">
               <span className={cn(
