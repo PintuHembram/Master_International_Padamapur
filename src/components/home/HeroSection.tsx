@@ -19,7 +19,7 @@ export function HeroSection() {
 
       {/* Decorative Elements */}
       <div className="absolute top-20 right-10 w-72 h-72 bg-gold/20 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-20 left-10 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
+      <div className="absolute bottom-20 left-10 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float animation-delay-2s" />
 
       {/* Content */}
       <div className="relative container mx-auto px-4 lg:px-8 pt-24 pb-16">
@@ -37,13 +37,13 @@ export function HeroSection() {
           </h1>
 
           {/* Subtext */}
-          <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+          <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl animate-fade-in-up animation-delay-200ms">
             Master International, Padamapur offers a holistic CBSE education nurturing 
             young minds from Kindergarten to Class XII in a world-class learning environment.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-16 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
+          <div className="flex flex-col sm:flex-row gap-4 mb-16 animate-fade-in-up animation-delay-400ms">
             <Button variant="hero" size="xl" asChild>
               <Link to="/admissions">
                 Apply Now
@@ -59,7 +59,7 @@ export function HeroSection() {
           </div>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up animation-delay-600ms">
             {[
               { value: "K-12", label: "Classes Offered" },
               { value: "25+", label: "Years Legacy" },

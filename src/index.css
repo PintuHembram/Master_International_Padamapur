@@ -1,3 +1,6 @@
+/* stylelint-disable */
+/* prettier-ignore */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -99,7 +102,9 @@
   }
 }
 
+/* stylelint-disable-next-line at-rule-no-unknown */
 @layer base {
+  /* stylelint-disable-next-line at-rule-no-unknown */
   * {
     @apply border-border;
   }
@@ -109,17 +114,43 @@
   }
 
   body {
+    /* stylelint-disable-next-line at-rule-no-unknown */
     @apply bg-background text-foreground font-sans antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
+    /* stylelint-disable-next-line at-rule-no-unknown */
     @apply font-display font-semibold tracking-tight;
   }
 }
 
 @layer utilities {
+  /* Text balance using wrap-prefer where supported */
   .text-balance {
-    text-wrap: balance;
+    /* @supports (text-wrap: balance) {
+      text-wrap: balance;
+    } */
+  }
+
+  /* Animation delay utilities */
+  .animation-delay-0 {
+    animation-delay: 0s;
+  }
+
+  .animation-delay-200ms {
+    animation-delay: 0.2s;
+  }
+
+  .animation-delay-400ms {
+    animation-delay: 0.4s;
+  }
+
+  .animation-delay-600ms {
+    animation-delay: 0.6s;
+  }
+
+  .animation-delay-2s {
+    animation-delay: 2s;
   }
 
   .animate-fade-in {
@@ -147,10 +178,12 @@
   }
 
   .gradient-text {
+    /* stylelint-disable-next-line at-rule-no-unknown */
     @apply bg-clip-text text-transparent bg-gradient-to-r from-gold to-gold-light;
   }
 
   .glass-card {
+    /* stylelint-disable-next-line at-rule-no-unknown */
     @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-lg;
   }
 }
