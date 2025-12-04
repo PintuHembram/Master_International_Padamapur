@@ -30,6 +30,7 @@ export function Navbar() {
   }, []);
 
   const isActive = (href: string) => location.pathname === href;
+  const showAdmin = import.meta.env.DEV || import.meta.env.VITE_SHOW_ADMIN === 'true';
 
   return (
     <header
@@ -90,6 +91,23 @@ export function Navbar() {
                 {item.name}
               </Link>
             ))}
+            {showAdmin && (
+              <Link
+                to="/admin/applications"
+                className={cn(
+                  "px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
+                  isActive('/admin/applications')
+                    ? isScrolled
+                      ? "bg-navy/10 text-navy"
+                      : "bg-white/20 text-white"
+                    : isScrolled
+                    ? "text-foreground/70 hover:text-navy hover:bg-navy/5"
+                    : "text-white/80 hover:text-white hover:bg-white/10"
+                )}
+              >
+                Admin
+              </Link>
+            )}
           </div>
 
           {/* CTA Buttons */}
@@ -151,6 +169,20 @@ export function Navbar() {
                 {item.name}
               </Link>
             ))}
+            {showAdmin && (
+              <Link
+                to="/admin/applications"
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "block px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+                  isActive('/admin/applications')
+                    ? "bg-navy text-white"
+                    : "text-foreground hover:bg-muted"
+                )}
+              >
+                Admin
+              </Link>
+            )}
             <div className="pt-4 flex flex-col gap-2">
               <Button variant="gold" asChild className="w-full">
                 <Link to="/admissions">Apply Now</Link>
