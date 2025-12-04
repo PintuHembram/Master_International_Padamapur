@@ -10,8 +10,8 @@ import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
 const contactInfo = [
-  { icon: MapPin, title: "Address", content: "Master International School,\nMain Road, Padamapur,\nOdisha, India - 768036" },
-  { icon: Phone, title: "Phone", content: "+91 98765 43210\n+91 98765 43211" },
+  { icon: MapPin, title: "Address", content: "Master International School,\nMain Road, Padamapur,\nAnandapur, Odisha, India - 768021" },
+  { icon: Phone, title: "Phone", content: "+91 70082 82967\n+91 91148 60906" },
   { icon: Mail, title: "Email", content: "info@masterinternational.edu\nadmissions@masterinternational.edu" },
   { icon: Clock, title: "Office Hours", content: "Monday - Friday: 8:00 AM - 4:00 PM\nSaturday: 8:00 AM - 1:00 PM" },
 ];
@@ -79,7 +79,7 @@ const Contact = () => {
               {/* Map */}
               <div className="rounded-xl overflow-hidden border border-border/50">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29712.04574723098!2d83.0562!3d21.1233!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a213ad95c58ed41%3A0x5db96b63d5c5b80!2sPadampur%2C%20Odisha!5e0!3m2!1sen!2sin!4v1234567890"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4440.390662424938!2d86.12344007586861!3d21.23630098061673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1eaf865963e70d%3A0x258b41b1bfb7b7a0!2sMaster%20International%20School!5e1!3m2!1sen!2sus!4v1764866021350"
                   width="100%"
                   height="300"
                   style={{ border: 0 }}
