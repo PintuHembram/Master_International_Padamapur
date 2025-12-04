@@ -1,13 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Layout } from "@/components/Layout";
+import { HeroSection } from "@/components/home/HeroSection";
+import { HighlightsSection } from "@/components/home/HighlightsSection";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import { NewsSection } from "@/components/home/NewsSection";
+import { CTASection } from "@/components/home/CTASection";
+import { Helmet } from "react-helmet-async";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <Layout>
+      <Helmet>
+        <title>Master International, Padamapur | Premier CBSE School in Odisha</title>
+        <meta name="description" content="Master International, Padamapur offers comprehensive K-12 CBSE education with world-class facilities, expert faculty, and holistic development programs. Admissions open for 2026-27." />
+        <meta property="og:title" content="Master International, Padamapur | Premier CBSE School" />
+        <meta property="og:description" content="Inspiring Excellence — Mind, Body & Character. Join the leading CBSE school in Padamapur, Odisha." />
+        <link rel="canonical" href="https://masterinternationalpadamapur.edu" />
+      </Helmet>
+      
+      <HeroSection />
+      <HighlightsSection />
+      <TestimonialsSection />
+      <NewsSection />
+      <CTASection />
+    </Layout>
   );
 };
 
