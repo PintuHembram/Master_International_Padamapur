@@ -17,6 +17,40 @@ app.use(cors({ origin: true }));
 app.use(bodyParser.json({ limit: '5mb' }));
 
 const DB_PATH = path.join(__dirname, 'applications.json');
+const USERS_DB_PATH = path.join(__dirname, 'users.json');
+
+// User database functions
+function readUsers() {
+  try {
+    if (!fs.existsSync(USERS_DB_PATH)) {
+      // Initialize with demo admin user
+      const demoUsers = [{
+        id: 1,
+        fullName: 'Admin User',
+        email: 'admin@mis.com',
+        password: 'admin123', // In production, use bcrypt
+        createdAt: new Date().toISOString()
+      }];
+      fs.writeFileSync(USERS_DB_PATH, JSON.stringify(demoUsers, null, 2));
+      return demoUsers;
+    }
+    const raw = fs.readFileSync(USERS_DB_PATH, 'utf8');
+    return JSON.parse(raw || '[]');
+  } catch (err) {
+    console.error('Failed to read users DB', err);
+    return [];
+  }
+}
+
+function writeUsers(data) {
+  try {
+    fs.writeFileSync(USERS_DB_PATH, JSON.stringify(data, null, 2));
+    return true;
+  } catch (err) {
+    console.error('Failed to write users DB', err);
+    return false;
+  }
+}
 
 function readDB() {
   try {
@@ -102,17 +136,66 @@ app.get('/api/applications/export', (req, res) => {
   return res.status(401).json({ error: 'Unauthorized' });
 });
 
-// Simple admin auth: issue a token when credentials match env vars
-const ADMIN_USER = process.env.ADMIN_USER || 'admin';
-const ADMIN_PASS = process.env.ADMIN_PASS || 'admin';
+// Simple admin auth: issue a token when credentials match
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'admintoken';
 
-app.post('/api/admin/login', (req, res) => {
-  const { username, password } = req.body || {};
-  if (username === ADMIN_USER && password === ADMIN_PASS) {
-    return res.json({ token: ADMIN_TOKEN });
+// Sign Up endpoint
+app.post('/api/admin/signup', (req, res) => {
+  const { fullName, email, password } = req.body || {};
+  
+  if (!fullName || !email || !password) {
+    return res.status(400).json({ message: 'Missing required fields' });
   }
-  return res.status(401).json({ error: 'Invalid credentials' });
+
+  if (password.length < 6) {
+    return res.status(400).json({ message: 'Password must be at least 6 characters' });
+  }
+
+  let users = readUsers();
+  
+  // Check if email already exists
+  if (users.some(u => u.email === email)) {
+    return res.status(400).json({ message: 'Email already registered' });
+  }
+
+  // Create new user
+  const newUser = {
+    id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+    fullName,
+    email,
+    password, // In production, hash this with bcrypt
+    createdAt: new Date().toISOString()
+  };
+
+  users.push(newUser);
+  writeUsers(users);
+
+  return res.status(201).json({ 
+    message: 'Account created successfully',
+    user: { id: newUser.id, fullName, email }
+  });
+});
+
+// Sign In endpoint
+app.post('/api/admin/login', (req, res) => {
+  const { email, password } = req.body || {};
+  
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password required' });
+  }
+
+  let users = readUsers();
+  const user = users.find(u => u.email === email && u.password === password);
+
+  if (!user) {
+    return res.status(401).json({ message: 'Invalid email or password' });
+  }
+
+  return res.json({ 
+    token: ADMIN_TOKEN,
+    name: user.fullName,
+    email: user.email
+  });
 });
 
 function verifyToken(req, res) {
