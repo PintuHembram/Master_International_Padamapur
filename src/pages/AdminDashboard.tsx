@@ -1,27 +1,25 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import misLogo from '@/assets/mis-logo.png';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/lib/supabase/client';
 import {
-  Users,
-  FileText,
-  Mail,
-  Calendar,
-  Image,
-  LogOut,
-  Home,
-  Clock,
-  CheckCircle,
-  XCircle,
-  Eye,
+    Calendar,
+    CheckCircle,
+    Clock,
+    Eye,
+    FileText,
+    Home,
+    LogOut,
+    Mail,
+    XCircle
 } from 'lucide-react';
-import misLogo from '@/assets/mis-logo.png';
+import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 
 interface Admission {
   id: string;
