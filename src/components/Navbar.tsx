@@ -146,6 +146,15 @@ export function Navbar() {
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
+            {!isAdminLoggedIn && (
+              <Button
+                variant={isScrolled ? "outline" : "hero-outline"}
+                size="sm"
+                asChild
+              >
+                <Link to="/admin/login">Admin Login</Link>
+              </Button>
+            )}
             <Button
               variant={isScrolled ? "outline" : "hero-outline"}
               size="sm"
@@ -218,6 +227,11 @@ export function Navbar() {
               </Link>
             )}
             <div className="pt-4 flex flex-col gap-2">
+              {!isAdminLoggedIn && (
+                <Button variant="outline" asChild className="w-full">
+                  <Link to="/admin/login">Admin Login</Link>
+                </Button>
+              )}
               <Button variant="gold" asChild className="w-full">
                 <Link to="/admissions">Apply Now</Link>
               </Button>
