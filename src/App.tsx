@@ -6,6 +6,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import About from "./pages/About";
 import Academics from "./pages/Academics";
+import AdminAdmissionsDashboard from "./pages/AdminAdmissionsDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import Admissions from "./pages/Admissions";
 import Contact from "./pages/Contact";
