@@ -113,10 +113,10 @@ export function Navbar() {
             {(showAdmin || isAdminLoggedIn) && (
               <>
                 <Link
-                  to="/admin/applications"
+                  to="/admin/admissions"
                   className={cn(
                     "px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
-                    isActive('/admin/applications')
+                    isActive('/admin/admissions')
                       ? isScrolled
                         ? "bg-navy/10 text-navy"
                         : "bg-white/20 text-white"
@@ -125,7 +125,7 @@ export function Navbar() {
                       : "text-white/80 hover:text-white hover:bg-white/10"
                   )}
                 >
-                  Admin
+                  Dashboard
                 </Link>
                 {isAdminLoggedIn && (
                   <button
@@ -214,16 +214,16 @@ export function Navbar() {
             ))}
             {(showAdmin || isAdminLoggedIn) && (
               <Link
-                to="/admin/applications"
+                to="/admin/admissions"
                 onClick={() => setIsOpen(false)}
                 className={cn(
                   "block px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                  isActive('/admin/applications')
+                  isActive('/admin/admissions')
                     ? "bg-navy text-white"
                     : "text-foreground hover:bg-muted"
                 )}
               >
-                Admin
+                Dashboard
               </Link>
             )}
             <div className="pt-4 flex flex-col gap-2">

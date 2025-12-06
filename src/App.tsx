@@ -6,7 +6,6 @@ import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import About from "./pages/About";
 import Academics from "./pages/Academics";
-import AdminDashboard from "./pages/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import Admissions from "./pages/Admissions";
 import Contact from "./pages/Contact";
@@ -35,7 +34,7 @@ const App = () => (
             <Route path="/events" element={<Events />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/admissions" element={<AdminAdmissionsDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
