@@ -8,6 +8,7 @@ import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const contactInfo = [
   { icon: MapPin, title: "Address", content: "Master International School,\nMain Road, Padamapur,\nAnandapur, Odisha, India - 768021" },
@@ -17,6 +18,7 @@ const contactInfo = [
 ];
 
 const Contact = () => {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,10 +27,28 @@ const Contact = () => {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent successfully! We'll get back to you soon.");
-    setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.from('contact_messages').insert({
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      });
+
+      if (error) throw error;
+
+      toast.success("Message sent successfully! We'll get back to you soon.");
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast.error('Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -120,6 +140,7 @@ const Contact = () => {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
+                        disabled={loading}
                         className="mt-2"
                       />
                     </div>
@@ -130,6 +151,7 @@ const Contact = () => {
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        disabled={loading}
                         className="mt-2"
                       />
                     </div>
@@ -139,16 +161,17 @@ const Contact = () => {
                     <Select
                       value={formData.subject}
                       onValueChange={(value) => setFormData({ ...formData, subject: value })}
+                      disabled={loading}
                     >
                       <SelectTrigger className="mt-2">
                         <SelectValue placeholder="Select a subject" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="admissions">Admissions Inquiry</SelectItem>
-                        <SelectItem value="academics">Academic Information</SelectItem>
-                        <SelectItem value="visit">Campus Visit</SelectItem>
-                        <SelectItem value="feedback">Feedback</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="Admissions Inquiry">Admissions Inquiry</SelectItem>
+                        <SelectItem value="Academic Information">Academic Information</SelectItem>
+                        <SelectItem value="Campus Visit">Campus Visit</SelectItem>
+                        <SelectItem value="Feedback">Feedback</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -159,13 +182,14 @@ const Contact = () => {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       required
+                      disabled={loading}
                       className="mt-2"
                       rows={5}
                       placeholder="How can we help you?"
                     />
                   </div>
-                  <Button type="submit" variant="gold" className="w-full" size="lg">
-                    Send Message
+                  <Button type="submit" variant="gold" className="w-full" size="lg" disabled={loading}>
+                    {loading ? 'Sending...' : 'Send Message'}
                     <Send className="w-5 h-5" />
                   </Button>
                 </div>
