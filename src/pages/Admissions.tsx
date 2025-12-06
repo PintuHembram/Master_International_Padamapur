@@ -8,6 +8,7 @@ import { ArrowRight, Calendar, CheckCircle, Download, FileText } from "lucide-re
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const steps = [
   { step: 1, title: "Fill Application", desc: "Complete the online admission form with student details" },
@@ -28,48 +29,59 @@ const eligibility = [
 ];
 
 const Admissions = () => {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     studentName: "",
     dob: "",
+    gender: "",
     classApplying: "",
-    parentName: "",
+    fatherName: "",
+    motherName: "",
     parentPhone: "",
     parentEmail: "",
     address: "",
-    message: "",
+    previousSchool: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // POST to the local admissions API
-    (async () => {
-      try {
-        const res = await fetch('/api/applications', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          toast.error(`Failed to submit: ${err.error || res.statusText}`);
-          return;
-        }
-        toast.success("Application submitted successfully! We'll contact you within 48 hours.");
-        setFormData({
-          studentName: "",
-          dob: "",
-          classApplying: "",
-          parentName: "",
-          parentPhone: "",
-          parentEmail: "",
-          address: "",
-          message: "",
-        });
-      } catch (err) {
-        console.error(err);
-        toast.error('Network error while submitting application. Make sure the admissions server is running (npm run server).');
-      }
-    })();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.from('admissions').insert({
+        student_name: formData.studentName,
+        date_of_birth: formData.dob,
+        gender: formData.gender,
+        class_applying: formData.classApplying,
+        father_name: formData.fatherName,
+        mother_name: formData.motherName,
+        parent_phone: formData.parentPhone,
+        parent_email: formData.parentEmail,
+        address: formData.address,
+        previous_school: formData.previousSchool || null,
+      });
+
+      if (error) throw error;
+
+      toast.success("Application submitted successfully! We'll contact you within 48 hours.");
+      setFormData({
+        studentName: "",
+        dob: "",
+        gender: "",
+        classApplying: "",
+        fatherName: "",
+        motherName: "",
+        parentPhone: "",
+        parentEmail: "",
+        address: "",
+        previousSchool: "",
+      });
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      toast.error('Failed to submit application. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -193,6 +205,7 @@ const Admissions = () => {
                       value={formData.studentName}
                       onChange={(e) => setFormData({ ...formData, studentName: e.target.value })}
                       required
+                      disabled={loading}
                       className="mt-2"
                     />
                   </div>
@@ -205,35 +218,68 @@ const Admissions = () => {
                         value={formData.dob}
                         onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
                         required
+                        disabled={loading}
                         className="mt-2"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="class">Class Applying For *</Label>
+                      <Label htmlFor="gender">Gender *</Label>
                       <Select
-                        value={formData.classApplying}
-                        onValueChange={(value) => setFormData({ ...formData, classApplying: value })}
+                        value={formData.gender}
+                        onValueChange={(value) => setFormData({ ...formData, gender: value })}
+                        disabled={loading}
                       >
                         <SelectTrigger className="mt-2">
-                          <SelectValue placeholder="Select class" />
+                          <SelectValue placeholder="Select gender" />
                         </SelectTrigger>
                         <SelectContent>
-                          {eligibility.map((item) => (
-                            <SelectItem key={item.class} value={item.class}>{item.class}</SelectItem>
-                          ))}
+                          <SelectItem value="male">Male</SelectItem>
+                          <SelectItem value="female">Female</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="parentName">Parent/Guardian Name *</Label>
-                    <Input
-                      id="parentName"
-                      value={formData.parentName}
-                      onChange={(e) => setFormData({ ...formData, parentName: e.target.value })}
-                      required
-                      className="mt-2"
-                    />
+                    <Label htmlFor="class">Class Applying For *</Label>
+                    <Select
+                      value={formData.classApplying}
+                      onValueChange={(value) => setFormData({ ...formData, classApplying: value })}
+                      disabled={loading}
+                    >
+                      <SelectTrigger className="mt-2">
+                        <SelectValue placeholder="Select class" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {eligibility.map((item) => (
+                          <SelectItem key={item.class} value={item.class}>{item.class}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="fatherName">Father's Name *</Label>
+                      <Input
+                        id="fatherName"
+                        value={formData.fatherName}
+                        onChange={(e) => setFormData({ ...formData, fatherName: e.target.value })}
+                        required
+                        disabled={loading}
+                        className="mt-2"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="motherName">Mother's Name *</Label>
+                      <Input
+                        id="motherName"
+                        value={formData.motherName}
+                        onChange={(e) => setFormData({ ...formData, motherName: e.target.value })}
+                        required
+                        disabled={loading}
+                        className="mt-2"
+                      />
+                    </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -244,6 +290,7 @@ const Admissions = () => {
                         value={formData.parentPhone}
                         onChange={(e) => setFormData({ ...formData, parentPhone: e.target.value })}
                         required
+                        disabled={loading}
                         className="mt-2"
                       />
                     </div>
@@ -255,43 +302,40 @@ const Admissions = () => {
                         value={formData.parentEmail}
                         onChange={(e) => setFormData({ ...formData, parentEmail: e.target.value })}
                         required
+                        disabled={loading}
                         className="mt-2"
                       />
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="address">Residential Address</Label>
+                    <Label htmlFor="address">Residential Address *</Label>
                     <Textarea
                       id="address"
                       value={formData.address}
                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                      required
+                      disabled={loading}
                       className="mt-2"
                       rows={3}
                     />
                   </div>
                   <div>
-                    <Label htmlFor="message">Any Additional Information</Label>
-                    <Textarea
-                      id="message"
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    <Label htmlFor="previousSchool">Previous School (if any)</Label>
+                    <Input
+                      id="previousSchool"
+                      value={formData.previousSchool}
+                      onChange={(e) => setFormData({ ...formData, previousSchool: e.target.value })}
+                      disabled={loading}
                       className="mt-2"
-                      rows={3}
-                      placeholder="Previous school, special requirements, etc."
+                      placeholder="Name of previous school"
                     />
                   </div>
-                  <Button type="submit" variant="gold" className="w-full" size="lg">
-                    Submit Application
+                  <Button type="submit" variant="gold" className="w-full" size="lg" disabled={loading}>
+                    {loading ? 'Submitting...' : 'Submit Application'}
                     <CheckCircle className="w-5 h-5" />
                   </Button>
                 </div>
               </form>
-              <div className="mt-4 flex gap-3">
-                <a href="/api/applications/export" className="inline-flex items-center gap-2 text-sm text-navy hover:text-gold">
-                  <Download className="w-4 h-4" />
-                  Export Applications (CSV)
-                </a>
-              </div>
             </div>
           </div>
         </div>
