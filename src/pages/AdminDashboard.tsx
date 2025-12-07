@@ -1,4 +1,7 @@
 import misLogo from '@/assets/mis-logo.png';
+import { EventsManager } from '@/components/admin/EventsManager';
+import { GalleryManager } from '@/components/admin/GalleryManager';
+import { NewsManager } from '@/components/admin/NewsManager';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,8 +16,10 @@ import {
     Eye,
     FileText,
     Home,
+    Image,
     LogOut,
     Mail,
+    Newspaper,
     XCircle
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -285,7 +290,7 @@ const AdminDashboard = () => {
 
           {/* Main Content */}
           <Tabs defaultValue="admissions" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2 lg:w-auto lg:inline-grid">
+            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 lg:w-auto lg:inline-grid">
               <TabsTrigger value="admissions" className="gap-2">
                 <FileText className="h-4 w-4" />
                 Admissions
@@ -293,6 +298,18 @@ const AdminDashboard = () => {
               <TabsTrigger value="messages" className="gap-2">
                 <Mail className="h-4 w-4" />
                 Messages
+              </TabsTrigger>
+              <TabsTrigger value="events" className="gap-2">
+                <Calendar className="h-4 w-4" />
+                Events
+              </TabsTrigger>
+              <TabsTrigger value="news" className="gap-2">
+                <Newspaper className="h-4 w-4" />
+                News
+              </TabsTrigger>
+              <TabsTrigger value="gallery" className="gap-2">
+                <Image className="h-4 w-4" />
+                Gallery
               </TabsTrigger>
             </TabsList>
 
@@ -449,6 +466,21 @@ const AdminDashboard = () => {
                   )}
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            {/* Events Tab */}
+            <TabsContent value="events">
+              <EventsManager />
+            </TabsContent>
+
+            {/* News Tab */}
+            <TabsContent value="news">
+              <NewsManager />
+            </TabsContent>
+
+            {/* Gallery Tab */}
+            <TabsContent value="gallery">
+              <GalleryManager />
             </TabsContent>
           </Tabs>
         </main>
