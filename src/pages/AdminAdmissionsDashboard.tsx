@@ -2,7 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/lib/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 import { Download, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -11,17 +11,20 @@ import { toast } from "sonner";
 
 type Admission = {
   id: string;
-  studentName: string;
-  dob: string;
-  classApplying: string;
-  parentName: string;
-  parentPhone: string;
-  parentEmail: string;
-  address?: string;
-  message?: string;
-  status?: 'pending' | 'approved' | 'rejected';
-  createdAt: string;
-  updatedAt?: string;
+  student_name: string;
+  date_of_birth: string;
+  class_applying: string;
+  father_name: string;
+  mother_name: string;
+  parent_phone: string;
+  parent_email: string;
+  address: string;
+  previous_school: string | null;
+  documents_url: string | null;
+  gender: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export default function AdminAdmissionsDashboard() {
@@ -53,17 +56,14 @@ export default function AdminAdmissionsDashboard() {
       const { data, error } = await supabase
         .from('admissions')
         .select('*')
-        .order('createdAt', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (error && error.code !== 'PGRST116') { // PGRST116 is table not found
         console.warn('Supabase error:', error);
         // Fall back to local API
         await fetchFromLocal();
       } else if (data) {
-        setAdmissions(data.map(d => ({
-          ...d,
-          createdAt: new Date(d.createdAt).toLocaleString(),
-        })));
+        setAdmissions(data);
       }
     } catch (err) {
       console.error('Fetch error:', err);
@@ -95,7 +95,7 @@ export default function AdminAdmissionsDashboard() {
     try {
       const { error } = await supabase
         .from('admissions')
-        .update({ status, updatedAt: new Date().toISOString() })
+        .update({ status, updated_at: new Date().toISOString() })
         .eq('id', id);
 
       if (error) throw error;
@@ -135,17 +135,18 @@ export default function AdminAdmissionsDashboard() {
       return;
     }
 
-    const headers = ['ID', 'Student Name', 'DOB', 'Class', 'Parent', 'Phone', 'Email', 'Status', 'Date'];
+    const headers = ['ID', 'Student Name', 'DOB', 'Class', 'Father', 'Mother', 'Phone', 'Email', 'Status', 'Date'];
     const rows = admissions.map(a => [
       a.id,
-      a.studentName,
-      a.dob,
-      a.classApplying,
-      a.parentName,
-      a.parentPhone,
-      a.parentEmail,
+      a.student_name,
+      a.date_of_birth,
+      a.class_applying,
+      a.father_name,
+      a.mother_name,
+      a.parent_phone,
+      a.parent_email,
       a.status || 'pending',
-      a.createdAt,
+      a.created_at,
     ]);
 
     const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
@@ -167,10 +168,10 @@ export default function AdminAdmissionsDashboard() {
   const filtered = admissions.filter(a => {
     const q = search.toLowerCase();
     return (
-      a.studentName.toLowerCase().includes(q) ||
-      a.parentName.toLowerCase().includes(q) ||
-      a.parentEmail.toLowerCase().includes(q) ||
-      a.classApplying.toLowerCase().includes(q)
+      a.student_name.toLowerCase().includes(q) ||
+      a.father_name.toLowerCase().includes(q) ||
+      a.parent_email.toLowerCase().includes(q) ||
+      a.class_applying.toLowerCase().includes(q)
     );
   });
 
@@ -252,10 +253,10 @@ export default function AdminAdmissionsDashboard() {
                 <tbody>
                   {pageItems.map(admission => (
                     <tr key={admission.id} className="border-b hover:bg-muted/30 transition">
-                      <td className="p-4 text-sm">{admission.studentName}</td>
-                      <td className="p-4 text-sm">{admission.classApplying}</td>
-                      <td className="p-4 text-sm">{admission.parentName}</td>
-                      <td className="p-4 text-sm text-blue-600">{admission.parentEmail}</td>
+                      <td className="p-4 text-sm">{admission.student_name}</td>
+                      <td className="p-4 text-sm">{admission.class_applying}</td>
+                      <td className="p-4 text-sm">{admission.father_name}</td>
+                      <td className="p-4 text-sm text-blue-600">{admission.parent_email}</td>
                       <td className="p-4 text-sm">
                         <select
                           title="Update admission status"
@@ -274,7 +275,7 @@ export default function AdminAdmissionsDashboard() {
                         </select>
                       </td>
                       <td className="p-4 text-sm text-muted-foreground">
-                        {new Date(admission.createdAt).toLocaleDateString()}
+                        {new Date(admission.created_at).toLocaleDateString()}
                       </td>
                       <td className="p-4 text-sm">
                         <button
