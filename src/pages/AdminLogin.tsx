@@ -29,14 +29,14 @@ const AdminLogin = () => {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        navigate('/admin/admissions');
+        navigate('/admin/dashboard');
       }
     };
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        navigate('/admin/admissions');
+        navigate('/admin/dashboard');
       }
     });
 
@@ -83,7 +83,7 @@ const AdminLogin = () => {
           title: 'Login Successful',
           description: `Welcome back!`,
         });
-        navigate('/admin/admissions');
+        navigate('/admin/dashboard');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -130,7 +130,7 @@ const AdminLogin = () => {
     }
 
     try {
-      const redirectUrl = `${window.location.origin}/admin/admissions`;
+      const redirectUrl = `${window.location.origin}/admin/dashboard`;
       
       const { data, error } = await supabase.auth.signUp({
         email: email.trim(),
@@ -181,7 +181,7 @@ const AdminLogin = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/admin/admissions`,
+          redirectTo: `${window.location.origin}/admin/dashboard`,
         },
       });
 
