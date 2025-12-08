@@ -1,4 +1,5 @@
 import misLogo from "@/assets/mis-logo.png";
+import { DarkModeToggle } from "@/components/DarkModeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Menu, Phone, X } from "lucide-react";
@@ -146,6 +147,7 @@ export function Navbar() {
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
+            <DarkModeToggle />
             {!isAdminLoggedIn && (
               <Button
                 variant={isScrolled ? "outline" : "hero-outline"}
@@ -227,6 +229,10 @@ export function Navbar() {
               </Link>
             )}
             <div className="pt-4 flex flex-col gap-2">
+              <div className="flex items-center justify-between px-4 py-3">
+                <span className="text-sm font-medium text-foreground">Dark Mode</span>
+                <DarkModeToggle />
+              </div>
               {!isAdminLoggedIn && (
                 <Button variant="outline" asChild className="w-full">
                   <Link to="/admin/login">Admin Login</Link>
