@@ -83,6 +83,7 @@ const AdminLogin = () => {
           title: 'Login Successful',
           description: `Welcome back!`,
         });
+        navigate('/admin/admissions');
       }
     } catch (error) {
       console.error('Login error:', error);
