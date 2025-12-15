@@ -1,73 +1,128 @@
-# Welcome to your MIS project
+🎓 Master International School – Official Website
 
-## Project info
+A modern, responsive, and performance-optimized official website developed for Master International School, Padmapur (CBSE Affiliated).
+This project focuses on delivering a professional digital presence for the institution with an intuitive user experience for parents, students, and staff.
 
-**URL**: https://lovable.dev/projects/20666d16-e73c-4e00-b0e7-87151bc282ad
+🔗 Live Website:
+👉 https://master-international-padamapur.vercel.app/
 
-## How can I edit this code?
+✨ Project Highlights
 
-There are several ways of editing your application.
+🌐 Fully responsive design (Mobile, Tablet & Desktop)
 
-**Use Lovable**
+⚡ Fast loading & optimized performance
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/20666d16-e73c-4e00-b0e7-87151bc282ad) and start prompting.
+🎨 Clean and modern UI aligned with CBSE standards
 
-Changes made via Lovable will be committed automatically to this repo.
+📚 Dedicated sections for Admissions, Academics, Faculty & Events
 
-**Use your preferred IDE**
+🖼️ Image Gallery and Event Showcase
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+🔐 Admin Login & Admission CTA integration
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+🚀 SEO-friendly structure
 
-Follow these steps:
+🛠️ Tech Stack
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+This project is built using modern web technologies:
+
+Vite – Lightning-fast build tool
+
+TypeScript – Type-safe JavaScript
+
+React – Component-based UI
+
+Tailwind CSS – Utility-first styling
+
+shadcn/ui – Accessible & reusable UI components
+
+📂 Project Setup & Local Development
+🔹 Prerequisites
+
+Make sure you have the following installed:
+
+Node.js (v18+ recommended)
+
+npm or yarn
+
+Install Node.js using nvm:
+https://github.com/nvm-sh/nvm#installing-and-updating
+
+🔹 Installation Steps
+# 1️⃣ Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# 2️⃣ Navigate to the project directory
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# 3️⃣ Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 4️⃣ Start the development server
 npm run dev
-```
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+The application will be available at:
+👉 http://localhost:5173
 
-**Use GitHub Codespaces**
+✅ Using Your Local IDE
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Clone the repository
 
-## What technologies are used for this project?
+Edit files in VS Code / preferred IDE
 
-This project is built with:
+Push changes to GitHub
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Changes automatically sync with Lovable
 
-## How can I deploy this project?
+✅ Edit Directly on GitHub
 
-Simply open [Lovable](https://lovable.dev/projects/20666d16-e73c-4e00-b0e7-87151bc282ad) and click on Share -> Publish.
+Open any file
 
-## Can I connect a custom domain to my Lovable project?
+Click the ✏️ Edit button
 
-Yes, you can!
+Commit changes directly from the browser
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+✅ Using GitHub Codespaces
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Click Code → Codespaces
+
+Launch a new Codespace
+
+Edit, commit, and push changes instantly
+
+🚀 Deployment
+
+Deployment is handled via Lovable:
+
+Open the project in Lovable
+
+Click Share → Publish
+
+Your site will be deployed instantly
+
+🌍 Custom Domain Support
+
+You can easily connect a custom domain:
+
+Go to Project → Settings → Domains
+
+Click Connect Domain
+
+Follow the instructions
+
+📖 Guide:
+https://hembramit.blogspot.com/
+
+👨‍💻 Developer
+
+Pintu Hembram
+Computer Science Engineering Student | Software Engineer
+Cybersecurity Enthusiast | Full-Stack Web Developer
+
+🔗 GitHub: https://github.com/PintuHembram
+
+📜 License
+
+This project is developed for Master International School, Padmapur.
+All rights reserved unless otherwise specified.
