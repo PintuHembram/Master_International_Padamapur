@@ -1,54 +1,59 @@
-🎓 Master International School – Official Website
+Below is a **clean, professional, well-structured GitHub README** with proper Markdown formatting, spacing, and hierarchy.
+You can **directly copy–paste** this into your `README.md`.
 
-A modern, responsive, and performance-optimized official website developed for Master International School, Padmapur (CBSE Affiliated).
-This project focuses on delivering a professional digital presence for the institution with an intuitive user experience for parents, students, and staff.
+---
 
-🔗 Live Website:
-👉 https://master-international-padamapur.vercel.app/
+# 🎓 Master International School – Official Website
 
-✨ Project Highlights
+A **modern, responsive, and performance-optimized** official website developed for **Master International School, Padmapur (CBSE Affiliated)**.
+This project delivers a strong digital presence with an intuitive and accessible user experience for **parents, students, and staff**.
 
-🌐 Fully responsive design (Mobile, Tablet & Desktop)
+🔗 **Live Website:**
+👉 [https://master-international-padamapur.vercel.app/](https://master-international-padamapur.vercel.app/)
 
-⚡ Fast loading & optimized performance
+---
 
-🎨 Clean and modern UI aligned with CBSE standards
+## ✨ Project Highlights
 
-📚 Dedicated sections for Admissions, Academics, Faculty & Events
+* 🌐 Fully responsive design (Mobile, Tablet & Desktop)
+* ⚡ Fast loading & optimized performance
+* 🎨 Clean, modern UI aligned with CBSE standards
+* 📚 Dedicated sections for Admissions, Academics, Faculty & Events
+* 🖼️ Image Gallery and Event Showcase
+* 🔐 Admin Login & Admission CTA integration
+* 🚀 SEO-friendly structure
 
-🖼️ Image Gallery and Event Showcase
+---
 
-🔐 Admin Login & Admission CTA integration
+## 🛠️ Tech Stack
 
-🚀 SEO-friendly structure
+Built using modern and scalable web technologies:
 
-🛠️ Tech Stack
+* **Vite** – Lightning-fast build tool
+* **TypeScript** – Type-safe JavaScript
+* **React** – Component-based UI architecture
+* **Tailwind CSS** – Utility-first styling framework
+* **shadcn/ui** – Accessible and reusable UI components
 
-This project is built using modern web technologies:
+---
 
-Vite – Lightning-fast build tool
+## 📂 Project Setup & Local Development
 
-TypeScript – Type-safe JavaScript
+### 🔹 Prerequisites
 
-React – Component-based UI
+Ensure the following are installed on your system:
 
-Tailwind CSS – Utility-first styling
+* **Node.js** (v18+ recommended)
+* **npm** or **yarn**
 
-shadcn/ui – Accessible & reusable UI components
+Install Node.js using **nvm**:
+👉 [https://github.com/nvm-sh/nvm#installing-and-updating](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-📂 Project Setup & Local Development
-🔹 Prerequisites
+---
 
-Make sure you have the following installed:
+### 🔹 Installation Steps
 
-Node.js (v18+ recommended)
-
-npm or yarn
-
-Install Node.js using nvm:
-https://github.com/nvm-sh/nvm#installing-and-updating
-
-🔹 Installation Steps
+```bash
 # 1️⃣ Clone the repository
 git clone <YOUR_GIT_URL>
 
@@ -60,69 +65,77 @@ npm install
 
 # 4️⃣ Start the development server
 npm run dev
+```
 
+🔗 The application will be available at:
+👉 **[http://localhost:5173](http://localhost:5173)**
 
-The application will be available at:
-👉 http://localhost:5173
+---
 
-✅ Using Your Local IDE
+## ✏️ Ways to Edit the Project
 
-Clone the repository
+### ✅ Using Your Local IDE
 
-Edit files in VS Code / preferred IDE
+* Clone the repository
+* Edit files in VS Code or your preferred IDE
+* Push changes to GitHub
+* Changes automatically sync with Lovable
 
-Push changes to GitHub
+---
 
-Changes automatically sync with Lovable
+### ✅ Edit Directly on GitHub
 
-✅ Edit Directly on GitHub
+* Open the required file
+* Click the ✏️ **Edit** button
+* Commit changes directly from the browser
 
-Open any file
+---
 
-Click the ✏️ Edit button
+### ✅ Using GitHub Codespaces
 
-Commit changes directly from the browser
+* Click **Code → Codespaces**
+* Launch a new Codespace
+* Edit, commit, and push changes instantly
 
-✅ Using GitHub Codespaces
+---
 
-Click Code → Codespaces
+## 🚀 Deployment
 
-Launch a new Codespace
+Deployment is managed via **Lovable**:
 
-Edit, commit, and push changes instantly
+1. Open the project in Lovable
+2. Click **Share → Publish**
+3. Your website will be deployed instantly
 
-🚀 Deployment
+---
 
-Deployment is handled via Lovable:
-
-Open the project in Lovable
-
-Click Share → Publish
-
-Your site will be deployed instantly
-
-🌍 Custom Domain Support
+## 🌍 Custom Domain Support
 
 You can easily connect a custom domain:
 
-Go to Project → Settings → Domains
-
-Click Connect Domain
-
-Follow the instructions
+1. Navigate to **Project → Settings → Domains**
+2. Click **Connect Domain**
+3. Follow the on-screen instructions
 
 📖 Guide:
-https://hembramit.blogspot.com/
+👉 [https://hembramit.blogspot.com/](https://hembramit.blogspot.com/)
 
-👨‍💻 Developer
+---
 
-Pintu Hembram
-Computer Science Engineering Student | Software Engineer
-Cybersecurity Enthusiast | Full-Stack Web Developer
+## 👨‍💻 Developer
 
-🔗 GitHub: https://github.com/PintuHembram
+**Pintu Hembram**
+🎓 Computer Science Engineering Student
+💻 Software Engineer | 🌐 Full-Stack Web Developer
+🔐 Cybersecurity Enthusiast
 
-📜 License
+🔗 **GitHub:** [https://github.com/PintuHembram](https://github.com/PintuHembram)
 
-This project is developed for Master International School, Padmapur.
+---
+
+## 📜 License
+
+This project is developed exclusively for **Master International School, Padmapur**.
 All rights reserved unless otherwise specified.
+
+
