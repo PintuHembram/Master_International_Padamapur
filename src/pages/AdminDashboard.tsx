@@ -2,6 +2,8 @@ import misLogo from '@/assets/mis-logo.png';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -15,6 +17,7 @@ import {
     Home,
     LogOut,
     Mail,
+    UserPlus,
     XCircle
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -55,6 +58,9 @@ const AdminDashboard = () => {
   const { user, isAdmin, signOut, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [newAdminEmail, setNewAdminEmail] = useState('');
+  const [newAdminRole, setNewAdminRole] = useState<'admin' | 'moderator'>('admin');
+  const [assigning, setAssigning] = useState(false);
 
   useEffect(() => {
     if (!authLoading) {
@@ -285,7 +291,7 @@ const AdminDashboard = () => {
 
           {/* Main Content */}
           <Tabs defaultValue="admissions" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2 lg:w-auto lg:inline-grid">
+            <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:inline-grid">
               <TabsTrigger value="admissions" className="gap-2">
                 <FileText className="h-4 w-4" />
                 Admissions
@@ -293,6 +299,10 @@ const AdminDashboard = () => {
               <TabsTrigger value="messages" className="gap-2">
                 <Mail className="h-4 w-4" />
                 Messages
+              </TabsTrigger>
+              <TabsTrigger value="admins" className="gap-2">
+                <UserPlus className="h-4 w-4" />
+                Admins
               </TabsTrigger>
             </TabsList>
 
@@ -383,6 +393,99 @@ const AdminDashboard = () => {
                       </table>
                     </div>
                   )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Admins Tab */}
+            <TabsContent value="admins">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Manage Admins</CardTitle>
+                  <CardDescription>Assign admin or moderator roles to existing users</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4 max-w-md">
+                    <div>
+                      <Label htmlFor="adminEmail">User Email</Label>
+                      <Input
+                        id="adminEmail"
+                        type="email"
+                        placeholder="user@example.com"
+                        value={newAdminEmail}
+                        onChange={(e) => setNewAdminEmail(e.target.value)}
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="adminRole">Role</Label>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant={newAdminRole === 'admin' ? 'default' : 'outline'}
+                          onClick={() => setNewAdminRole('admin')}
+                        >
+                          Admin
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant={newAdminRole === 'moderator' ? 'default' : 'outline'}
+                          onClick={() => setNewAdminRole('moderator')}
+                        >
+                          Moderator
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Button
+                        onClick={async () => {
+                          // assign role handler
+                          if (!newAdminEmail || !newAdminEmail.includes('@')) {
+                            toast({ title: 'Invalid email', description: 'Please provide a valid email', variant: 'destructive' });
+                            return;
+                          }
+
+                          try {
+                            setAssigning(true);
+
+                            // Find profile by email to get user_id
+                            const { data: profile, error: profileError } = await supabase
+                              .from('profiles')
+                              .select('user_id')
+                              .eq('email', newAdminEmail.trim())
+                              .maybeSingle();
+
+                            if (profileError) throw profileError;
+
+                            if (!profile || !profile.user_id) {
+                              toast({ title: 'User not found', description: 'No user with that email exists. Ask them to sign up first.', variant: 'destructive' });
+                              return;
+                            }
+
+                            // Insert role
+                            const { error: insertError } = await supabase
+                              .from('user_roles')
+                              .insert({ user_id: profile.user_id, role: newAdminRole });
+
+                            if (insertError) throw insertError;
+
+                            toast({ title: 'Success', description: `Assigned ${newAdminRole} role to ${newAdminEmail}` });
+                            setNewAdminEmail('');
+                          } catch (err) {
+                            console.error('Assign role error:', err);
+                            const message = (err as any)?.message || 'Failed to assign role';
+                            toast({ title: 'Error', description: message, variant: 'destructive' });
+                          } finally {
+                            setAssigning(false);
+                          }
+                        }}
+                        disabled={assigning}
+                      >
+                        {assigning ? 'Assigning...' : 'Assign Role'}
+                      </Button>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
