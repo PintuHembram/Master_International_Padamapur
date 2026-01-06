@@ -1,73 +1,141 @@
-# Welcome to your MIS project
+Below is a **clean, professional, well-structured GitHub README** with proper Markdown formatting, spacing, and hierarchy.
+You can **directly copy–paste** this into your `README.md`.
 
-## Project info
+---
 
-**URL**: https://lovable.dev/projects/20666d16-e73c-4e00-b0e7-87151bc282ad
+# 🎓 Master International School – Official Website
 
-## How can I edit this code?
+A **modern, responsive, and performance-optimized** official website developed for **Master International School, Padmapur (CBSE Affiliated)**.
+This project delivers a strong digital presence with an intuitive and accessible user experience for **parents, students, and staff**.
 
-There are several ways of editing your application.
+🔗 **Live Website:**
+👉 [https://master-international-padamapur.vercel.app/](https://master-international-padamapur.vercel.app/)
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/20666d16-e73c-4e00-b0e7-87151bc282ad) and start prompting.
+## ✨ Project Highlights
 
-Changes made via Lovable will be committed automatically to this repo.
+* 🌐 Fully responsive design (Mobile, Tablet & Desktop)
+* ⚡ Fast loading & optimized performance
+* 🎨 Clean, modern UI aligned with CBSE standards
+* 📚 Dedicated sections for Admissions, Academics, Faculty & Events
+* 🖼️ Image Gallery and Event Showcase
+* 🔐 Admin Login & Admission CTA integration
+* 🚀 SEO-friendly structure
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🛠️ Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Built using modern and scalable web technologies:
 
-Follow these steps:
+* **Vite** – Lightning-fast build tool
+* **TypeScript** – Type-safe JavaScript
+* **React** – Component-based UI architecture
+* **Tailwind CSS** – Utility-first styling framework
+* **shadcn/ui** – Accessible and reusable UI components
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+---
+
+## 📂 Project Setup & Local Development
+
+### 🔹 Prerequisites
+
+Ensure the following are installed on your system:
+
+* **Node.js** (v18+ recommended)
+* **npm** or **yarn**
+
+Install Node.js using **nvm**:
+👉 [https://github.com/nvm-sh/nvm#installing-and-updating](https://github.com/nvm-sh/nvm#installing-and-updating)
+
+---
+
+### 🔹 Installation Steps
+
+```bash
+# 1️⃣ Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# 2️⃣ Navigate to the project directory
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# 3️⃣ Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 4️⃣ Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+🔗 The application will be available at:
+👉 **[http://localhost:5173](http://localhost:5173)**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+---
 
-**Use GitHub Codespaces**
+## ✏️ Ways to Edit the Project
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### ✅ Using Your Local IDE
 
-## What technologies are used for this project?
+* Clone the repository
+* Edit files in VS Code or your preferred IDE
+* Push changes to GitHub
+* Changes automatically sync with Lovable
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### ✅ Edit Directly on GitHub
 
-## How can I deploy this project?
+* Open the required file
+* Click the ✏️ **Edit** button
+* Commit changes directly from the browser
 
-Simply open [Lovable](https://lovable.dev/projects/20666d16-e73c-4e00-b0e7-87151bc282ad) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+### ✅ Using GitHub Codespaces
 
-Yes, you can!
+* Click **Code → Codespaces**
+* Launch a new Codespace
+* Edit, commit, and push changes instantly
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+---
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 🚀 Deployment
+
+Deployment is managed via **Lovable**:
+
+1. Open the project in Lovable
+2. Click **Share → Publish**
+3. Your website will be deployed instantly
+
+---
+
+## 🌍 Custom Domain Support
+
+You can easily connect a custom domain:
+
+1. Navigate to **Project → Settings → Domains**
+2. Click **Connect Domain**
+3. Follow the on-screen instructions
+
+📖 Guide:
+👉 [https://hembramit.blogspot.com/](https://hembramit.blogspot.com/)
+
+---
+
+## 👨‍💻 Developer
+
+**Pintu Hembram**
+🎓 Computer Science Engineering Student
+💻 Software Engineer | 🌐 Full-Stack Web Developer
+🔐 Cybersecurity Enthusiast
+
+🔗 **GitHub:** [https://github.com/PintuHembram](https://github.com/PintuHembram)
+
+---
+
+## 📜 License
+
+This project is developed exclusively for **Master International School, Padmapur**.
+All rights reserved unless otherwise specified.
+
+
