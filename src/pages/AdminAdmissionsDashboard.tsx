@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { CreateAdminDialog } from "@/components/admin/CreateAdminDialog";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -193,6 +194,7 @@ export default function AdminAdmissionsDashboard() {
             <p className="text-sm text-muted-foreground">{user?.email}</p>
           </div>
           <div className="flex items-center gap-2">
+            <CreateAdminDialog />
             <DarkModeToggle />
             <Button onClick={handleSignOut} variant="outline" size="sm">
               <LogOut className="w-4 h-4 mr-2" />
