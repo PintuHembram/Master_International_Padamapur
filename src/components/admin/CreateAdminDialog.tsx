@@ -65,29 +65,60 @@ export function CreateAdminDialog() {
       const { data: sessionData } = await supabase.auth.getSession();
       if (!sessionData.session) {
         toast.error("You must be logged in to create users");
+        setLoading(false);
         return;
       }
 
-      const response = await supabase.functions.invoke("create-admin-user", {
-        body: {
-          email: formData.email.trim(),
-          password: formData.password,
-          fullName: formData.fullName.trim(),
-          role: formData.role,
-        },
-      });
+      // Try Supabase Edge Function first (recommended). If not available, fall back to local API.
+      let created = false;
 
-      if (response.error) {
-        throw new Error(response.error.message);
+      try {
+        const response = await supabase.functions.invoke("create-admin-user", {
+          // supabase-js may stringify for us, but ensure JSON body for safety
+          body: JSON.stringify({
+            email: formData.email.trim(),
+            password: formData.password,
+            fullName: formData.fullName.trim(),
+            role: formData.role,
+          }),
+        });
+
+        if (response.error) {
+          throw response.error;
+        }
+
+        if (response.data?.error) {
+          throw new Error(response.data.error);
+        }
+
+        created = true;
+      } catch (fnErr) {
+        // If the Edge Function isn't deployed or fails, try the local server endpoint
+        try {
+          const res = await fetch('/api/admin/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              fullName: formData.fullName.trim(),
+              email: formData.email.trim(),
+              password: formData.password,
+              role: formData.role,
+            }),
+          });
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || 'Signup failed');
+          created = true;
+        } catch (localErr) {
+          throw localErr;
+        }
       }
 
-      if (response.data?.error) {
-        throw new Error(response.data.error);
+      if (created) {
+        toast.success(`${formData.role.charAt(0).toUpperCase() + formData.role.slice(1)} user created successfully`);
+        setOpen(false);
+        setFormData({ fullName: "", email: "", password: "", role: "admin" });
       }
-
-      toast.success(`${formData.role.charAt(0).toUpperCase() + formData.role.slice(1)} user created successfully`);
-      setOpen(false);
-      setFormData({ fullName: "", email: "", password: "", role: "admin" });
     } catch (error) {
       console.error("Error creating user:", error);
       toast.error(error instanceof Error ? error.message : "Failed to create user");
