@@ -2,6 +2,12 @@ import pintuComputer from "@/assets/pintucomputer.png";
 import Ahalya from "@/assets/AHALYA.png";
 import bh  from "@/assets/IMG_20260108_120404.jpg"
 import nary from "@/assets/naray.png"
+import suji from "@/assets/Sujit.png"
+import top from "@/assets/IMG_20260108_143901.jpg"
+import Bara from "@/assets/IMG_20260108_120242.jpg"
+import bij from "@/assets/BIJ.jpeg"
+import lip from "@/assets/LIP.jpeg"
+import atu from "@/"
 import { Layout } from "@/components/Layout";
 import { Input } from "@/components/ui/input";
 import { Mail, Search } from "lucide-react";
@@ -14,13 +20,13 @@ const facultyData = [
   { name: "Er. Pintu Hembram", role: "Computer HOD", department: "Administration", qualification: "Diploma, B.Tech.", image: pintuComputer, email: "pintuhembram@outlook.com" },
   { name: "Miss. Bhagyashree Jena", role: "Head of Primary", department: "Primary", qualification: "M.A., B.Ed.", image: bh, email: "bh@gmail.com" },
   { name: "Mr. Narayan Das", role: "PRT - English", department: "Primary", qualification: "B.A., B.Ed.", image: nary, email: "narayan.das@masterinternational.edu" },
-  { name: "Mr. Ranjan Kumar Sahoo", role: "Founder MIS", department: "Secondary", qualification: "M.Sc., B.Ed.", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop", email: "" },
-  { name: "Mr. Sujit Kumar Das", role: "TGT - Science", department: "Secondary", qualification: "M.Sc., B.Ed.", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop", email: "" },
-  { name: "Miss. Tapaswini Sahoo", role: "PGT - Physics", department: "Primary", qualification: "Ph.D., M.Sc.", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop", email: "physics@masterinternational.edu" },
-  { name: "Miss. Barasha Rani", role: "PGT - Chemistry", department: "Dance", qualification: "M.Sc., B.Ed.", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop", email: "" },
-  { name: "Mr. Bikash Sethi", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop", email: "" },
-  { name: "Mrs. Ranjita Mohanty", role: "Music Teacher", department: "Arts", qualification: "M.A. Music", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop", email: "" },
-  { name: "Mr. Bikash Sethi", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop", email: "" },
+  { name: "Mr. Ranjan Kumar Sahoo", role: "Founder MIS", department: "Secondary", qualification: "M.Sc., B.Ed.", image: OWN, email: "ranjan.sahoo@masterinternational.edu" },
+  { name: "Mr. Sujit Kumar Das", role: "TGT - Science", department: "Secondary", qualification: "M.Sc., B.Ed.", image: suji, email: "sujit.das@masterinternational.edu" },
+  { name: "Miss. Tapaswini Sahoo", role: "PGT - Physics", department: "Primary", qualification: "Ph.D., M.Sc.", image: top, email: "physics@masterinternational.edu" },
+  { name: "Miss. Barsha Priyadarshani Ram", role: "PGT - Chemistry", department: "Dance", qualification: "M.Sc., B.Ed.", image: Bara, email: "chemistry@masterinternational.edu" },
+  { name: "Mr. Bijay Kumar Jena", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: bij, email: "sports@masterinternational.edu" },
+  { name: "Miss. Lipsa Shaoo", role: "Music Teacher", department: "Arts", qualification: "M.A. Music", image: lip, email: "music@masterinternational.edu" },
+  { name: "Mr. Atanu Sabyasachi", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop", email: "" },
   { name: "Mrs. Ranjita Mohanty", role: "Music Teacher", department: "Arts", qualification: "M.A. Music", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop", email: "" },
 ];
 
