@@ -2,11 +2,12 @@ import pintuComputer from "@/assets/pintucomputer.png";
 import Ahalya from "@/assets/AHALYA.png";
 import bh  from "@/assets/IMG_20260108_120404.jpg"
 import nary from "@/assets/naray.png"
-import suji from "@/assets/Sujit.png"
+import sujit from "@/assets/Sujit.png"
 import top from "@/assets/IMG_20260108_143901.jpg"
 import Bara from "@/assets/IMG_20260108_120242.jpg"
 import bij from "@/assets/BIJ.jpeg"
 import lip from "@/assets/LIP.jpeg"
+import OWN from "@/assets/OWN.png";
 import { Layout } from "@/components/Layout";
 import { Input } from "@/components/ui/input";
 import { Mail, Search } from "lucide-react";
@@ -20,7 +21,7 @@ const facultyData = [
   { name: "Miss. Bhagyashree Jena", role: "Head of Primary", department: "Primary", qualification: "M.A., B.Ed.", image: bh, email: "bh@gmail.com" },
   { name: "Mr. Narayan Das", role: "PRT - English", department: "Primary", qualification: "B.A., B.Ed.", image: nary, email: "narayan.das@masterinternational.edu" },
   { name: "Mr. Ranjan Kumar Sahoo", role: "Founder MIS", department: "Secondary", qualification: "M.Sc., B.Ed.", image: OWN, email: "ranjan.sahoo@masterinternational.edu" },
-  { name: "Mr. Sujit Kumar Das", role: "TGT - Science", department: "Secondary", qualification: "M.Sc., B.Ed.", image: suji, email: "sujit.das@masterinternational.edu" },
+  { name: "Mr. Sujit Kumar Das", role: "TGT - Science", department: "Secondary", qualification: "M.Sc., B.Ed.", image: sujit, email: "sujit.das@masterinternational.edu" },
   { name: "Miss. Tapaswini Sahoo", role: "PGT - Physics", department: "Primary", qualification: "Ph.D., M.Sc.", image: top, email: "physics@masterinternational.edu" },
   { name: "Miss. Barsha Priyadarshani Ram", role: "PGT - Chemistry", department: "Dance", qualification: "M.Sc., B.Ed.", image: Bara, email: "chemistry@masterinternational.edu" },
   { name: "Mr. Bijay Kumar Jena", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: bij, email: "sports@masterinternational.edu" },
