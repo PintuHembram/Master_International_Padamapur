@@ -1,4 +1,4 @@
-import RAN from '@/assets/RAN.jpeg';
+import RAN from '@/assets/OWN.png';
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Award, BookOpen, Eye, Target, Trophy, Users } from "lucide-react";
@@ -82,7 +82,7 @@ const About = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <img
-                src={RAN}
+                src={OWN}
                 alt="Mr. Founder"
                 className="rounded-2xl shadow-xl w-full max-w-md mx-auto"
               />
