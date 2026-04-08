@@ -6,8 +6,6 @@ import suji from "@/assets/Sujit.png"
 import top from "@/assets/IMG_20260108_143901.jpg"
 import Bara from "@/assets/IMG_20260108_120242.jpg"
 import bij from "@/assets/BIJ.jpeg"
-import lip from "@/assets/LIP.jpeg"
-import atu from "@/"
 import { Layout } from "@/components/Layout";
 import { Input } from "@/components/ui/input";
 import { Mail, Search } from "lucide-react";
