@@ -1,4 +1,4 @@
-import RAN from '@/assets/OWN.png';
+import OWN from '@/assets/OWN.png';
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Award, BookOpen, Eye, Target, Trophy, Users } from "lucide-react";
