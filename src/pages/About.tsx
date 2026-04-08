@@ -90,7 +90,7 @@ const About = () => {
             <div>
               <span className="text-gold font-semibold text-sm uppercase tracking-wider">Founder's Message</span>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-3 mb-6">
-                Mr. Ranajan Kumar Sahoo
+                Mr. Ranjan Kumar Sahoo
               </h2>
               <blockquote className="text-muted-foreground text-lg leading-relaxed mb-6 border-l-4 border-gold pl-6">
                 "Education is not just about acquiring knowledge; it's about developing 
