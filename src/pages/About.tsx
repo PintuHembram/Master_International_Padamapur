@@ -1,8 +1,9 @@
+import RAN from '@/assets/RAN.jpeg';
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { Award, Users, Target, Eye, BookOpen, Trophy } from "lucide-react";
+import { Award, BookOpen, Eye, Target, Trophy, Users } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 
 const values = [
   { icon: Target, title: "Excellence", desc: "Striving for the highest standards in everything we do" },
@@ -75,21 +76,21 @@ const About = () => {
         </div>
       </section>
 
-      {/* Principal's Message */}
+      {/* Founder's Message */}
       <section className="py-20 bg-muted/50">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <img
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&h=600&fit=crop"
-                alt="Dr. Principal"
+                src={RAN}
+                alt="Mr. Founder"
                 className="rounded-2xl shadow-xl w-full max-w-md mx-auto"
               />
             </div>
             <div>
-              <span className="text-gold font-semibold text-sm uppercase tracking-wider">Principal's Message</span>
+              <span className="text-gold font-semibold text-sm uppercase tracking-wider">Founder's Message</span>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-3 mb-6">
-                Mrs. Ahalya Behera
+                Mr. Ranajan Kumar Sahoo
               </h2>
               <blockquote className="text-muted-foreground text-lg leading-relaxed mb-6 border-l-4 border-gold pl-6">
                 "Education is not just about acquiring knowledge; it's about developing 
@@ -98,12 +99,12 @@ const About = () => {
                 unlimited potential waiting to be unlocked."
               </blockquote>
               <p className="text-muted-foreground mb-6">
-                With over 11 years of experience in education, Dr. Mishra has been leading 
+                With over 11 years of experience in education, Mr. Sahoo has been leading 
                 Master International since 2014, transforming it into one of the most 
                 respected institutions in the region.
               </p>
               <p className="text-sm text-muted-foreground">
-                <strong>Qualifications:</strong> B.Ed. in Education, M.Ed.
+                <strong>Qualifications:</strong> P.H.D. in Education, M.Sc.
               </p>
             </div>
           </div>
