@@ -1,4 +1,4 @@
-import pintuComputer from "@/assets/pintucomputer.png";
+import pintucomputer from "@/assets/pintucomputer.png";
 import Ahalya from "@/assets/AHALYA.png";
 import bh  from "@/assets/IMG_20260108_120404.jpg"
 import nary from "@/assets/naray.png"
@@ -17,7 +17,7 @@ const departments = ["All", "Administration", "Primary", "Upr-Primary", "Compute
 
 const facultyData = [
   { name: "Mrs. Ahalya Behera", role: "Principal", department: "Administration", qualification: "Ph.D., M.Ed.", image: Ahalya, email: "principal@masterinternational.edu" },
-  { name: "Er. Pintu Hembram", role: "Computer HOD", department: "Administration", qualification: "Diploma, B.Tech.", image: pintuComputer, email: "pintuhembram@outlook.com" },
+  { name: "Er. Pintu Hembram", role: "Computer HOD", department: "Administration", qualification: "Diploma, B.Tech.", image: pintucomputer, email: "pintuhembram@outlook.com" },
   { name: "Miss. Bhagyashree Jena", role: "Head of Primary", department: "Primary", qualification: "M.A., B.Ed.", image: bh, email: "bh@gmail.com" },
   { name: "Mr. Narayan Das", role: "PRT - English", department: "Primary", qualification: "B.A., B.Ed.", image: nary, email: "narayan.das@masterinternational.edu" },
   { name: "Mr. Ranjan Kumar Sahoo", role: "Founder MIS", department: "Secondary", qualification: "M.Sc., B.Ed.", image: OWN, email: "ranjan.sahoo@masterinternational.edu" },
