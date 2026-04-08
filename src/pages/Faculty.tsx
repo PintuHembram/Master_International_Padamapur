@@ -1,4 +1,5 @@
 import pintuComputer from "@/assets/pintucomputer.png";
+import Ahalya from "@/assets/AHALYA.png";
 import { Layout } from "@/components/Layout";
 import { Input } from "@/components/ui/input";
 import { Mail, Search } from "lucide-react";
@@ -7,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 const departments = ["All", "Administration", "Primary", "Upr-Primary", "Computer", "Sports", "Arts", "Dance",];
 
 const facultyData = [
-  { name: "Mrs. Ahalya Behera", role: "Principal", department: "Administration", qualification: "Ph.D., M.Ed.", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop", email: "principal@masterinternational.edu" },
+  { name: "Mrs. Ahalya Behera", role: "Principal", department: "Administration", qualification: "Ph.D., M.Ed.", image: Ahalya, email: "principal@masterinternational.edu" },
   { name: "Er. Pintu Hembram", role: "Computer HOD", department: "Administration", qualification: "Diploma, B.Tech.", image: pintuComputer, email: "pintuhembram@outlook.com" },
   { name: "Miss. Bhagyashree Jena", role: "Head of Primary", department: "Primary", qualification: "M.A., B.Ed.", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop", email: "" },
   { name: "Mr. Narayan Das", role: "PRT - English", department: "Primary", qualification: "B.A., B.Ed.", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop", email: "" },
