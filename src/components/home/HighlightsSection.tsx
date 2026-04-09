@@ -1,4 +1,4 @@
-import { , Bus, FlaskConical, Palette, Trophy, Users } from "lucide-react";
+import { Bus, FlaskConical, Palette, Trophy, Users } from "lucide-react";
 import graduationGif from "@/assets/graduation.gif";
 import { Link } from "react-router-dom";
 
