@@ -16,6 +16,7 @@ import Faculty from "./pages/Faculty";
 import Gallery from "./pages/Gallery";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import StudentResults from "./pages/StudentResults";
 
 const queryClient = new QueryClient();
 
