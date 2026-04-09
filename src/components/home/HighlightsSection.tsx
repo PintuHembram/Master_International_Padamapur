@@ -1,5 +1,9 @@
 import graduationGif from "@/assets/graduation-hat-diploma.gif";
-import { Bus, FlaskConical, Palette, Trophy, Users } from "lucide-react";
+import Po from "@/assets/podium.gif";
+import Art from "@/assets/watercolor.gif";
+import exp from "@/assets/experiment.gif";
+import Users from "@/assets/management.gif";
+import Bus from "@/assets/bus.gif";
 import { Link } from "react-router-dom";
 
 const highlights = [
@@ -11,35 +15,35 @@ const highlights = [
     link: "/academics",
   },
   {
-    icon: Trophy,
+    Image: Po,
     title: "Sports & Athletics",
     description: "State-of-the-art sports facilities including cricket, basketball, athletics, and indoor games.",
     color: "bg-orange-500/10 text-orange-600",
     link: "/gallery#sports",
   },
   {
-    icon: Palette,
+    image: Art,
     title: "Arts & Culture",
     description: "Nurturing creativity through music, dance, drama, and visual arts programs.",
     color: "bg-purple-500/10 text-purple-600",
     link: "/academics#arts",
   },
   {
-    icon: FlaskConical,
+    image: exp,
     title: "STEM Labs",
     description: "Modern science and computer labs encouraging hands-on learning and innovation.",
     color: "bg-green-500/10 text-green-600",
     link: "/academics#labs",
   },
   {
-    icon: Users,
+    image: Users,
     title: "Expert Faculty",
     description: "Highly qualified and experienced teachers dedicated to student success.",
     color: "bg-red-500/10 text-red-600",
     link: "/faculty",
   },
   {
-    icon: Bus,
+    image: Bus,
     title: "Safe Transport",
     description: "GPS-enabled buses covering all major routes ensuring safe commute for students.",
     color: "bg-teal-500/10 text-teal-600",
