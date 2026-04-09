@@ -1,13 +1,14 @@
-import { BookOpen, Trophy, Users, Palette, FlaskConical, Bus } from "lucide-react";
+import { , Bus, FlaskConical, Palette, Trophy, Users } from "lucide-react";
+import graduationGif from "@/assets/graduation.gif";
 import { Link } from "react-router-dom";
 
 const highlights = [
   {
-    icon: BookOpen,
     title: "Academic Excellence",
     description: "Comprehensive CBSE curriculum with innovative teaching methodologies and personalized attention.",
     color: "bg-blue-500/10 text-blue-600",
     link: "/academics",
+    image: graduationGif,
   },
   {
     icon: Trophy,
@@ -71,7 +72,11 @@ export function HighlightsSection() {
               className="group bg-card rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-border/50"
             >
               <div className={`w-14 h-14 rounded-xl ${item.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                <item.icon className="w-7 h-7" />
+                {item.image ? (
+                  <img src={item.image} alt={item.title} className="w-7 h-7 object-contain" />
+                ) : (
+                  <item.icon className="w-7 h-7" />
+                )}
               </div>
               <h3 className="font-display text-xl font-semibold text-foreground mb-3 group-hover:text-navy transition-colors">
                 {item.title}
