@@ -162,9 +162,9 @@ export function Navbar() {
               size="sm"
               asChild
             >
-              <Link to="/contact">
-                <Phone className="w-4 h-4" />
-                Contact
+              <Link to="/fee-payment">
+                <CreditCard className="w-4 h-4" />
+                Fee Payment
               </Link>
             </Button>
             <Button
