@@ -1,9 +1,9 @@
+import Bus from "@/assets/bus.gif";
+import exp from "@/assets/experiment.gif";
 import graduationGif from "@/assets/graduation-hat-diploma.gif";
+import Users from "@/assets/management.gif";
 import Po from "@/assets/podium.gif";
 import Art from "@/assets/watercolor.gif";
-import exp from "@/assets/experiment.gif";
-import Users from "@/assets/management.gif";
-import Bus from "@/assets/bus.gif";
 import { Link } from "react-router-dom";
 
 const highlights = [
@@ -15,7 +15,7 @@ const highlights = [
     link: "/academics",
   },
   {
-    Image: Po,
+    image: Po,
     title: "Sports & Athletics",
     description: "State-of-the-art sports facilities including cricket, basketball, athletics, and indoor games.",
     color: "bg-orange-500/10 text-orange-600",
