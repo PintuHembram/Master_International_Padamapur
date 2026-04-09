@@ -66,10 +66,10 @@ export function HeroSection() {
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up animation-delay-600ms">
             {[
-              { value: "K-12", label: "Classes Offered" },
-              { value: "25+", label: "Years Legacy" },
+              { value: "K-VIII", label: "Classes Offered" },
+              { value: "12+", label: "Years Legacy" },
               { value: "50+", label: "Expert Faculty" },
-              { value: "5000+", label: "Alumni Network" },
+              { value: "650+", label: "Alumni Network" },
             ].map((stat, i) => (
               <div key={i} className="text-center sm:text-left">
                 <div className="text-3xl md:text-4xl font-bold text-gold mb-1">{stat.value}</div>
