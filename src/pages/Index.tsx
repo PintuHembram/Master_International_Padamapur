@@ -1,9 +1,9 @@
 import { Layout } from "@/components/Layout";
+import { CTASection } from "@/components/home/CTASection";
 import { HeroSection } from "@/components/home/HeroSection";
 import { HighlightsSection } from "@/components/home/HighlightsSection";
-import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { NewsSection } from "@/components/home/NewsSection";
-import { CTASection } from "@/components/home/CTASection";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { Helmet } from "react-helmet-async";
 
 const Index = () => {
@@ -22,6 +22,7 @@ const Index = () => {
       <TestimonialsSection />
       <NewsSection />
       <CTASection />
+      <ImportantNewsModal />
     </Layout>
   );
 };
