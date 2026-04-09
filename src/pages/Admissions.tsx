@@ -171,7 +171,7 @@ const Admissions = () => {
               {/* Downloads */}
               <div className="mt-8 space-y-4">
                 <h3 className="font-semibold text-lg mb-4">Downloads</h3>
-                <a href="#" className="flex items-center gap-3 p-4 bg-card rounded-lg border border-border/50 hover:border-gold transition-colors">
+                <a href="https://hembram-my.sharepoint.com/:w:/g/personal/pintuhembram_hembram_onmicrosoft_com/IQDCY2jNiqRfTZfKXvChMzB8AYmUaWTf5JRNk90Xs2QpBPw?e=y4r2qd" className="flex items-center gap-3 p-4 bg-card rounded-lg border border-border/50 hover:border-gold transition-colors">
                   <FileText className="w-8 h-8 text-gold" />
                   <div>
                     <div className="font-medium">Fee Structure 2026-27</div>

@@ -21,7 +21,7 @@ const academicLinks = [
 
 const socialLinks = [
   { icon: Facebook, href: "https://www.facebook.com/MISchool2014", label: "Facebook" },
-  { icon: Twitter, href: "https://twitter.com/MISchool2014", label: "Twitter" },
+  { icon: Twitter, href: "https://x.com/internatio50902", label: "Twitter" },
   { icon: Instagram, href: "https://www.instagram.com/MISchool2014", label: "Instagram" },
   { icon: Youtube, href: "https://www.youtube.com/@MASTERINTERNATIONALSCHOOL", label: "YouTube" },
 ];
