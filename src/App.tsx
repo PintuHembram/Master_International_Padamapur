@@ -16,6 +16,7 @@ import Faculty from "./pages/Faculty";
 import Gallery from "./pages/Gallery";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import StudentResults from "./pages/StudentResults";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/events" element={<Events />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/results" element={<StudentResults />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/admissions" element={<AdminAdmissionsDashboard />} />
               <Route path="*" element={<NotFound />} />
