@@ -11,6 +11,7 @@ import AdminAdmissionsDashboard from "./pages/AdminAdmissionsDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import Admissions from "./pages/Admissions";
 import Contact from "./pages/Contact";
+import FeePayment from "./pages/FeePayment";
 import Events from "./pages/Events";
 import Faculty from "./pages/Faculty";
 import Gallery from "./pages/Gallery";
