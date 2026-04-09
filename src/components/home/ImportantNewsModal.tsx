@@ -5,7 +5,7 @@ interface ImportantNewsModalProps {
   videoType?: 'youtube' | 'mp4';
 }
 
-export function ImportantNewsModal({ videoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ', videoType = 'youtube' }: ImportantNewsModalProps) {
+export function ImportantNewsModal({ videoUrl = 'https://www.youtube.com/watch?v=pv-Zskb2o9o&t=6s', videoType = 'youtube' }: ImportantNewsModalProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
