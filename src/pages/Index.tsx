@@ -2,6 +2,7 @@ import { Layout } from "@/components/Layout";
 import { CTASection } from "@/components/home/CTASection";
 import { HeroSection } from "@/components/home/HeroSection";
 import { HighlightsSection } from "@/components/home/HighlightsSection";
+import { ImportantNewsModal } from "@/components/home/ImportantNewsModal";
 import { NewsSection } from "@/components/home/NewsSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { Helmet } from "react-helmet-async";
