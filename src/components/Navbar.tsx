@@ -2,7 +2,7 @@ import misLogo from "@/assets/mis-logo.png";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Menu, Phone, X } from "lucide-react";
+import { CreditCard, Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
