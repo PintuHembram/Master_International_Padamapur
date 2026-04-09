@@ -1,3 +1,4 @@
+import misLogo from '@/assets/mis-logo.png';
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -289,8 +290,7 @@ const FeePayment = () => {
               {/* Receipt Preview */}
               <div ref={receiptRef}>
                 <div className="receipt" style={{ maxWidth: 700, margin: "0 auto", border: "2px solid hsl(213, 52%, 24%)", borderRadius: 12, overflow: "hidden" }}>
-                  <div style={{ background: "linear-gradient(135deg, hsl(213,52%,24%), hsl(213,40%,35%))", color: "#fff", padding: "24px 32px", textAlign: "center" }}>
-                    <h1 style={{ fontSize: 22, marginBottom: 4, letterSpacing: 1 }}>Master International School</h1>
+                  <div style={{ background: "linear-gradient(135deg, hsl(213,52%,24%), hsl(213,40%,35%))", color: "#fff", padding: "24px 32px", textAlign: "center" }}>                  <img src={misLogo} alt="MIS Logo" style={{ width: '80px', height: 'auto', marginBottom: '10px' }} />                    <h1 style={{ fontSize: 22, marginBottom: 4, letterSpacing: 1 }}>Master International School</h1>
                     <p style={{ fontSize: 12, opacity: 0.85 }}>Padamapur, Anandapur, Odisha — CBSE Affiliated</p>
                   </div>
                   <div style={{ background: "hsl(43,65%,55%)", color: "hsl(213,52%,24%)", textAlign: "center", padding: 10, fontWeight: 700, fontSize: 15, letterSpacing: 2 }}>
