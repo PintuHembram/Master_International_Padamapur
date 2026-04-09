@@ -17,7 +17,7 @@ const academicLinks = [
   { name: "Secondary School", href: "/academics#secondary" },
   { name: "Senior Secondary", href: "/academics#senior" },
   { name: "Curriculum", href: "/academics#curriculum" },
-  { name: "Results", href: "/academics#results" },
+  { name: "Results", href: "/results" },
 ];
 
 const socialLinks = [
