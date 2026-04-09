@@ -2,7 +2,7 @@ import misLogo from "@/assets/mis-logo.png";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Menu, Phone, X } from "lucide-react";
+import { CreditCard, Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -162,9 +162,9 @@ export function Navbar() {
               size="sm"
               asChild
             >
-              <Link to="/contact">
-                <Phone className="w-4 h-4" />
-                Contact
+              <Link to="/fee-payment">
+                <CreditCard className="w-4 h-4" />
+                Fee Payment
               </Link>
             </Button>
             <Button
@@ -242,9 +242,9 @@ export function Navbar() {
                 <Link to="/admissions">Apply Now</Link>
               </Button>
               <Button variant="outline" asChild className="w-full">
-                <Link to="/contact">
-                  <Phone className="w-4 h-4" />
-                  Contact Us
+                <Link to="/fee-payment">
+                  <CreditCard className="w-4 h-4" />
+                  Fee Payment
                 </Link>
               </Button>
               {isAdminLoggedIn && (

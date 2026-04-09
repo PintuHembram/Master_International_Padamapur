@@ -140,6 +140,54 @@ export type Database = {
         }
         Relationships: []
       }
+      fee_payments: {
+        Row: {
+          academic_year: string
+          amount: number
+          created_at: string
+          father_name: string | null
+          fee_category: string
+          id: string
+          payment_date: string
+          payment_mode: string
+          receipt_number: string
+          remarks: string | null
+          roll_number: string | null
+          student_class: string
+          student_name: string
+        }
+        Insert: {
+          academic_year: string
+          amount: number
+          created_at?: string
+          father_name?: string | null
+          fee_category: string
+          id?: string
+          payment_date?: string
+          payment_mode?: string
+          receipt_number: string
+          remarks?: string | null
+          roll_number?: string | null
+          student_class: string
+          student_name: string
+        }
+        Update: {
+          academic_year?: string
+          amount?: number
+          created_at?: string
+          father_name?: string | null
+          fee_category?: string
+          id?: string
+          payment_date?: string
+          payment_mode?: string
+          receipt_number?: string
+          remarks?: string | null
+          roll_number?: string | null
+          student_class?: string
+          student_name?: string
+        }
+        Relationships: []
+      }
       gallery: {
         Row: {
           category: string

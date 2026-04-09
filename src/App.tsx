@@ -11,6 +11,7 @@ import AdminAdmissionsDashboard from "./pages/AdminAdmissionsDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import Admissions from "./pages/Admissions";
 import Contact from "./pages/Contact";
+import FeePayment from "./pages/FeePayment";
 import Events from "./pages/Events";
 import Faculty from "./pages/Faculty";
 import Gallery from "./pages/Gallery";
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/events" element={<Events />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/fee-payment" element={<FeePayment />} />
               <Route path="/results" element={<StudentResults />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/admissions" element={<AdminAdmissionsDashboard />} />
