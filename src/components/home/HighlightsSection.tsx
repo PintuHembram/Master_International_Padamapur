@@ -7,7 +7,7 @@ const highlights = [
     image: graduationGif,
     title: "Academic Excellence",
     description: "Comprehensive CBSE curriculum with innovative teaching methodologies and personalized attention.",
-    color: "bg-blue-500/10 text-blue-600",
+    color: "bg-blue-500/5 text-blue-600",
     link: "/academics",
   },
   {
