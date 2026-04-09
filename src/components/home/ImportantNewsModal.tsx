@@ -7,6 +7,12 @@ interface ImportantNewsModalProps {
 
 export function ImportantNewsModal({ videoUrl = 'https://youtu.be/pv-Zskb2o9o', videoType = 'youtube' }: ImportantNewsModalProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const normalizedVideoUrl = videoType === 'youtube'
+    ? videoUrl
+        .replace('https://youtu.be/', 'https://www.youtube.com/embed/')
+        .replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/')
+        .replace('http://youtu.be/', 'https://www.youtube.com/embed/')
+    : videoUrl;
 
   useEffect(() => {
     const hasSeenModal = localStorage.getItem('importantNewsSeen');
@@ -49,7 +55,7 @@ export function ImportantNewsModal({ videoUrl = 'https://youtu.be/pv-Zskb2o9o', 
           {videoType === 'youtube' ? (
             <div className="aspect-video">
               <iframe
-                src={videoUrl}
+                src={normalizedVideoUrl}
                 title="Important News Video"
                 className="w-full h-full rounded-lg"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
