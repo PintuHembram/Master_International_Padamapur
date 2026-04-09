@@ -242,9 +242,9 @@ export function Navbar() {
                 <Link to="/admissions">Apply Now</Link>
               </Button>
               <Button variant="outline" asChild className="w-full">
-                <Link to="/contact">
-                  <Phone className="w-4 h-4" />
-                  Contact Us
+                <Link to="/fee-payment">
+                  <CreditCard className="w-4 h-4" />
+                  Fee Payment
                 </Link>
               </Button>
               {isAdminLoggedIn && (
