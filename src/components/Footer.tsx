@@ -3,11 +3,11 @@ import { ArrowRight, Facebook, Instagram, Mail, MapPin, Phone, Twitter, Youtube 
 import { Link } from "react-router-dom";
 
 const quickLinks = [
+  { name: "UDISE+", href: "https://udiseplus.gov.in/#/en/home" },
+  { name: "RTE-PARADARSHI", href: "https://rteparadarshi.odisha.gov.in/odisha" },
+  { name: "CBSE", href: "https://www.cbse.gov.in/" },
   { name: "About Us", href: "/about" },
-  { name: "Admissions", href: "/admissions" },
-  { name: "Academics", href: "/academics" },
   { name: "Faculty", href: "/faculty" },
-  { name: "Gallery", href: "/gallery" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -20,10 +20,10 @@ const academicLinks = [
 ];
 
 const socialLinks = [
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Youtube, href: "#", label: "YouTube" },
+  { icon: Facebook, href: "https://www.facebook.com/MISchool2014", label: "Facebook" },
+  { icon: Twitter, href: "https://twitter.com/MISchool2014", label: "Twitter" },
+  { icon: Instagram, href: "https://www.instagram.com/MISchool2014", label: "Instagram" },
+  { icon: Youtube, href: "https://www.youtube.com/@MASTERINTERNATIONALSCHOOL", label: "YouTube" },
 ];
 
 export function Footer() {
@@ -137,7 +137,7 @@ export function Footer() {
         <div className="container mx-auto px-4 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-white/50 text-sm text-center md:text-left">
-              © {new Date().getFullYear()} Hembram IT Solutions Pvt. Ltd . All rights reserved.
+              © {new Date().getFullYear()} <a href="https://hembramit.blogspot.com/" className="hover:text-gold transition-colors">Hembram IT Solutions Pvt. Ltd</a> . All rights reserved.
             </p>
             <div className="flex items-center gap-6 text-sm">
               <Link to="/privacy" className="text-white/50 hover:text-gold transition-colors">

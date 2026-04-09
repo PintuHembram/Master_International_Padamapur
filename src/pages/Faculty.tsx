@@ -8,6 +8,7 @@ import Bara from "@/assets/IMG_20260108_120242.jpg"
 import bij from "@/assets/BIJ.jpeg"
 import lip from "@/assets/LIP.jpeg"
 import OWN from "@/assets/OWN.png";
+import Atu from "@/assets/ATU.png";
 import { Layout } from "@/components/Layout";
 import { Input } from "@/components/ui/input";
 import { Mail, Search } from "lucide-react";
@@ -26,7 +27,7 @@ const facultyData = [
   { name: "Miss. Barsha Priyadarshani Ram", role: "PGT - Chemistry", department: "Dance", qualification: "M.Sc., B.Ed.", image: Bara, email: "chemistry@masterinternational.edu" },
   { name: "Mr. Bijay Kumar Jena", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: bij, email: "sports@masterinternational.edu" },
   { name: "Miss. Lipsa Shaoo", role: "Music Teacher", department: "Arts", qualification: "M.A. Music", image: lip, email: "music@masterinternational.edu" },
-  { name: "Mr. Atanu Sabyasachi", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop", email: "" },
+  { name: "Mr. Atanu Sabyasachi", role: "Sports Coordinator", department: "Sports", qualification: "M.P.Ed.", image: Atu, email: "atu@gmail.com" },
   { name: "Mrs. Ranjita Mohanty", role: "Music Teacher", department: "Arts", qualification: "M.A. Music", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop", email: "" },
 ];
 

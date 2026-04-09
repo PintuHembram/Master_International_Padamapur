@@ -44,7 +44,7 @@ export function HeroSection() {
           {/* Subtext */}
           <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl animate-fade-in-up animation-delay-200ms">
             Master International, Padamapur offers a holistic CBSE education nurturing 
-            young minds from Kindergarten to Class XII in a world-class learning environment.
+            young minds from Kindergarten to Class VIII in a world-class learning environment.
           </p>
 
           {/* CTA Buttons */}
