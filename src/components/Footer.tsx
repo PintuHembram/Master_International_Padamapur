@@ -16,6 +16,7 @@ const academicLinks = [
   { name: "Middle School", href: "/academics#middle" },
   { name: "Secondary School", href: "/academics#secondary" },
   { name: "Senior Secondary", href: "/academics#senior" },
+  { name: "Admit Cards", href: "/admit-cards" },
   { name: "Curriculum", href: "/academics#curriculum" },
   { name: "Results", href: "/results" },
 ];

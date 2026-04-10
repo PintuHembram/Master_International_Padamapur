@@ -140,6 +140,65 @@ export type Database = {
         }
         Relationships: []
       }
+      exam_subjects: {
+        Row: {
+          created_at: string
+          exam_date: string
+          exam_id: string
+          exam_time: string
+          id: string
+          subject_name: string
+        }
+        Insert: {
+          created_at?: string
+          exam_date: string
+          exam_id: string
+          exam_time?: string
+          id?: string
+          subject_name: string
+        }
+        Update: {
+          created_at?: string
+          exam_date?: string
+          exam_id?: string
+          exam_time?: string
+          id?: string
+          subject_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exam_subjects_exam_id_fkey"
+            columns: ["exam_id"]
+            isOneToOne: false
+            referencedRelation: "exams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exams: {
+        Row: {
+          academic_year: string
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          academic_year?: string
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          academic_year?: string
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       fee_payments: {
         Row: {
           academic_year: string
@@ -281,6 +340,42 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      students: {
+        Row: {
+          class: string
+          created_at: string
+          date_of_birth: string
+          id: string
+          name: string
+          photo_url: string | null
+          roll_number: string
+          section: string
+          updated_at: string
+        }
+        Insert: {
+          class: string
+          created_at?: string
+          date_of_birth: string
+          id?: string
+          name: string
+          photo_url?: string | null
+          roll_number: string
+          section?: string
+          updated_at?: string
+        }
+        Update: {
+          class?: string
+          created_at?: string
+          date_of_birth?: string
+          id?: string
+          name?: string
+          photo_url?: string | null
+          roll_number?: string
+          section?: string
+          updated_at?: string
         }
         Relationships: []
       }

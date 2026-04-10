@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import About from "./pages/About";
+import AdmitCards from "./pages/AdmitCards";
 import Academics from "./pages/Academics";
 import AdminAdmissionsDashboard from "./pages/AdminAdmissionsDashboard";
 import AdminLogin from "./pages/AdminLogin";
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/fee-payment" element={<FeePayment />} />
               <Route path="/results" element={<StudentResults />} />
+              <Route path="/admit-cards" element={<AdmitCards />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/admissions" element={<AdminAdmissionsDashboard />} />
               <Route path="*" element={<NotFound />} />
