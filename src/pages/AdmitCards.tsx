@@ -36,8 +36,9 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+// Dynamic imports to avoid React context conflicts
+const loadHtml2Canvas = () => import("html2canvas").then((m) => m.default);
+const loadJsPDF = () => import("jspdf").then((m) => m.default);
 
 interface Student {
   id: string;
