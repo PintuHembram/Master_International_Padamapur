@@ -36,8 +36,8 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+// Dynamic imports to avoid React context conflicts
+const loadHtml2Canvas = () => import("html2canvas").then((m) => m.default);
 
 interface Student {
   id: string;
@@ -185,6 +185,8 @@ export default function AdmitCards() {
     if (!ref.current) return;
     toast.info("Generating PDF...");
     try {
+      const html2canvas = await loadHtml2Canvas();
+      const { default: jsPDF } = await import("jspdf");
       const canvas = await html2canvas(ref.current, {
         scale: 2,
         useCORS: true,
