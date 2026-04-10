@@ -1,3 +1,4 @@
+import misLogo from "@/assets/mis-logo.png";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -19,8 +19,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import misLogo from "@/assets/mis-logo.png";
 import {
   BookOpen,
   Download,
@@ -101,18 +101,36 @@ export default function AdmitCards() {
   }, []);
 
   async function fetchStudents() {
-    const { data } = await supabase.from("students").select("*").order("roll_number");
-    if (data) setStudents(data);
+    if (supabase) {
+      const { data } = await supabase.from("students").select("*").order("roll_number");
+      if (data) setStudents(data);
+    } else {
+      const res = await fetch('/api/students');
+      const data = await res.json();
+      setStudents(data);
+    }
   }
 
   async function fetchExams() {
-    const { data } = await supabase.from("exams").select("*").order("name");
-    if (data) setExams(data);
+    if (supabase) {
+      const { data } = await supabase.from("exams").select("*").order("name");
+      if (data) setExams(data);
+    } else {
+      const res = await fetch('/api/exams');
+      const data = await res.json();
+      setExams(data);
+    }
   }
 
   async function fetchExamSubjects() {
-    const { data } = await supabase.from("exam_subjects").select("*").order("exam_date");
-    if (data) setExamSubjects(data);
+    if (supabase) {
+      const { data } = await supabase.from("exam_subjects").select("*").order("exam_date");
+      if (data) setExamSubjects(data);
+    } else {
+      const res = await fetch('/api/exam_subjects');
+      const data = await res.json();
+      setExamSubjects(data);
+    }
   }
 
   async function addStudent() {
@@ -120,10 +138,23 @@ export default function AdmitCards() {
       toast.error("Please fill all required fields");
       return;
     }
-    const { error } = await supabase.from("students").insert([newStudent]);
-    if (error) {
-      toast.error(error.message);
-      return;
+    if (supabase) {
+      const { error } = await supabase.from("students").insert([newStudent]);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+    } else {
+      const res = await fetch('/api/students', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newStudent)
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        toast.error(error.error || 'Failed to add student');
+        return;
+      }
     }
     toast.success("Student added successfully");
     setNewStudent({ roll_number: "", name: "", class: "", section: "A", date_of_birth: "" });
@@ -131,10 +162,19 @@ export default function AdmitCards() {
   }
 
   async function deleteStudent(id: string) {
-    const { error } = await supabase.from("students").delete().eq("id", id);
-    if (error) {
-      toast.error(error.message);
-      return;
+    if (supabase) {
+      const { error } = await supabase.from("students").delete().eq("id", id);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+    } else {
+      const res = await fetch(`/api/students/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const error = await res.json();
+        toast.error(error.error || 'Failed to delete student');
+        return;
+      }
     }
     toast.success("Student deleted");
     fetchStudents();
@@ -145,10 +185,23 @@ export default function AdmitCards() {
       toast.error("Please fill all required fields");
       return;
     }
-    const { error } = await supabase.from("exam_subjects").insert([newSubject]);
-    if (error) {
-      toast.error(error.message);
-      return;
+    if (supabase) {
+      const { error } = await supabase.from("exam_subjects").insert([newSubject]);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+    } else {
+      const res = await fetch('/api/exam_subjects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newSubject)
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        toast.error(error.error || 'Failed to add subject');
+        return;
+      }
     }
     toast.success("Subject added successfully");
     setNewSubject({ exam_id: "", subject_name: "", exam_date: "", exam_time: "10:00 AM - 1:00 PM" });
@@ -156,10 +209,19 @@ export default function AdmitCards() {
   }
 
   async function deleteSubject(id: string) {
-    const { error } = await supabase.from("exam_subjects").delete().eq("id", id);
-    if (error) {
-      toast.error(error.message);
-      return;
+    if (supabase) {
+      const { error } = await supabase.from("exam_subjects").delete().eq("id", id);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+    } else {
+      const res = await fetch(`/api/exam_subjects/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const error = await res.json();
+        toast.error(error.error || 'Failed to delete subject');
+        return;
+      }
     }
     toast.success("Subject deleted");
     fetchExamSubjects();

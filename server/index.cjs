@@ -18,6 +18,9 @@ app.use(bodyParser.json({ limit: '5mb' }));
 
 const DB_PATH = path.join(__dirname, 'applications.json');
 const USERS_DB_PATH = path.join(__dirname, 'users.json');
+const STUDENTS_DB_PATH = path.join(__dirname, 'students.json');
+const EXAMS_DB_PATH = path.join(__dirname, 'exams.json');
+const EXAM_SUBJECTS_DB_PATH = path.join(__dirname, 'exam_subjects.json');
 
 // User database functions
 function readUsers() {
@@ -48,6 +51,78 @@ function writeUsers(data) {
     return true;
   } catch (err) {
     console.error('Failed to write users DB', err);
+    return false;
+  }
+}
+
+function readStudents() {
+  try {
+    if (!fs.existsSync(STUDENTS_DB_PATH)) {
+      fs.writeFileSync(STUDENTS_DB_PATH, JSON.stringify([]));
+      return [];
+    }
+    const raw = fs.readFileSync(STUDENTS_DB_PATH, 'utf8');
+    return JSON.parse(raw || '[]');
+  } catch (err) {
+    console.error('Failed to read students DB', err);
+    return [];
+  }
+}
+
+function writeStudents(data) {
+  try {
+    fs.writeFileSync(STUDENTS_DB_PATH, JSON.stringify(data, null, 2));
+    return true;
+  } catch (err) {
+    console.error('Failed to write students DB', err);
+    return false;
+  }
+}
+
+function readExams() {
+  try {
+    if (!fs.existsSync(EXAMS_DB_PATH)) {
+      fs.writeFileSync(EXAMS_DB_PATH, JSON.stringify([]));
+      return [];
+    }
+    const raw = fs.readFileSync(EXAMS_DB_PATH, 'utf8');
+    return JSON.parse(raw || '[]');
+  } catch (err) {
+    console.error('Failed to read exams DB', err);
+    return [];
+  }
+}
+
+function writeExams(data) {
+  try {
+    fs.writeFileSync(EXAMS_DB_PATH, JSON.stringify(data, null, 2));
+    return true;
+  } catch (err) {
+    console.error('Failed to write exams DB', err);
+    return false;
+  }
+}
+
+function readExamSubjects() {
+  try {
+    if (!fs.existsSync(EXAM_SUBJECTS_DB_PATH)) {
+      fs.writeFileSync(EXAM_SUBJECTS_DB_PATH, JSON.stringify([]));
+      return [];
+    }
+    const raw = fs.readFileSync(EXAM_SUBJECTS_DB_PATH, 'utf8');
+    return JSON.parse(raw || '[]');
+  } catch (err) {
+    console.error('Failed to read exam subjects DB', err);
+    return [];
+  }
+}
+
+function writeExamSubjects(data) {
+  try {
+    fs.writeFileSync(EXAM_SUBJECTS_DB_PATH, JSON.stringify(data, null, 2));
+    return true;
+  } catch (err) {
+    console.error('Failed to write exam subjects DB', err);
     return false;
   }
 }
@@ -245,6 +320,105 @@ app.delete('/api/admin/applications/:id', (req, res) => {
   const ok = writeDB(db);
   if (!ok) return res.status(500).json({ error: 'Failed to delete' });
   return res.json({ success: true });
+});
+
+app.get('/api/students', (req, res) => {
+  const students = readStudents();
+  res.json(students);
+});
+
+app.post('/api/students', (req, res) => {
+  const payload = req.body || {};
+  const required = ['roll_number', 'name', 'class', 'section', 'date_of_birth'];
+  for (const key of required) {
+    if (!payload[key]) {
+      return res.status(400).json({ error: `${key} is required` });
+    }
+  }
+  const students = readStudents();
+  const id = Date.now().toString();
+  const student = { id, ...payload };
+  students.push(student);
+  const ok = writeStudents(students);
+  if (!ok) return res.status(500).json({ error: 'Failed to save student' });
+  res.status(201).json(student);
+});
+
+app.delete('/api/students/:id', (req, res) => {
+  const id = req.params.id;
+  const students = readStudents();
+  const idx = students.findIndex((s) => s.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Student not found' });
+  students.splice(idx, 1);
+  const ok = writeStudents(students);
+  if (!ok) return res.status(500).json({ error: 'Failed to delete student' });
+  res.json({ success: true });
+});
+
+app.get('/api/exams', (req, res) => {
+  const exams = readExams();
+  res.json(exams);
+});
+
+app.post('/api/exams', (req, res) => {
+  const payload = req.body || {};
+  const required = ['name', 'academic_year'];
+  for (const key of required) {
+    if (!payload[key]) {
+      return res.status(400).json({ error: `${key} is required` });
+    }
+  }
+  const exams = readExams();
+  const id = Date.now().toString();
+  const exam = { id, ...payload };
+  exams.push(exam);
+  const ok = writeExams(exams);
+  if (!ok) return res.status(500).json({ error: 'Failed to save exam' });
+  res.status(201).json(exam);
+});
+
+app.delete('/api/exams/:id', (req, res) => {
+  const id = req.params.id;
+  const exams = readExams();
+  const idx = exams.findIndex((e) => e.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Exam not found' });
+  exams.splice(idx, 1);
+  const ok = writeExams(exams);
+  if (!ok) return res.status(500).json({ error: 'Failed to delete exam' });
+  res.json({ success: true });
+});
+
+app.get('/api/exam_subjects', (req, res) => {
+  const examSubjects = readExamSubjects();
+  res.json(examSubjects);
+});
+
+app.post('/api/exam_subjects', (req, res) => {
+  const payload = req.body || {};
+  const required = ['exam_id', 'subject_name', 'exam_date'];
+  for (const key of required) {
+    if (!payload[key]) {
+      return res.status(400).json({ error: `${key} is required` });
+    }
+  }
+  const examSubjects = readExamSubjects();
+  const id = Date.now().toString();
+  const examSubject = { id, ...payload };
+  examSubjects.push(examSubject);
+  const ok = writeExamSubjects(examSubjects);
+  if (!ok) return res.status(500).json({ error: 'Failed to save exam subject' });
+  res.status(201).json(examSubject);
+});
+
+app.delete('/api/exam_subjects/:id', (req, res) => {
+  const id = req.params.id;
+  const examSubjects = readExamSubjects();
+  const idx = examSubjects.findIndex((es) => es.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Exam subject not found' });
+  examSubjects.splice(idx, 1);
+  const ok = writeExamSubjects(examSubjects);
+  if (!ok) return res.status(500).json({ error: 'Failed to delete exam subject' });
+  res.json({ success: true });
 });
 
 app.listen(PORT, () => {
