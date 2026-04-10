@@ -186,6 +186,8 @@ export default function AdmitCards() {
     if (!ref.current) return;
     toast.info("Generating PDF...");
     try {
+      const html2canvas = await loadHtml2Canvas();
+      const { default: jsPDF } = await import("jspdf");
       const canvas = await html2canvas(ref.current, {
         scale: 2,
         useCORS: true,
