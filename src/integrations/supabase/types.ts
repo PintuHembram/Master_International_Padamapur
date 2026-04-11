@@ -142,6 +142,7 @@ export type Database = {
       }
       exam_subjects: {
         Row: {
+          class: string
           created_at: string
           exam_date: string
           exam_id: string
@@ -150,6 +151,7 @@ export type Database = {
           subject_name: string
         }
         Insert: {
+          class?: string
           created_at?: string
           exam_date: string
           exam_id: string
@@ -158,6 +160,7 @@ export type Database = {
           subject_name: string
         }
         Update: {
+          class?: string
           created_at?: string
           exam_date?: string
           exam_id?: string
