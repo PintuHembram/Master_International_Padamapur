@@ -92,6 +92,7 @@ export default function AdmitCards() {
     subject_name: "",
     exam_date: "",
     exam_time: "10:00 AM - 1:00 PM",
+    class: "ALL",
   });
 
   useEffect(() => {
@@ -204,7 +205,7 @@ export default function AdmitCards() {
       }
     }
     toast.success("Subject added successfully");
-    setNewSubject({ exam_id: "", subject_name: "", exam_date: "", exam_time: "10:00 AM - 1:00 PM" });
+    setNewSubject({ exam_id: "", subject_name: "", exam_date: "", exam_time: "10:00 AM - 1:00 PM", class: "ALL" });
     fetchExamSubjects();
   }
 
@@ -616,7 +617,7 @@ export default function AdmitCards() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
                     <div>
                       <Label>Exam *</Label>
                       <Select value={newSubject.exam_id} onValueChange={(v) => setNewSubject({ ...newSubject, exam_id: v })}>
@@ -624,6 +625,18 @@ export default function AdmitCards() {
                         <SelectContent>
                           {exams.map((e) => (
                             <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label>Class *</Label>
+                      <Select value={newSubject.class} onValueChange={(v) => setNewSubject({ ...newSubject, class: v })}>
+                        <SelectTrigger><SelectValue placeholder="Select class" /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ALL">All Classes</SelectItem>
+                          {classes.map((c) => (
+                            <SelectItem key={c} value={c}>Class {c}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -680,6 +693,7 @@ export default function AdmitCards() {
                           <TableHeader>
                             <TableRow className="bg-navy/5">
                               <TableHead>Subject</TableHead>
+                              <TableHead>Class</TableHead>
                               <TableHead>Date</TableHead>
                               <TableHead>Time</TableHead>
                               <TableHead className="w-16">Action</TableHead>
@@ -689,6 +703,7 @@ export default function AdmitCards() {
                             {subs.map((sub) => (
                               <TableRow key={sub.id}>
                                 <TableCell className="font-medium">{sub.subject_name}</TableCell>
+                                <TableCell>{(sub as any).class || 'ALL'}</TableCell>
                                 <TableCell>{new Date(sub.exam_date).toLocaleDateString("en-IN")}</TableCell>
                                 <TableCell>{sub.exam_time}</TableCell>
                                 <TableCell>

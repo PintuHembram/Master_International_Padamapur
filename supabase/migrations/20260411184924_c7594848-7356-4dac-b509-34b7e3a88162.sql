@@ -1,0 +1,1 @@
+ALTER TABLE public.exam_subjects ADD COLUMN class TEXT NOT NULL DEFAULT 'ALL';
