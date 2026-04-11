@@ -21,6 +21,32 @@ const USERS_DB_PATH = path.join(__dirname, 'users.json');
 const STUDENTS_DB_PATH = path.join(__dirname, 'students.json');
 const EXAMS_DB_PATH = path.join(__dirname, 'exams.json');
 const EXAM_SUBJECTS_DB_PATH = path.join(__dirname, 'exam_subjects.json');
+const RESULTS_DB_PATH = path.join(__dirname, 'student_results.json');
+
+// Results database functions
+function readResults() {
+  try {
+    if (!fs.existsSync(RESULTS_DB_PATH)) {
+      fs.writeFileSync(RESULTS_DB_PATH, JSON.stringify([]));
+      return [];
+    }
+    const raw = fs.readFileSync(RESULTS_DB_PATH, 'utf8');
+    return JSON.parse(raw || '[]');
+  } catch (err) {
+    console.error('Failed to read results DB', err);
+    return [];
+  }
+}
+
+function writeResults(data) {
+  try {
+    fs.writeFileSync(RESULTS_DB_PATH, JSON.stringify(data, null, 2));
+    return true;
+  } catch (err) {
+    console.error('Failed to write results DB', err);
+    return false;
+  }
+}
 
 // User database functions
 function readUsers() {
@@ -418,6 +444,57 @@ app.delete('/api/exam_subjects/:id', (req, res) => {
   examSubjects.splice(idx, 1);
   const ok = writeExamSubjects(examSubjects);
   if (!ok) return res.status(500).json({ error: 'Failed to delete exam subject' });
+  res.json({ success: true });
+});
+
+// Student Results endpoints
+app.get('/api/student_results', (req, res) => {
+  if (!verifyToken(req, res)) return res.status(401).json({ error: 'Unauthorized' });
+  const results = readResults();
+  res.json(results);
+});
+
+app.post('/api/student_results', (req, res) => {
+  if (!verifyToken(req, res)) return res.status(401).json({ error: 'Unauthorized' });
+  const payload = req.body || {};
+  const required = ['student_id', 'student_name', 'roll_number', 'exam_id', 'exam_name'];
+  for (const key of required) {
+    if (!payload[key]) {
+      return res.status(400).json({ error: `${key} is required` });
+    }
+  }
+  const results = readResults();
+  const id = Date.now().toString();
+  const result = { id, ...payload, created_at: new Date().toISOString() };
+  results.push(result);
+  const ok = writeResults(results);
+  if (!ok) return res.status(500).json({ error: 'Failed to save result' });
+  res.status(201).json(result);
+});
+
+app.put('/api/student_results/:id', (req, res) => {
+  if (!verifyToken(req, res)) return res.status(401).json({ error: 'Unauthorized' });
+  const id = req.params.id;
+  const payload = req.body || {};
+  const results = readResults();
+  const idx = results.findIndex((r) => r.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Result not found' });
+  
+  results[idx] = { ...results[idx], ...payload };
+  const ok = writeResults(results);
+  if (!ok) return res.status(500).json({ error: 'Failed to update result' });
+  res.json(results[idx]);
+});
+
+app.delete('/api/student_results/:id', (req, res) => {
+  if (!verifyToken(req, res)) return res.status(401).json({ error: 'Unauthorized' });
+  const id = req.params.id;
+  const results = readResults();
+  const idx = results.findIndex((r) => r.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Result not found' });
+  results.splice(idx, 1);
+  const ok = writeResults(results);
+  if (!ok) return res.status(500).json({ error: 'Failed to delete result' });
   res.json({ success: true });
 });
 

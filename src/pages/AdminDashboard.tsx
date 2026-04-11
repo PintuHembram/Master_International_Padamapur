@@ -22,6 +22,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import {
+  Award,
   BookOpen,
   Edit,
   FileText,
@@ -32,7 +33,7 @@ import {
   Save,
   Trash2,
   Users,
-  X,
+  X
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -70,12 +71,38 @@ interface ExamSubject {
   exam_date: string;
 }
 
+interface SubjectMark {
+  subject_name: string;
+  max_marks: number;
+  obtained_marks: number;
+  grade: string;
+}
+
+interface StudentResult {
+  id: string;
+  student_id: string;
+  student_name: string;
+  roll_number: string;
+  exam_id: string;
+  exam_name: string;
+  class: string;
+  section: string;
+  total_marks: number;
+  obtained_marks: number;
+  percentage: number;
+  grade: string;
+  subject_marks: SubjectMark[];
+  remarks: string;
+  created_at: string;
+}
+
 const AdminDashboard = () => {
   // Data state
   const [admissions, setAdmissions] = useState<Admission[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
   const [exams, setExams] = useState<Exam[]>([]);
   const [examSubjects, setExamSubjects] = useState<ExamSubject[]>([]);
+  const [results, setResults] = useState<StudentResult[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Form states
@@ -90,6 +117,10 @@ const AdminDashboard = () => {
   const [showExamSubjectForm, setShowExamSubjectForm] = useState(false);
   const [examSubjectForm, setExamSubjectForm] = useState<Partial<ExamSubject>>({});
   const [editingExamSubjectId, setEditingExamSubjectId] = useState<string | null>(null);
+
+  const [showResultForm, setShowResultForm] = useState(false);
+  const [resultForm, setResultForm] = useState<Partial<StudentResult>>({});
+  const [editingResultId, setEditingResultId] = useState<string | null>(null);
 
   const { isAdmin, signOut, getToken, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -114,7 +145,7 @@ const AdminDashboard = () => {
       setLoading(true);
       const token = getToken();
 
-      const [admResp, studResp, examResp, subjResp] = await Promise.all([
+      const [admResp, studResp, examResp, subjResp, resResp] = await Promise.all([
         fetch('http://localhost:5000/api/admin/applications', {
           headers: { 'Authorization': `Bearer ${token}` },
         }),
@@ -127,12 +158,16 @@ const AdminDashboard = () => {
         fetch('http://localhost:5000/api/exam_subjects', {
           headers: { 'Authorization': `Bearer ${token}` },
         }),
+        fetch('http://localhost:5000/api/student_results', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        }),
       ]);
 
       if (admResp.ok) setAdmissions(await admResp.json());
       if (studResp.ok) setStudents(await studResp.json());
       if (examResp.ok) setExams(await examResp.json());
       if (subjResp.ok) setExamSubjects(await subjResp.json());
+      if (resResp.ok) setResults(await resResp.json());
     } catch (error) {
       console.error('Error fetching data:', error);
       toast({
@@ -292,6 +327,97 @@ const AdminDashboard = () => {
     }
   };
 
+  // Result CRUD
+  const calculateGrade = (percentage: number): string => {
+    if (percentage >= 90) return 'A+';
+    if (percentage >= 80) return 'A';
+    if (percentage >= 70) return 'B+';
+    if (percentage >= 60) return 'B';
+    if (percentage >= 50) return 'C';
+    if (percentage >= 40) return 'D';
+    return 'F';
+  };
+
+  const calculateSubjectGrade = (obtained: number, max: number): string => {
+    const percentage = (obtained / max) * 100;
+    return calculateGrade(percentage);
+  };
+
+  const saveResult = async () => {
+    if (!resultForm.student_id || !resultForm.exam_id || !resultForm.obtained_marks || !resultForm.total_marks) {
+      toast({ title: 'Error', description: 'Fill all required fields', variant: 'destructive' });
+      return;
+    }
+
+    try {
+      const token = getToken();
+      const selectedStudent = students.find(s => s.id === resultForm.student_id);
+      const selectedExam = exams.find(e => e.id === resultForm.exam_id);
+
+      if (!selectedStudent || !selectedExam) {
+        toast({ title: 'Error', description: 'Invalid student or exam', variant: 'destructive' });
+        return;
+      }
+
+      const percentage = (Number(resultForm.obtained_marks) / Number(resultForm.total_marks)) * 100;
+      const grade = calculateGrade(percentage);
+
+      const payload = {
+        ...resultForm,
+        student_name: selectedStudent.name,
+        roll_number: selectedStudent.roll_number,
+        exam_name: selectedExam.name,
+        class: selectedStudent.class,
+        section: selectedStudent.section,
+        percentage: Math.round(percentage * 100) / 100,
+        grade,
+        subject_marks: resultForm.subject_marks || [],
+      };
+
+      const method = editingResultId ? 'PUT' : 'POST';
+      const url = editingResultId
+        ? `http://localhost:5000/api/student_results/${editingResultId}`
+        : 'http://localhost:5000/api/student_results';
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error('Failed to save');
+
+      setShowResultForm(false);
+      setResultForm({});
+      setEditingResultId(null);
+      fetchAllData();
+      toast({ title: 'Success', description: 'Result saved' });
+    } catch (error) {
+      toast({ title: 'Error', description: 'Failed to save', variant: 'destructive' });
+    }
+  };
+
+  const deleteResult = async (id: string) => {
+    if (!window.confirm('Delete this result?')) return;
+
+    try {
+      const token = getToken();
+      const response = await fetch(`http://localhost:5000/api/student_results/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+
+      if (!response.ok) throw new Error('Failed to delete');
+      fetchAllData();
+      toast({ title: 'Success', description: 'Result deleted' });
+    } catch (error) {
+      toast({ title: 'Error', description: 'Failed to delete', variant: 'destructive' });
+    }
+  };
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/admin/login');
@@ -350,7 +476,7 @@ const AdminDashboard = () => {
 
         <main className="container mx-auto px-4 py-8">
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
             <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
               <CardContent className="p-6">
                 <p className="text-sm opacity-80">Admissions</p>
@@ -375,11 +501,17 @@ const AdminDashboard = () => {
                 <p className="text-3xl font-bold">{examSubjects.length}</p>
               </CardContent>
             </Card>
+            <Card className="bg-gradient-to-br from-red-500 to-red-600 text-white border-0">
+              <CardContent className="p-6">
+                <p className="text-sm opacity-80">Results</p>
+                <p className="text-3xl font-bold">{results.length}</p>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Tabs for different data types */}
           <Tabs defaultValue="admissions" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="admissions" className="gap-2">
                 <FileText className="h-4 w-4" /> Admissions
               </TabsTrigger>
@@ -391,6 +523,9 @@ const AdminDashboard = () => {
               </TabsTrigger>
               <TabsTrigger value="exam-subjects" className="gap-2">
                 <GraduationCap className="h-4 w-4" /> Subjects
+              </TabsTrigger>
+              <TabsTrigger value="results" className="gap-2">
+                <Award className="h-4 w-4" /> Results
               </TabsTrigger>
             </TabsList>
 
@@ -785,6 +920,217 @@ const AdminDashboard = () => {
                               </TableRow>
                             );
                           })}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* RESULTS TAB */}
+            <TabsContent value="results" className="space-y-6">
+              {/* Add Result Form */}
+              {showResultForm && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{editingResultId ? 'Edit Result' : 'Add Student Result'}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Student *</Label>
+                        <Select
+                          value={resultForm.student_id || ''}
+                          onValueChange={(v) => {
+                            const student = students.find(s => s.id === v);
+                            setResultForm({
+                              ...resultForm,
+                              student_id: v,
+                              class: student?.class,
+                              section: student?.section,
+                            });
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select student" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {students.map((s) => (
+                              <SelectItem key={s.id} value={s.id}>
+                                {s.roll_number} - {s.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label>Exam *</Label>
+                        <Select
+                          value={resultForm.exam_id || ''}
+                          onValueChange={(v) => setResultForm({ ...resultForm, exam_id: v })}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select exam" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {exams.map((e) => (
+                              <SelectItem key={e.id} value={e.id}>
+                                {e.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label>Total Marks *</Label>
+                        <Input
+                          type="number"
+                          value={resultForm.total_marks || ''}
+                          onChange={(e) => setResultForm({ ...resultForm, total_marks: parseInt(e.target.value) })}
+                          placeholder="Total marks"
+                        />
+                      </div>
+                      <div>
+                        <Label>Obtained Marks *</Label>
+                        <Input
+                          type="number"
+                          value={resultForm.obtained_marks || ''}
+                          onChange={(e) => setResultForm({ ...resultForm, obtained_marks: parseInt(e.target.value) })}
+                          placeholder="Obtained marks"
+                        />
+                      </div>
+                      <div>
+                        <Label>Remarks</Label>
+                        <Input
+                          value={resultForm.remarks || ''}
+                          onChange={(e) => setResultForm({ ...resultForm, remarks: e.target.value })}
+                          placeholder="Remarks (optional)"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label className="mb-3 block">Subject-wise Marks</Label>
+                      <div className="mb-4 overflow-x-auto">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Subject</TableHead>
+                              <TableHead>Max Marks</TableHead>
+                              <TableHead>Obtained</TableHead>
+                              <TableHead>Grade</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {(resultForm.subject_marks || []).map((mark, idx) => (
+                              <TableRow key={idx}>
+                                <TableCell>{mark.subject_name}</TableCell>
+                                <TableCell>{mark.max_marks}</TableCell>
+                                <TableCell>{mark.obtained_marks}</TableCell>
+                                <TableCell>{calculateSubjectGrade(mark.obtained_marks, mark.max_marks)}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Button onClick={saveResult} className="gap-2">
+                        <Save className="h-4 w-4" /> {editingResultId ? 'Update' : 'Save'} Result
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setShowResultForm(false);
+                          setResultForm({});
+                          setEditingResultId(null);
+                        }}
+                        className="gap-2"
+                      >
+                        <X className="h-4 w-4" /> Cancel
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Results Table */}
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle>Student Results</CardTitle>
+                  <Button onClick={() => setShowResultForm(true)} className="gap-2">
+                    <Plus className="h-4 w-4" /> Add Result
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  {results.length === 0 ? (
+                    <div className="text-center py-12 text-muted-foreground">
+                      <p>No results yet.</p>
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Roll No.</TableHead>
+                            <TableHead>Student Name</TableHead>
+                            <TableHead>Class</TableHead>
+                            <TableHead>Exam</TableHead>
+                            <TableHead>Total Marks</TableHead>
+                            <TableHead>Obtained</TableHead>
+                            <TableHead>Percentage</TableHead>
+                            <TableHead>Grade</TableHead>
+                            <TableHead>Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {results.map((result) => (
+                            <TableRow key={result.id}>
+                              <TableCell className="font-medium">{result.roll_number}</TableCell>
+                              <TableCell>{result.student_name}</TableCell>
+                              <TableCell>{result.class}</TableCell>
+                              <TableCell>{result.exam_name}</TableCell>
+                              <TableCell>{result.total_marks}</TableCell>
+                              <TableCell>{result.obtained_marks}</TableCell>
+                              <TableCell>{result.percentage}%</TableCell>
+                              <TableCell>
+                                <span className={`px-2 py-1 rounded text-white font-bold ${
+                                  result.grade === 'A+' || result.grade === 'A' ? 'bg-green-500' :
+                                  result.grade === 'B+' || result.grade === 'B' ? 'bg-blue-500' :
+                                  result.grade === 'C' ? 'bg-yellow-500' :
+                                  'bg-red-500'
+                                }`}>
+                                  {result.grade}
+                                </span>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      setResultForm(result);
+                                      setEditingResultId(result.id);
+                                      setShowResultForm(true);
+                                    }}
+                                    className="gap-2"
+                                  >
+                                    <Edit className="h-3 w-3" /> Edit
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="destructive"
+                                    onClick={() => deleteResult(result.id)}
+                                    className="gap-2"
+                                  >
+                                    <Trash2 className="h-3 w-3" /> Delete
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
                         </TableBody>
                       </Table>
                     </div>
