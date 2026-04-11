@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "fullName": "Admin User",
+    "email": "admin@mis.com",
+    "password": "admin123",
+    "createdAt": "2026-04-11T19:19:42.621Z"
+  }
+]

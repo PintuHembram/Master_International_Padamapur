@@ -1,11 +1,11 @@
-import { DarkModeToggle } from '@/components/DarkModeToggle';
 import misLogo from '@/assets/mis-logo.png';
+import { DarkModeToggle } from '@/components/DarkModeToggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 import { Eye, EyeOff, Lock, LogIn, Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -19,14 +19,14 @@ const AdminLogin = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user, isAdmin, signIn, loading: authLoading } = useAuth();
+  const { isAdmin, signIn, loading: authLoading } = useAuth();
 
   // Redirect if already logged in as admin
   useEffect(() => {
-    if (!authLoading && user && isAdmin) {
+    if (!authLoading && isAdmin) {
       navigate('/admin/admissions');
     }
-  }, [user, isAdmin, authLoading, navigate]);
+  }, [isAdmin, authLoading, navigate]);
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,7 +64,7 @@ const AdminLogin = () => {
       } else {
         toast({
           title: 'Login Successful',
-          description: 'Checking admin privileges...',
+          description: 'Redirecting to dashboard...',
         });
         // The useEffect will handle redirect once isAdmin is confirmed
       }
@@ -82,47 +82,10 @@ const AdminLogin = () => {
     }
   };
 
-  // Show access denied if user is logged in but not admin
-  if (!authLoading && user && !isAdmin) {
-    return (
-      <div className="admin-bg min-h-screen flex items-center justify-center p-4">
-        <Helmet>
-          <title>Access Denied - Master International</title>
-        </Helmet>
-        <div className="absolute top-4 right-4">
-          <DarkModeToggle />
-        </div>
-        <Card className="w-full max-w-md shadow-lg">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-destructive">Access Denied</CardTitle>
-            <CardDescription>
-              You do not have admin privileges. Please contact an administrator.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button
-              onClick={async () => {
-                const { signOut } = await import('@/hooks/useAuth').then(m => ({ signOut: m.useAuth }));
-                // Sign out and reload
-                const { supabase } = await import('@/integrations/supabase/client');
-                await supabase.auth.signOut();
-                window.location.reload();
-              }}
-              className="w-full"
-              variant="outline"
-            >
-              Sign Out
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   return (
     <div className="admin-bg min-h-screen flex items-center justify-center p-4">
       <Helmet>
-        <title>Admin Sign In - Master International</title>
+        <title>Admin Login - Master International</title>
       </Helmet>
       
       <div className="absolute top-4 right-4">
