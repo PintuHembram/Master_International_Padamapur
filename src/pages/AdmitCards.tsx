@@ -205,7 +205,7 @@ export default function AdmitCards() {
       }
     }
     toast.success("Subject added successfully");
-    setNewSubject({ exam_id: "", subject_name: "", exam_date: "", exam_time: "10:00 AM - 1:00 PM" });
+    setNewSubject({ exam_id: "", subject_name: "", exam_date: "", exam_time: "10:00 AM - 1:00 PM", class: "ALL" });
     fetchExamSubjects();
   }
 
