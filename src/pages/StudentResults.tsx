@@ -18,8 +18,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { supabase } from "@/integrations/supabase/client";
 import { Award, Download, GraduationCap, Printer, Search, Trophy } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 
 interface SubjectResult {
@@ -30,67 +31,16 @@ interface SubjectResult {
 }
 
 interface StudentResult {
-  rollNumber: string;
-  name: string;
+  id: string;
+  roll_number: string;
+  student_name: string;
   class: string;
   section: string;
-  examType: string;
-  academicYear: string;
-  rank: number;
+  exam_type: string;
+  academic_year: string;
+  rank: number | null;
   subjects: SubjectResult[];
 }
-
-const sampleResults: StudentResult[] = [
-  {
-    rollNumber: "MIS-2025-001",
-    name: "Aarav Sharma",
-    class: "10",
-    section: "A",
-    examType: "Annual",
-    academicYear: "2024-25",
-    rank: 3,
-    subjects: [
-      { subject: "English", maxMarks: 100, obtained: 88, grade: "A+" },
-      { subject: "Hindi", maxMarks: 100, obtained: 82, grade: "A" },
-      { subject: "Mathematics", maxMarks: 100, obtained: 95, grade: "A+" },
-      { subject: "Science", maxMarks: 100, obtained: 90, grade: "A+" },
-      { subject: "Social Science", maxMarks: 100, obtained: 78, grade: "A" },
-      { subject: "Computer Science", maxMarks: 100, obtained: 92, grade: "A+" },
-    ],
-  },
-  {
-    rollNumber: "MIS-2025-015",
-    name: "Priya Patel",
-    class: "8",
-    section: "B",
-    examType: "Mid-Term",
-    academicYear: "2024-25",
-    rank: 1,
-    subjects: [
-      { subject: "English", maxMarks: 100, obtained: 94, grade: "A+" },
-      { subject: "Hindi", maxMarks: 100, obtained: 91, grade: "A+" },
-      { subject: "Mathematics", maxMarks: 100, obtained: 97, grade: "A+" },
-      { subject: "Science", maxMarks: 100, obtained: 93, grade: "A+" },
-      { subject: "Social Science", maxMarks: 100, obtained: 89, grade: "A+" },
-    ],
-  },
-  {
-    rollNumber: "MIS-2025-042",
-    name: "Rohan Das",
-    class: "5",
-    section: "A",
-    examType: "Unit Test",
-    academicYear: "2024-25",
-    rank: 7,
-    subjects: [
-      { subject: "English", maxMarks: 50, obtained: 38, grade: "A" },
-      { subject: "Hindi", maxMarks: 50, obtained: 35, grade: "B+" },
-      { subject: "Mathematics", maxMarks: 50, obtained: 45, grade: "A+" },
-      { subject: "EVS", maxMarks: 50, obtained: 40, grade: "A" },
-      { subject: "Computer", maxMarks: 50, obtained: 42, grade: "A+" },
-    ],
-  },
-];
 
 function getOverallGrade(percentage: number): string {
   if (percentage >= 90) return "A+";
@@ -115,23 +65,49 @@ function getGradeColor(grade: string): string {
 }
 
 export default function StudentResults() {
+  const [allResults, setAllResults] = useState<StudentResult[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedClass, setSelectedClass] = useState("all");
   const [selectedExam, setSelectedExam] = useState("all");
-  const [selectedYear, setSelectedYear] = useState("all");
   const [foundResult, setFoundResult] = useState<StudentResult | null>(null);
   const [searched, setSearched] = useState(false);
+  const [loading, setLoading] = useState(true);
   const resultRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetchResults();
+  }, []);
+
+  async function fetchResults() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("student_results")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) {
+      console.error("Error fetching results:", error);
+    }
+    setAllResults(
+      (data as any[])?.map((r) => ({
+        ...r,
+        subjects: r.subjects || [],
+      })) || []
+    );
+    setLoading(false);
+  }
 
   const handleSearch = () => {
     if (!searchQuery.trim()) return;
     setSearched(true);
     const query = searchQuery.toLowerCase().trim();
-    const result = sampleResults.find(
-      (r) =>
-        r.rollNumber.toLowerCase().includes(query) ||
-        r.name.toLowerCase().includes(query)
-    );
+    const result = allResults.find((r) => {
+      const matchQuery =
+        r.roll_number.toLowerCase().includes(query) ||
+        r.student_name.toLowerCase().includes(query);
+      const matchClass = selectedClass === "all" || r.class === selectedClass;
+      const matchExam = selectedExam === "all" || r.exam_type === selectedExam;
+      return matchQuery && matchClass && matchExam;
+    });
     setFoundResult(result || null);
   };
 
@@ -202,10 +178,8 @@ export default function StudentResults() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Classes</SelectItem>
-                    {Array.from({ length: 12 }, (_, i) => (
-                      <SelectItem key={i + 1} value={String(i + 1)}>
-                        Class {i + 1}
-                      </SelectItem>
+                    {["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"].map((c) => (
+                      <SelectItem key={c} value={c}>Class {c}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -215,21 +189,23 @@ export default function StudentResults() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Exams</SelectItem>
-                    <SelectItem value="unit">Unit Test</SelectItem>
-                    <SelectItem value="mid">Mid-Term</SelectItem>
-                    <SelectItem value="annual">Annual</SelectItem>
+                    <SelectItem value="Unit Test">Unit Test</SelectItem>
+                    <SelectItem value="Mid-Term">Mid-Term</SelectItem>
+                    <SelectItem value="Annual">Annual</SelectItem>
+                    <SelectItem value="Semester 1">Semester 1</SelectItem>
+                    <SelectItem value="Semester 2">Semester 2</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button onClick={handleSearch} className="h-11 bg-primary hover:bg-primary/90">
+                <Button onClick={handleSearch} className="h-11" disabled={loading}>
                   <Search className="w-4 h-4 mr-2" />
-                  Search
+                  {loading ? "Loading..." : "Search"}
                 </Button>
               </div>
-              <p className="text-xs text-muted-foreground mt-3">
-                Try: <button onClick={() => { setSearchQuery("MIS-2025-001"); }} className="underline hover:text-primary">MIS-2025-001</button>,{" "}
-                <button onClick={() => { setSearchQuery("Priya"); }} className="underline hover:text-primary">Priya</button>, or{" "}
-                <button onClick={() => { setSearchQuery("Rohan"); }} className="underline hover:text-primary">Rohan</button>
-              </p>
+              {allResults.length > 0 && (
+                <p className="text-xs text-muted-foreground mt-3">
+                  {allResults.length} results available in database. Search by name or roll number.
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -246,9 +222,9 @@ export default function StudentResults() {
                   <div className="bg-gradient-to-r from-primary to-primary/80 p-6 text-primary-foreground">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                       <div>
-                        <h2 className="text-2xl font-bold font-display">{foundResult.name}</h2>
+                        <h2 className="text-2xl font-bold font-display">{foundResult.student_name}</h2>
                         <p className="text-primary-foreground/80 mt-1">
-                          Roll No: {foundResult.rollNumber} • Class {foundResult.class}-{foundResult.section} • {foundResult.examType} Exam • {foundResult.academicYear}
+                          Roll No: {foundResult.roll_number} • Class {foundResult.class}-{foundResult.section} • {foundResult.exam_type} Exam • {foundResult.academic_year}
                         </p>
                       </div>
                       <div className="flex gap-2 print:hidden">
@@ -284,7 +260,7 @@ export default function StudentResults() {
                     <p className="text-sm text-muted-foreground">Class Rank</p>
                     <div className="flex items-center justify-center gap-1 mt-1">
                       <Trophy className="w-5 h-5 text-secondary" />
-                      <span className="text-2xl font-bold text-foreground">#{foundResult.rank}</span>
+                      <span className="text-2xl font-bold text-foreground">#{foundResult.rank || '—'}</span>
                     </div>
                   </Card>
                 </div>
@@ -321,7 +297,6 @@ export default function StudentResults() {
                             </TableCell>
                           </TableRow>
                         ))}
-                        {/* Total Row */}
                         <TableRow className="bg-muted/50 font-bold">
                           <TableCell className="font-bold">Total</TableCell>
                           <TableCell className="text-center font-bold">{totalMarks}</TableCell>
@@ -344,7 +319,7 @@ export default function StudentResults() {
                     {passed ? "🎉 PASSED" : "❌ NOT PASSED"}
                   </p>
                   <p className="text-muted-foreground text-sm mt-1">
-                    Overall Result for {foundResult.examType} Examination {foundResult.academicYear}
+                    Overall Result for {foundResult.exam_type} Examination {foundResult.academic_year}
                   </p>
                 </Card>
               </div>
@@ -392,7 +367,7 @@ export default function StudentResults() {
                 </div>
                 <h3 className="font-display font-semibold text-lg text-foreground mb-2">Print & Download</h3>
                 <p className="text-muted-foreground text-sm">
-                  Print or download your result card for your records.
+                  Print or download your result card for official records and reference.
                 </p>
               </div>
             </div>

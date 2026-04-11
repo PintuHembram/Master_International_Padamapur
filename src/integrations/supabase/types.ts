@@ -346,6 +346,48 @@ export type Database = {
         }
         Relationships: []
       }
+      student_results: {
+        Row: {
+          academic_year: string
+          class: string
+          created_at: string
+          exam_type: string
+          id: string
+          rank: number | null
+          roll_number: string
+          section: string
+          student_name: string
+          subjects: Json
+          updated_at: string
+        }
+        Insert: {
+          academic_year?: string
+          class: string
+          created_at?: string
+          exam_type?: string
+          id?: string
+          rank?: number | null
+          roll_number: string
+          section?: string
+          student_name: string
+          subjects?: Json
+          updated_at?: string
+        }
+        Update: {
+          academic_year?: string
+          class?: string
+          created_at?: string
+          exam_type?: string
+          id?: string
+          rank?: number | null
+          roll_number?: string
+          section?: string
+          student_name?: string
+          subjects?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       students: {
         Row: {
           class: string
