@@ -693,6 +693,7 @@ export default function AdmitCards() {
                           <TableHeader>
                             <TableRow className="bg-navy/5">
                               <TableHead>Subject</TableHead>
+                              <TableHead>Class</TableHead>
                               <TableHead>Date</TableHead>
                               <TableHead>Time</TableHead>
                               <TableHead className="w-16">Action</TableHead>
@@ -702,6 +703,7 @@ export default function AdmitCards() {
                             {subs.map((sub) => (
                               <TableRow key={sub.id}>
                                 <TableCell className="font-medium">{sub.subject_name}</TableCell>
+                                <TableCell>{(sub as any).class || 'ALL'}</TableCell>
                                 <TableCell>{new Date(sub.exam_date).toLocaleDateString("en-IN")}</TableCell>
                                 <TableCell>{sub.exam_time}</TableCell>
                                 <TableCell>
