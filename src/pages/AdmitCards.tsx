@@ -92,6 +92,7 @@ export default function AdmitCards() {
     subject_name: "",
     exam_date: "",
     exam_time: "10:00 AM - 1:00 PM",
+    class: "ALL",
   });
 
   useEffect(() => {
