@@ -617,7 +617,7 @@ export default function AdmitCards() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
                     <div>
                       <Label>Exam *</Label>
                       <Select value={newSubject.exam_id} onValueChange={(v) => setNewSubject({ ...newSubject, exam_id: v })}>
@@ -625,6 +625,18 @@ export default function AdmitCards() {
                         <SelectContent>
                           {exams.map((e) => (
                             <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label>Class *</Label>
+                      <Select value={newSubject.class} onValueChange={(v) => setNewSubject({ ...newSubject, class: v })}>
+                        <SelectTrigger><SelectValue placeholder="Select class" /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ALL">All Classes</SelectItem>
+                          {classes.map((c) => (
+                            <SelectItem key={c} value={c}>Class {c}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
