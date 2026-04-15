@@ -1161,6 +1161,59 @@ const AdminDashboard = () => {
                 </Card>
               )}
 
+              {/* CSV Preview */}
+              {showCsvPreview && csvPreview.length > 0 && (
+                <Card className="border-dashed border-2 border-primary/30">
+                  <CardHeader>
+                    <CardTitle className="text-lg">CSV Preview ({csvPreview.length} records)</CardTitle>
+                    <CardDescription>Review the data before importing</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="overflow-x-auto max-h-64 overflow-y-auto mb-4">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Student Name</TableHead>
+                            <TableHead>Roll No.</TableHead>
+                            <TableHead>Class</TableHead>
+                            <TableHead>Section</TableHead>
+                            <TableHead>Exam Type</TableHead>
+                            <TableHead>Year</TableHead>
+                            <TableHead>Subjects</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {csvPreview.map((row, idx) => (
+                            <TableRow key={idx}>
+                              <TableCell>{row.student_name}</TableCell>
+                              <TableCell>{row.roll_number}</TableCell>
+                              <TableCell>{row.class}</TableCell>
+                              <TableCell>{row.section || 'A'}</TableCell>
+                              <TableCell>{row.exam_type}</TableCell>
+                              <TableCell>{row.academic_year || '2024-25'}</TableCell>
+                              <TableCell className="max-w-[200px] truncate">{row.subjects}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button onClick={importCsvResults} disabled={importing} className="gap-2">
+                        {importing ? (
+                          <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-primary-foreground"></div>
+                        ) : (
+                          <Upload className="h-4 w-4" />
+                        )}
+                        {importing ? 'Importing...' : `Import ${csvPreview.length} Results`}
+                      </Button>
+                      <Button variant="outline" onClick={() => { setShowCsvPreview(false); setCsvPreview([]); }} className="gap-2">
+                        <X className="h-4 w-4" /> Cancel
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
               {/* Results Table */}
               <Card>
                <CardHeader className="flex flex-row items-center justify-between flex-wrap gap-2">
