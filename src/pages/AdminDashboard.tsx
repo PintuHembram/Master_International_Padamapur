@@ -49,7 +49,7 @@ interface Admission {
   parentEmail: string;
   parentPhone: string;
   status?: string;
-  createdAt: string;
+  createdAt?: string;
 }
 
 interface Student {
@@ -72,31 +72,34 @@ interface ExamSubject {
   exam_id: string;
   subject_name: string;
   exam_date: string;
+  exam_time?: string;
+  class?: string;
 }
 
 interface SubjectMark {
-  subject_name: string;
-  max_marks: number;
-  obtained_marks: number;
+  subject: string;
+  maxMarks: number;
+  obtained: number;
   grade: string;
 }
 
 interface StudentResult {
   id: string;
-  student_id: string;
   student_name: string;
   roll_number: string;
-  exam_id: string;
-  exam_name: string;
   class: string;
   section: string;
-  total_marks: number;
-  obtained_marks: number;
-  percentage: number;
-  grade: string;
-  subject_marks: SubjectMark[];
-  remarks: string;
-  created_at: string;
+  exam_type: string;
+  academic_year: string;
+  rank?: number | null;
+  subjects: SubjectMark[];
+  created_at?: string;
+  // Form-only fields
+  student_id?: string;
+  exam_id?: string;
+  subject_marks?: SubjectMark[];
+  obtained_marks?: number;
+  total_marks?: number;
 }
 
 const AdminDashboard = () => {
