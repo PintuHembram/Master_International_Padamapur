@@ -1,101 +1,87 @@
+import { supabase } from '@/integrations/supabase/client';
 import { useCallback, useEffect, useState } from 'react';
-
-interface AdminUser {
-  id?: string;
-  email: string;
-  name?: string;
-}
+import type { User, Session } from '@supabase/supabase-js';
 
 export const useAuth = () => {
-  const [user, setUser] = useState<AdminUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // Check if we have a stored token on mount
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    const adminEmail = localStorage.getItem('adminEmail');
-    const adminName = localStorage.getItem('adminName');
-    
-    if (token && adminEmail) {
-      setUser({ email: adminEmail, name: adminName || undefined });
-      setIsAdmin(true);
-    }
-    setLoading(false);
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+
+        if (session?.user) {
+          // Check admin role using the has_role function
+          const { data } = await supabase.rpc('has_role', {
+            _user_id: session.user.id,
+            _role: 'admin',
+          });
+          setIsAdmin(!!data);
+        } else {
+          setIsAdmin(false);
+        }
+        setLoading(false);
+      }
+    );
+
+    // THEN get current session
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+
+      if (session?.user) {
+        const { data } = await supabase.rpc('has_role', {
+          _user_id: session.user.id,
+          _role: 'admin',
+        });
+        setIsAdmin(!!data);
+      }
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {
-    try {
-      const response = await fetch('http://localhost:5000/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        return { error: { message: data.message || 'Login failed' } };
-      }
-
-      const data = await response.json();
-      
-      // Store token and user info
-      localStorage.setItem('adminToken', data.token);
-      localStorage.setItem('adminEmail', email);
-      if (data.name) {
-        localStorage.setItem('adminName', data.name);
-      }
-
-      setUser({ email, name: data.name });
-      setIsAdmin(true);
-      return { error: null };
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Network error';
-      return { error: { message } };
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      return { error: { message: error.message } };
     }
-  }, []);
-
-  const signUp = useCallback(async (email: string, password: string, fullName: string) => {
-    try {
-      const response = await fetch('http://localhost:5000/api/admin/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, fullName }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        return { error: { message: data.message || 'Signup failed' } };
-      }
-
-      return { error: null };
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Network error';
-      return { error: { message } };
-    }
-  }, []);
-
-  const signOut = useCallback(async () => {
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('adminEmail');
-    localStorage.removeItem('adminName');
-    setUser(null);
-    setIsAdmin(false);
     return { error: null };
   }, []);
 
-  const getToken = useCallback(() => {
-    return localStorage.getItem('adminToken');
+  const signUp = useCallback(async (email: string, password: string, fullName: string) => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: fullName },
+        emailRedirectTo: window.location.origin,
+      },
+    });
+    if (error) {
+      return { error: { message: error.message } };
+    }
+    return { error: null };
+  }, []);
+
+  const signOut = useCallback(async () => {
+    const { error } = await supabase.auth.signOut();
+    return { error: error ? { message: error.message } : null };
   }, []);
 
   return {
     user,
-    session: user ? { user } : null,
+    session,
     loading,
     isAdmin,
     signIn,
     signUp,
     signOut,
-    getToken,
   };
 };

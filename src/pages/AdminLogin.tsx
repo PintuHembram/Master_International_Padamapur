@@ -55,28 +55,34 @@ const AdminLogin = () => {
       const { error } = await signIn(email.trim(), password.trim());
 
       if (error) {
+        let msg = 'Invalid email or password';
+        if (error.message.includes('Invalid login credentials')) {
+          msg = 'Invalid email or password. Please try again.';
+        } else if (error.message.includes('Email not confirmed')) {
+          msg = 'Please verify your email before signing in.';
+        } else {
+          msg = error.message;
+        }
         toast({
           title: 'Login Failed',
-          description: error.message || 'Invalid email or password',
+          description: msg,
           variant: 'destructive',
         });
-        setErrors({ submit: error.message || 'Invalid credentials' });
+        setErrors({ submit: msg });
       } else {
         toast({
           title: 'Login Successful',
           description: 'Redirecting to dashboard...',
         });
-        // The useEffect will handle redirect once isAdmin is confirmed
       }
     } catch (error) {
       console.error('Login error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Network error. Please try again.';
       toast({
-        title: 'Login Error',
-        description: errorMessage,
+        title: 'Connection Error',
+        description: 'Server not reachable. Please try again later.',
         variant: 'destructive',
       });
-      setErrors({ submit: errorMessage });
+      setErrors({ submit: 'Server not reachable. Please try again later.' });
     } finally {
       setLoading(false);
     }
