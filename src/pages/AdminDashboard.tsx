@@ -1244,7 +1244,8 @@ const AdminDashboard = () => {
                                 </div>
                               </TableCell>
                             </TableRow>
-                          ))}
+                            );
+                          })}
                         </TableBody>
                       </Table>
                     </div>
