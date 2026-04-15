@@ -33,10 +33,11 @@ import {
   Plus,
   Save,
   Trash2,
+  Upload,
   Users,
   X
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
