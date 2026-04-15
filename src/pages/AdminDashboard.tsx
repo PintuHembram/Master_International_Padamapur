@@ -1195,23 +1195,28 @@ const AdminDashboard = () => {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {results.map((result) => (
+                          {results.map((result) => {
+                            const totalMax = (result.subjects || []).reduce((s, m) => s + (m.maxMarks || 0), 0);
+                            const totalObt = (result.subjects || []).reduce((s, m) => s + (m.obtained || 0), 0);
+                            const pct = totalMax > 0 ? Math.round((totalObt / totalMax) * 100) : 0;
+                            const grade = calculateGrade(pct);
+                            return (
                             <TableRow key={result.id}>
                               <TableCell className="font-medium">{result.roll_number}</TableCell>
                               <TableCell>{result.student_name}</TableCell>
                               <TableCell>{result.class}</TableCell>
-                              <TableCell>{result.exam_name}</TableCell>
-                              <TableCell>{result.total_marks}</TableCell>
-                              <TableCell>{result.obtained_marks}</TableCell>
-                              <TableCell>{result.percentage}%</TableCell>
+                              <TableCell>{result.exam_type}</TableCell>
+                              <TableCell>{totalMax}</TableCell>
+                              <TableCell>{totalObt}</TableCell>
+                              <TableCell>{pct}%</TableCell>
                               <TableCell>
-                                <span className={`px-2 py-1 rounded text-white font-bold ${
-                                  result.grade === 'A+' || result.grade === 'A' ? 'bg-green-500' :
-                                  result.grade === 'B+' || result.grade === 'B' ? 'bg-blue-500' :
-                                  result.grade === 'C' ? 'bg-yellow-500' :
-                                  'bg-red-500'
+                                <span className={`px-2 py-1 rounded font-bold ${
+                                  grade === 'A+' || grade === 'A' ? 'bg-green-500 text-green-50' :
+                                  grade === 'B+' || grade === 'B' ? 'bg-blue-500 text-blue-50' :
+                                  grade === 'C' ? 'bg-yellow-500 text-yellow-50' :
+                                  'bg-red-500 text-red-50'
                                 }`}>
-                                  {result.grade}
+                                  {grade}
                                 </span>
                               </TableCell>
                               <TableCell>
