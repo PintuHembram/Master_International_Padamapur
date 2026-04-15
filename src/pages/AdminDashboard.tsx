@@ -424,6 +424,105 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (result) => {
+        const requiredCols = ['student_name', 'roll_number', 'class', 'exam_type', 'subjects'];
+        const headers = result.meta.fields || [];
+        const missing = requiredCols.filter(c => !headers.includes(c));
+        if (missing.length > 0) {
+          toast({
+            title: 'Invalid CSV format',
+            description: `Missing columns: ${missing.join(', ')}. Required: student_name, roll_number, class, exam_type, subjects (JSON array)`,
+            variant: 'destructive',
+          });
+          return;
+        }
+        setCsvPreview(result.data);
+        setShowCsvPreview(true);
+      },
+      error: () => {
+        toast({ title: 'Error', description: 'Failed to parse CSV file', variant: 'destructive' });
+      },
+    });
+    e.target.value = '';
+  };
+
+  const importCsvResults = async () => {
+    if (csvPreview.length === 0) return;
+    setImporting(true);
+
+    try {
+      const token = getToken();
+      let successCount = 0;
+      let errorCount = 0;
+
+      for (const row of csvPreview) {
+        try {
+          let subjects = [];
+          try {
+            subjects = typeof row.subjects === 'string' ? JSON.parse(row.subjects) : row.subjects || [];
+          } catch {
+            subjects = [];
+          }
+
+          const payload = {
+            student_name: row.student_name,
+            roll_number: row.roll_number,
+            class: row.class,
+            section: row.section || 'A',
+            exam_type: row.exam_type || 'Annual',
+            academic_year: row.academic_year || '2024-25',
+            rank: row.rank ? parseInt(row.rank) : null,
+            subjects,
+          };
+
+          const response = await fetch('http://localhost:5000/api/student_results', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (response.ok) successCount++;
+          else errorCount++;
+        } catch {
+          errorCount++;
+        }
+      }
+
+      toast({
+        title: 'Import Complete',
+        description: `${successCount} results imported, ${errorCount} failed.`,
+      });
+      setShowCsvPreview(false);
+      setCsvPreview([]);
+      fetchAllData();
+    } catch (error) {
+      toast({ title: 'Error', description: 'Import failed', variant: 'destructive' });
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const downloadCsvTemplate = () => {
+    const template = 'student_name,roll_number,class,section,exam_type,academic_year,rank,subjects\nJohn Doe,101,V,A,Annual,2024-25,1,"[{""subject"":""Math"",""maxMarks"":100,""obtained"":95,""grade"":""A+""},{""subject"":""Science"",""maxMarks"":100,""obtained"":88,""grade"":""A""}]"';
+    const blob = new Blob([template], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'student_results_template.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/admin/login');
