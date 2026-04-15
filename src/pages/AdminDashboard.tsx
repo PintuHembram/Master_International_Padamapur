@@ -1,5 +1,6 @@
 import misLogo from '@/assets/mis-logo.png';
 import { Button } from '@/components/ui/button';
+import Papa from 'papaparse';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -32,10 +33,11 @@ import {
   Plus,
   Save,
   Trash2,
+  Upload,
   Users,
   X
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
@@ -121,6 +123,10 @@ const AdminDashboard = () => {
   const [showResultForm, setShowResultForm] = useState(false);
   const [resultForm, setResultForm] = useState<Partial<StudentResult>>({});
   const [editingResultId, setEditingResultId] = useState<string | null>(null);
+  const [csvPreview, setCsvPreview] = useState<any[]>([]);
+  const [showCsvPreview, setShowCsvPreview] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const csvFileRef = useRef<HTMLInputElement>(null);
 
   const { isAdmin, signOut, getToken, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -416,6 +422,105 @@ const AdminDashboard = () => {
     } catch (error) {
       toast({ title: 'Error', description: 'Failed to delete', variant: 'destructive' });
     }
+  };
+
+  const handleCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (result) => {
+        const requiredCols = ['student_name', 'roll_number', 'class', 'exam_type', 'subjects'];
+        const headers = result.meta.fields || [];
+        const missing = requiredCols.filter(c => !headers.includes(c));
+        if (missing.length > 0) {
+          toast({
+            title: 'Invalid CSV format',
+            description: `Missing columns: ${missing.join(', ')}. Required: student_name, roll_number, class, exam_type, subjects (JSON array)`,
+            variant: 'destructive',
+          });
+          return;
+        }
+        setCsvPreview(result.data);
+        setShowCsvPreview(true);
+      },
+      error: () => {
+        toast({ title: 'Error', description: 'Failed to parse CSV file', variant: 'destructive' });
+      },
+    });
+    e.target.value = '';
+  };
+
+  const importCsvResults = async () => {
+    if (csvPreview.length === 0) return;
+    setImporting(true);
+
+    try {
+      const token = getToken();
+      let successCount = 0;
+      let errorCount = 0;
+
+      for (const row of csvPreview) {
+        try {
+          let subjects = [];
+          try {
+            subjects = typeof row.subjects === 'string' ? JSON.parse(row.subjects) : row.subjects || [];
+          } catch {
+            subjects = [];
+          }
+
+          const payload = {
+            student_name: row.student_name,
+            roll_number: row.roll_number,
+            class: row.class,
+            section: row.section || 'A',
+            exam_type: row.exam_type || 'Annual',
+            academic_year: row.academic_year || '2024-25',
+            rank: row.rank ? parseInt(row.rank) : null,
+            subjects,
+          };
+
+          const response = await fetch('http://localhost:5000/api/student_results', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (response.ok) successCount++;
+          else errorCount++;
+        } catch {
+          errorCount++;
+        }
+      }
+
+      toast({
+        title: 'Import Complete',
+        description: `${successCount} results imported, ${errorCount} failed.`,
+      });
+      setShowCsvPreview(false);
+      setCsvPreview([]);
+      fetchAllData();
+    } catch (error) {
+      toast({ title: 'Error', description: 'Import failed', variant: 'destructive' });
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const downloadCsvTemplate = () => {
+    const template = 'student_name,roll_number,class,section,exam_type,academic_year,rank,subjects\nJohn Doe,101,V,A,Annual,2024-25,1,"[{""subject"":""Math"",""maxMarks"":100,""obtained"":95,""grade"":""A+""},{""subject"":""Science"",""maxMarks"":100,""obtained"":88,""grade"":""A""}]"';
+    const blob = new Blob([template], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'student_results_template.csv';
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleSignOut = async () => {
@@ -1056,13 +1161,81 @@ const AdminDashboard = () => {
                 </Card>
               )}
 
+              {/* CSV Preview */}
+              {showCsvPreview && csvPreview.length > 0 && (
+                <Card className="border-dashed border-2 border-primary/30">
+                  <CardHeader>
+                    <CardTitle className="text-lg">CSV Preview ({csvPreview.length} records)</CardTitle>
+                    <CardDescription>Review the data before importing</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="overflow-x-auto max-h-64 overflow-y-auto mb-4">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Student Name</TableHead>
+                            <TableHead>Roll No.</TableHead>
+                            <TableHead>Class</TableHead>
+                            <TableHead>Section</TableHead>
+                            <TableHead>Exam Type</TableHead>
+                            <TableHead>Year</TableHead>
+                            <TableHead>Subjects</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {csvPreview.map((row, idx) => (
+                            <TableRow key={idx}>
+                              <TableCell>{row.student_name}</TableCell>
+                              <TableCell>{row.roll_number}</TableCell>
+                              <TableCell>{row.class}</TableCell>
+                              <TableCell>{row.section || 'A'}</TableCell>
+                              <TableCell>{row.exam_type}</TableCell>
+                              <TableCell>{row.academic_year || '2024-25'}</TableCell>
+                              <TableCell className="max-w-[200px] truncate">{row.subjects}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button onClick={importCsvResults} disabled={importing} className="gap-2">
+                        {importing ? (
+                          <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-primary-foreground"></div>
+                        ) : (
+                          <Upload className="h-4 w-4" />
+                        )}
+                        {importing ? 'Importing...' : `Import ${csvPreview.length} Results`}
+                      </Button>
+                      <Button variant="outline" onClick={() => { setShowCsvPreview(false); setCsvPreview([]); }} className="gap-2">
+                        <X className="h-4 w-4" /> Cancel
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
               {/* Results Table */}
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
+               <CardHeader className="flex flex-row items-center justify-between flex-wrap gap-2">
                   <CardTitle>Student Results</CardTitle>
-                  <Button onClick={() => setShowResultForm(true)} className="gap-2">
-                    <Plus className="h-4 w-4" /> Add Result
-                  </Button>
+                  <div className="flex gap-2 flex-wrap">
+                    <Button variant="outline" onClick={downloadCsvTemplate} className="gap-2">
+                      <FileText className="h-4 w-4" /> Download Template
+                    </Button>
+                    <input
+                      type="file"
+                      accept=".csv"
+                      ref={csvFileRef}
+                      className="hidden"
+                      onChange={handleCsvUpload}
+                    />
+                    <Button variant="outline" onClick={() => csvFileRef.current?.click()} className="gap-2">
+                      <Upload className="h-4 w-4" /> Import CSV
+                    </Button>
+                    <Button onClick={() => setShowResultForm(true)} className="gap-2">
+                      <Plus className="h-4 w-4" /> Add Result
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   {results.length === 0 ? (
