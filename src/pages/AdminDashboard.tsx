@@ -129,7 +129,7 @@ const AdminDashboard = () => {
   const [importing, setImporting] = useState(false);
   const csvFileRef = useRef<HTMLInputElement>(null);
 
-  const { isAdmin, signOut, getToken, loading: authLoading } = useAuth();
+  const { isAdmin, signOut, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -150,38 +150,25 @@ const AdminDashboard = () => {
   const fetchAllData = async () => {
     try {
       setLoading(true);
-      const token = getToken();
-
-      const [admResp, studResp, examResp, subjResp, resResp] = await Promise.all([
-        fetch('http://localhost:5000/api/admin/applications', {
-          headers: { 'Authorization': `Bearer ${token}` },
-        }),
-        fetch('http://localhost:5000/api/students', {
-          headers: { 'Authorization': `Bearer ${token}` },
-        }),
-        fetch('http://localhost:5000/api/exams', {
-          headers: { 'Authorization': `Bearer ${token}` },
-        }),
-        fetch('http://localhost:5000/api/exam_subjects', {
-          headers: { 'Authorization': `Bearer ${token}` },
-        }),
-        fetch('http://localhost:5000/api/student_results', {
-          headers: { 'Authorization': `Bearer ${token}` },
-        }),
+      const [admRes, studRes, examRes, subjRes, resRes] = await Promise.all([
+        supabase.from('admissions').select('*').order('created_at', { ascending: false }),
+        supabase.from('students').select('*').order('created_at', { ascending: false }),
+        supabase.from('exams').select('*').order('created_at', { ascending: false }),
+        supabase.from('exam_subjects').select('*').order('created_at', { ascending: false }),
+        supabase.from('student_results').select('*').order('created_at', { ascending: false }),
       ]);
 
-      if (admResp.ok) setAdmissions(await admResp.json());
-      if (studResp.ok) setStudents(await studResp.json());
-      if (examResp.ok) setExams(await examResp.json());
-      if (subjResp.ok) setExamSubjects(await subjResp.json());
-      if (resResp.ok) setResults(await resResp.json());
+      if (admRes.data) setAdmissions(admRes.data.map((a: any) => ({
+        id: a.id, studentName: a.student_name, classApplying: a.class_applying,
+        parentEmail: a.parent_email, parentPhone: a.parent_phone, status: a.status,
+      })));
+      if (studRes.data) setStudents(studRes.data);
+      if (examRes.data) setExams(examRes.data);
+      if (subjRes.data) setExamSubjects(subjRes.data);
+      if (resRes.data) setResults(resRes.data);
     } catch (error) {
       console.error('Error fetching data:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load data',
-        variant: 'destructive',
-      });
+      toast({ title: 'Error', description: 'Failed to load data', variant: 'destructive' });
     } finally {
       setLoading(false);
     }
@@ -195,22 +182,19 @@ const AdminDashboard = () => {
     }
 
     try {
-      const token = getToken();
-      const method = editingStudentId ? 'PUT' : 'POST';
-      const url = editingStudentId
-        ? `http://localhost:5000/api/students/${editingStudentId}`
-        : 'http://localhost:5000/api/students';
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(studentForm),
-      });
-
-      if (!response.ok) throw new Error('Failed to save student');
+      if (editingStudentId) {
+        const { error } = await supabase.from('students').update(studentForm).eq('id', editingStudentId);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from('students').insert({
+          name: studentForm.name,
+          roll_number: studentForm.roll_number,
+          class: studentForm.class,
+          section: studentForm.section || 'A',
+          date_of_birth: studentForm.date_of_birth || '2010-01-01',
+        });
+        if (error) throw error;
+      }
 
       setShowStudentForm(false);
       setStudentForm({});
@@ -224,15 +208,9 @@ const AdminDashboard = () => {
 
   const deleteStudent = async (id: string) => {
     if (!window.confirm('Delete this student?')) return;
-
     try {
-      const token = getToken();
-      const response = await fetch(`http://localhost:5000/api/students/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-
-      if (!response.ok) throw new Error('Failed to delete');
+      const { error } = await supabase.from('students').delete().eq('id', id);
+      if (error) throw error;
       fetchAllData();
       toast({ title: 'Success', description: 'Student deleted' });
     } catch (error) {
@@ -246,20 +224,12 @@ const AdminDashboard = () => {
       toast({ title: 'Error', description: 'Fill all required fields', variant: 'destructive' });
       return;
     }
-
     try {
-      const token = getToken();
-      const response = await fetch('http://localhost:5000/api/exams', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(examForm),
+      const { error } = await supabase.from('exams').insert({
+        name: examForm.name,
+        academic_year: examForm.academic_year,
       });
-
-      if (!response.ok) throw new Error('Failed to save exam');
-
+      if (error) throw error;
       setShowExamForm(false);
       setExamForm({});
       fetchAllData();
@@ -271,15 +241,9 @@ const AdminDashboard = () => {
 
   const deleteExam = async (id: string) => {
     if (!window.confirm('Delete this exam?')) return;
-
     try {
-      const token = getToken();
-      const response = await fetch(`http://localhost:5000/api/exams/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-
-      if (!response.ok) throw new Error('Failed to delete');
+      const { error } = await supabase.from('exams').delete().eq('id', id);
+      if (error) throw error;
       fetchAllData();
       toast({ title: 'Success', description: 'Exam deleted' });
     } catch (error) {
@@ -293,20 +257,15 @@ const AdminDashboard = () => {
       toast({ title: 'Error', description: 'Fill all required fields', variant: 'destructive' });
       return;
     }
-
     try {
-      const token = getToken();
-      const response = await fetch('http://localhost:5000/api/exam_subjects', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(examSubjectForm),
+      const { error } = await supabase.from('exam_subjects').insert({
+        exam_id: examSubjectForm.exam_id,
+        subject_name: examSubjectForm.subject_name,
+        exam_date: examSubjectForm.exam_date,
+        exam_time: examSubjectForm.exam_time || '09:00 AM',
+        class: examSubjectForm.class || 'ALL',
       });
-
-      if (!response.ok) throw new Error('Failed to save');
-
+      if (error) throw error;
       setShowExamSubjectForm(false);
       setExamSubjectForm({});
       fetchAllData();
@@ -318,15 +277,9 @@ const AdminDashboard = () => {
 
   const deleteExamSubject = async (id: string) => {
     if (!window.confirm('Delete this exam subject?')) return;
-
     try {
-      const token = getToken();
-      const response = await fetch(`http://localhost:5000/api/exam_subjects/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-
-      if (!response.ok) throw new Error('Failed to delete');
+      const { error } = await supabase.from('exam_subjects').delete().eq('id', id);
+      if (error) throw error;
       fetchAllData();
       toast({ title: 'Success', description: 'Deleted' });
     } catch (error) {
@@ -357,45 +310,39 @@ const AdminDashboard = () => {
     }
 
     try {
-      const token = getToken();
-      const selectedStudent = students.find(s => s.id === resultForm.student_id);
-      const selectedExam = exams.find(e => e.id === resultForm.exam_id);
+      const selectedStudent = students.find((s: any) => s.id === resultForm.student_id);
+      const selectedExam = exams.find((e: any) => e.id === resultForm.exam_id);
 
       if (!selectedStudent || !selectedExam) {
         toast({ title: 'Error', description: 'Invalid student or exam', variant: 'destructive' });
         return;
       }
 
-      const percentage = (Number(resultForm.obtained_marks) / Number(resultForm.total_marks)) * 100;
-      const grade = calculateGrade(percentage);
+      const subjects = (resultForm.subject_marks || []).map((sm: any) => ({
+        subject: sm.subject,
+        maxMarks: Number(sm.maxMarks || 100),
+        obtained: Number(sm.obtained || 0),
+        grade: calculateSubjectGrade(Number(sm.obtained || 0), Number(sm.maxMarks || 100)),
+      }));
 
       const payload = {
-        ...resultForm,
         student_name: selectedStudent.name,
         roll_number: selectedStudent.roll_number,
-        exam_name: selectedExam.name,
         class: selectedStudent.class,
-        section: selectedStudent.section,
-        percentage: Math.round(percentage * 100) / 100,
-        grade,
-        subject_marks: resultForm.subject_marks || [],
+        section: selectedStudent.section || 'A',
+        exam_type: selectedExam.name,
+        academic_year: selectedExam.academic_year || '2024-25',
+        rank: resultForm.rank ? Number(resultForm.rank) : null,
+        subjects: subjects as any,
       };
 
-      const method = editingResultId ? 'PUT' : 'POST';
-      const url = editingResultId
-        ? `http://localhost:5000/api/student_results/${editingResultId}`
-        : 'http://localhost:5000/api/student_results';
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) throw new Error('Failed to save');
+      if (editingResultId) {
+        const { error } = await supabase.from('student_results').update(payload).eq('id', editingResultId);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from('student_results').insert(payload);
+        if (error) throw error;
+      }
 
       setShowResultForm(false);
       setResultForm({});
@@ -409,15 +356,9 @@ const AdminDashboard = () => {
 
   const deleteResult = async (id: string) => {
     if (!window.confirm('Delete this result?')) return;
-
     try {
-      const token = getToken();
-      const response = await fetch(`http://localhost:5000/api/student_results/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-
-      if (!response.ok) throw new Error('Failed to delete');
+      const { error } = await supabase.from('student_results').delete().eq('id', id);
+      if (error) throw error;
       fetchAllData();
       toast({ title: 'Success', description: 'Result deleted' });
     } catch (error) {
@@ -439,7 +380,7 @@ const AdminDashboard = () => {
         if (missing.length > 0) {
           toast({
             title: 'Invalid CSV format',
-            description: `Missing columns: ${missing.join(', ')}. Required: student_name, roll_number, class, exam_type, subjects (JSON array)`,
+            description: `Missing columns: ${missing.join(', ')}`,
             variant: 'destructive',
           });
           return;
@@ -459,20 +400,19 @@ const AdminDashboard = () => {
     setImporting(true);
 
     try {
-      const token = getToken();
       let successCount = 0;
       let errorCount = 0;
 
       for (const row of csvPreview) {
         try {
-          let subjects = [];
+          let subjects: any[] = [];
           try {
             subjects = typeof row.subjects === 'string' ? JSON.parse(row.subjects) : row.subjects || [];
           } catch {
             subjects = [];
           }
 
-          const payload = {
+          const { error } = await supabase.from('student_results').insert({
             student_name: row.student_name,
             roll_number: row.roll_number,
             class: row.class,
@@ -480,20 +420,11 @@ const AdminDashboard = () => {
             exam_type: row.exam_type || 'Annual',
             academic_year: row.academic_year || '2024-25',
             rank: row.rank ? parseInt(row.rank) : null,
-            subjects,
-          };
-
-          const response = await fetch('http://localhost:5000/api/student_results', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
+            subjects: subjects as any,
           });
 
-          if (response.ok) successCount++;
-          else errorCount++;
+          if (error) errorCount++;
+          else successCount++;
         } catch {
           errorCount++;
         }
