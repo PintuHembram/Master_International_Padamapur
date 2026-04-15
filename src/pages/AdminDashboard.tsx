@@ -123,6 +123,10 @@ const AdminDashboard = () => {
   const [showResultForm, setShowResultForm] = useState(false);
   const [resultForm, setResultForm] = useState<Partial<StudentResult>>({});
   const [editingResultId, setEditingResultId] = useState<string | null>(null);
+  const [csvPreview, setCsvPreview] = useState<any[]>([]);
+  const [showCsvPreview, setShowCsvPreview] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const csvFileRef = useRef<HTMLInputElement>(null);
 
   const { isAdmin, signOut, getToken, loading: authLoading } = useAuth();
   const navigate = useNavigate();
