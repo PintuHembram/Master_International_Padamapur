@@ -1163,11 +1163,26 @@ const AdminDashboard = () => {
 
               {/* Results Table */}
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
+               <CardHeader className="flex flex-row items-center justify-between flex-wrap gap-2">
                   <CardTitle>Student Results</CardTitle>
-                  <Button onClick={() => setShowResultForm(true)} className="gap-2">
-                    <Plus className="h-4 w-4" /> Add Result
-                  </Button>
+                  <div className="flex gap-2 flex-wrap">
+                    <Button variant="outline" onClick={downloadCsvTemplate} className="gap-2">
+                      <FileText className="h-4 w-4" /> Download Template
+                    </Button>
+                    <input
+                      type="file"
+                      accept=".csv"
+                      ref={csvFileRef}
+                      className="hidden"
+                      onChange={handleCsvUpload}
+                    />
+                    <Button variant="outline" onClick={() => csvFileRef.current?.click()} className="gap-2">
+                      <Upload className="h-4 w-4" /> Import CSV
+                    </Button>
+                    <Button onClick={() => setShowResultForm(true)} className="gap-2">
+                      <Plus className="h-4 w-4" /> Add Result
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   {results.length === 0 ? (
