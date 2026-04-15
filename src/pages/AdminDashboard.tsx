@@ -168,7 +168,7 @@ const AdminDashboard = () => {
       if (studRes.data) setStudents(studRes.data);
       if (examRes.data) setExams(examRes.data);
       if (subjRes.data) setExamSubjects(subjRes.data);
-      if (resRes.data) setResults(resRes.data);
+      if (resRes.data) setResults(resRes.data.map((r: any) => ({ ...r, subjects: r.subjects as SubjectMark[] })));
     } catch (error) {
       console.error('Error fetching data:', error);
       toast({ title: 'Error', description: 'Failed to load data', variant: 'destructive' });
@@ -1041,11 +1041,12 @@ const AdminDashboard = () => {
                         />
                       </div>
                       <div>
-                        <Label>Remarks</Label>
+                        <Label>Rank (optional)</Label>
                         <Input
-                          value={resultForm.remarks || ''}
-                          onChange={(e) => setResultForm({ ...resultForm, remarks: e.target.value })}
-                          placeholder="Remarks (optional)"
+                          type="number"
+                          value={resultForm.rank || ''}
+                          onChange={(e) => setResultForm({ ...resultForm, rank: e.target.value ? Number(e.target.value) : null })}
+                          placeholder="Rank (optional)"
                         />
                       </div>
                     </div>
@@ -1065,10 +1066,10 @@ const AdminDashboard = () => {
                           <TableBody>
                             {(resultForm.subject_marks || []).map((mark, idx) => (
                               <TableRow key={idx}>
-                                <TableCell>{mark.subject_name}</TableCell>
-                                <TableCell>{mark.max_marks}</TableCell>
-                                <TableCell>{mark.obtained_marks}</TableCell>
-                                <TableCell>{calculateSubjectGrade(mark.obtained_marks, mark.max_marks)}</TableCell>
+                                <TableCell>{mark.subject}</TableCell>
+                                <TableCell>{mark.maxMarks}</TableCell>
+                                <TableCell>{mark.obtained}</TableCell>
+                                <TableCell>{calculateSubjectGrade(mark.obtained, mark.maxMarks)}</TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
