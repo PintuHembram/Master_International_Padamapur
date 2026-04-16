@@ -784,11 +784,14 @@ const AdminDashboard = () => {
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Roll Number</TableHead>
+                            <TableHead>Student ID</TableHead>
+                            <TableHead>Roll No</TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Class</TableHead>
                             <TableHead>Section</TableHead>
-                            <TableHead>DOB</TableHead>
+                            <TableHead>Father</TableHead>
+                            <TableHead>Phone</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead>Actions</TableHead>
                           </TableRow>
                         </TableHeader>
