@@ -54,11 +54,34 @@ interface Admission {
 
 interface Student {
   id: string;
+  student_id?: string;
   roll_number: string;
   name: string;
   class: string;
   section: string;
   date_of_birth: string;
+  gender?: string;
+  blood_group?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  admission_date?: string;
+  session?: string;
+  father_name?: string;
+  father_phone?: string;
+  mother_name?: string;
+  mother_phone?: string;
+  guardian_name?: string;
+  height?: string;
+  weight?: string;
+  medical_conditions?: string;
+  allergies?: string;
+  photo_url?: string;
+  documents_url?: string;
+  status?: string;
 }
 
 interface Exam {
