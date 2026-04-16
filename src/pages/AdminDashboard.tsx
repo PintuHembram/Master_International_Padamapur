@@ -798,11 +798,18 @@ const AdminDashboard = () => {
                         <TableBody>
                           {students.map((student) => (
                             <TableRow key={student.id}>
+                              <TableCell className="font-mono text-xs">{student.student_id || '—'}</TableCell>
                               <TableCell>{student.roll_number}</TableCell>
                               <TableCell className="font-medium">{student.name}</TableCell>
                               <TableCell>{student.class}</TableCell>
                               <TableCell>{student.section || '—'}</TableCell>
-                              <TableCell>{student.date_of_birth || '—'}</TableCell>
+                              <TableCell>{student.father_name || '—'}</TableCell>
+                              <TableCell>{student.phone || student.father_phone || '—'}</TableCell>
+                              <TableCell>
+                                <span className={`px-2 py-1 rounded text-xs ${student.status === 'inactive' ? 'bg-destructive/10 text-destructive' : 'bg-green-500/10 text-green-700 dark:text-green-400'}`}>
+                                  {student.status || 'active'}
+                                </span>
+                              </TableCell>
                               <TableCell>
                                 <div className="flex gap-2">
                                   <Button
