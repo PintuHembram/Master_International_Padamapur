@@ -390,37 +390,103 @@ export type Database = {
       }
       students: {
         Row: {
+          address: string | null
+          admission_date: string | null
+          allergies: string | null
+          blood_group: string | null
+          city: string | null
           class: string
           created_at: string
           date_of_birth: string
+          documents_url: string | null
+          email: string | null
+          father_name: string | null
+          father_phone: string | null
+          gender: string | null
+          guardian_name: string | null
+          height: string | null
           id: string
+          medical_conditions: string | null
+          mother_name: string | null
+          mother_phone: string | null
           name: string
+          phone: string | null
           photo_url: string | null
+          pincode: string | null
           roll_number: string
           section: string
+          session: string | null
+          state: string | null
+          status: string
+          student_id: string | null
           updated_at: string
+          weight: string | null
         }
         Insert: {
+          address?: string | null
+          admission_date?: string | null
+          allergies?: string | null
+          blood_group?: string | null
+          city?: string | null
           class: string
           created_at?: string
           date_of_birth: string
+          documents_url?: string | null
+          email?: string | null
+          father_name?: string | null
+          father_phone?: string | null
+          gender?: string | null
+          guardian_name?: string | null
+          height?: string | null
           id?: string
+          medical_conditions?: string | null
+          mother_name?: string | null
+          mother_phone?: string | null
           name: string
+          phone?: string | null
           photo_url?: string | null
+          pincode?: string | null
           roll_number: string
           section?: string
+          session?: string | null
+          state?: string | null
+          status?: string
+          student_id?: string | null
           updated_at?: string
+          weight?: string | null
         }
         Update: {
+          address?: string | null
+          admission_date?: string | null
+          allergies?: string | null
+          blood_group?: string | null
+          city?: string | null
           class?: string
           created_at?: string
           date_of_birth?: string
+          documents_url?: string | null
+          email?: string | null
+          father_name?: string | null
+          father_phone?: string | null
+          gender?: string | null
+          guardian_name?: string | null
+          height?: string | null
           id?: string
+          medical_conditions?: string | null
+          mother_name?: string | null
+          mother_phone?: string | null
           name?: string
+          phone?: string | null
           photo_url?: string | null
+          pincode?: string | null
           roll_number?: string
           section?: string
+          session?: string | null
+          state?: string | null
+          status?: string
+          student_id?: string | null
           updated_at?: string
+          weight?: string | null
         }
         Relationships: []
       }

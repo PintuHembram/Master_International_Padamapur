@@ -54,11 +54,34 @@ interface Admission {
 
 interface Student {
   id: string;
+  student_id?: string;
   roll_number: string;
   name: string;
   class: string;
   section: string;
   date_of_birth: string;
+  gender?: string;
+  blood_group?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  admission_date?: string;
+  session?: string;
+  father_name?: string;
+  father_phone?: string;
+  mother_name?: string;
+  mother_phone?: string;
+  guardian_name?: string;
+  height?: string;
+  weight?: string;
+  medical_conditions?: string;
+  allergies?: string;
+  photo_url?: string;
+  documents_url?: string;
+  status?: string;
 }
 
 interface Exam {
@@ -185,17 +208,40 @@ const AdminDashboard = () => {
     }
 
     try {
+      const payload: any = {
+        name: studentForm.name,
+        roll_number: studentForm.roll_number,
+        class: studentForm.class,
+        section: studentForm.section || 'A',
+        date_of_birth: studentForm.date_of_birth || '2010-01-01',
+        gender: studentForm.gender || null,
+        blood_group: studentForm.blood_group || null,
+        phone: studentForm.phone || null,
+        email: studentForm.email || null,
+        address: studentForm.address || null,
+        city: studentForm.city || null,
+        state: studentForm.state || null,
+        pincode: studentForm.pincode || null,
+        admission_date: studentForm.admission_date || null,
+        session: studentForm.session || '2025-26',
+        father_name: studentForm.father_name || null,
+        father_phone: studentForm.father_phone || null,
+        mother_name: studentForm.mother_name || null,
+        mother_phone: studentForm.mother_phone || null,
+        guardian_name: studentForm.guardian_name || null,
+        height: studentForm.height || null,
+        weight: studentForm.weight || null,
+        medical_conditions: studentForm.medical_conditions || null,
+        allergies: studentForm.allergies || null,
+        photo_url: studentForm.photo_url || null,
+        documents_url: studentForm.documents_url || null,
+        status: studentForm.status || 'active',
+      };
       if (editingStudentId) {
-        const { error } = await supabase.from('students').update(studentForm).eq('id', editingStudentId);
+        const { error } = await supabase.from('students').update(payload).eq('id', editingStudentId);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('students').insert({
-          name: studentForm.name,
-          roll_number: studentForm.roll_number,
-          class: studentForm.class,
-          section: studentForm.section || 'A',
-          date_of_birth: studentForm.date_of_birth || '2010-01-01',
-        });
+        const { error } = await supabase.from('students').insert(payload);
         if (error) throw error;
       }
 
@@ -204,8 +250,8 @@ const AdminDashboard = () => {
       setEditingStudentId(null);
       fetchAllData();
       toast({ title: 'Success', description: 'Student saved successfully' });
-    } catch (error) {
-      toast({ title: 'Error', description: 'Failed to save student', variant: 'destructive' });
+    } catch (error: any) {
+      toast({ title: 'Error', description: error?.message || 'Failed to save student', variant: 'destructive' });
     }
   };
 
@@ -619,62 +665,93 @@ const AdminDashboard = () => {
                   <CardHeader>
                     <CardTitle>{editingStudentId ? 'Edit Student' : 'Add New Student'}</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label>Name *</Label>
-                        <Input
-                          value={studentForm.name || ''}
-                          onChange={(e) => setStudentForm({ ...studentForm, name: e.target.value })}
-                          placeholder="Student name"
-                        />
-                      </div>
-                      <div>
-                        <Label>Roll Number *</Label>
-                        <Input
-                          value={studentForm.roll_number || ''}
-                          onChange={(e) => setStudentForm({ ...studentForm, roll_number: e.target.value })}
-                          placeholder="Roll number"
-                        />
-                      </div>
-                      <div>
-                        <Label>Class *</Label>
-                        <Input
-                          value={studentForm.class || ''}
-                          onChange={(e) => setStudentForm({ ...studentForm, class: e.target.value })}
-                          placeholder="Class"
-                        />
-                      </div>
-                      <div>
-                        <Label>Section</Label>
-                        <Input
-                          value={studentForm.section || ''}
-                          onChange={(e) => setStudentForm({ ...studentForm, section: e.target.value })}
-                          placeholder="A/B/C"
-                        />
-                      </div>
-                      <div>
-                        <Label>Date of Birth</Label>
-                        <Input
-                          type="date"
-                          value={studentForm.date_of_birth || ''}
-                          onChange={(e) => setStudentForm({ ...studentForm, date_of_birth: e.target.value })}
-                        />
+                  <CardContent className="space-y-6">
+                    {/* Basic Info */}
+                    <div>
+                      <h3 className="text-sm font-semibold mb-3 text-primary">Basic Info</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div><Label>Full Name *</Label><Input value={studentForm.name || ''} onChange={(e) => setStudentForm({ ...studentForm, name: e.target.value })} /></div>
+                        <div><Label>Roll Number *</Label><Input value={studentForm.roll_number || ''} onChange={(e) => setStudentForm({ ...studentForm, roll_number: e.target.value })} /></div>
+                        <div><Label>Date of Birth *</Label><Input type="date" value={studentForm.date_of_birth || ''} onChange={(e) => setStudentForm({ ...studentForm, date_of_birth: e.target.value })} /></div>
+                        <div><Label>Gender</Label>
+                          <select className="w-full h-10 px-3 rounded-md border border-input bg-background" value={studentForm.gender || ''} onChange={(e) => setStudentForm({ ...studentForm, gender: e.target.value })}>
+                            <option value="">Select</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option>
+                          </select>
+                        </div>
+                        <div><Label>Blood Group</Label>
+                          <select className="w-full h-10 px-3 rounded-md border border-input bg-background" value={studentForm.blood_group || ''} onChange={(e) => setStudentForm({ ...studentForm, blood_group: e.target.value })}>
+                            <option value="">Select</option>{['A+','A-','B+','B-','O+','O-','AB+','AB-'].map(g=><option key={g} value={g}>{g}</option>)}
+                          </select>
+                        </div>
+                        <div><Label>Status</Label>
+                          <select className="w-full h-10 px-3 rounded-md border border-input bg-background" value={studentForm.status || 'active'} onChange={(e) => setStudentForm({ ...studentForm, status: e.target.value })}>
+                            <option value="active">Active</option><option value="inactive">Inactive</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
+
+                    {/* Academic */}
+                    <div>
+                      <h3 className="text-sm font-semibold mb-3 text-primary">Academic Info</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div><Label>Class *</Label><Input value={studentForm.class || ''} onChange={(e) => setStudentForm({ ...studentForm, class: e.target.value })} placeholder="e.g. 10" /></div>
+                        <div><Label>Section</Label><Input value={studentForm.section || ''} onChange={(e) => setStudentForm({ ...studentForm, section: e.target.value })} placeholder="A" /></div>
+                        <div><Label>Admission Date</Label><Input type="date" value={studentForm.admission_date || ''} onChange={(e) => setStudentForm({ ...studentForm, admission_date: e.target.value })} /></div>
+                        <div><Label>Session</Label><Input value={studentForm.session || '2025-26'} onChange={(e) => setStudentForm({ ...studentForm, session: e.target.value })} /></div>
+                      </div>
+                    </div>
+
+                    {/* Contact */}
+                    <div>
+                      <h3 className="text-sm font-semibold mb-3 text-primary">Contact Info</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div><Label>Phone</Label><Input value={studentForm.phone || ''} onChange={(e) => setStudentForm({ ...studentForm, phone: e.target.value })} /></div>
+                        <div><Label>Email</Label><Input type="email" value={studentForm.email || ''} onChange={(e) => setStudentForm({ ...studentForm, email: e.target.value })} /></div>
+                        <div><Label>Pincode</Label><Input value={studentForm.pincode || ''} onChange={(e) => setStudentForm({ ...studentForm, pincode: e.target.value })} /></div>
+                        <div className="md:col-span-2"><Label>Address</Label><Input value={studentForm.address || ''} onChange={(e) => setStudentForm({ ...studentForm, address: e.target.value })} /></div>
+                        <div><Label>City</Label><Input value={studentForm.city || ''} onChange={(e) => setStudentForm({ ...studentForm, city: e.target.value })} /></div>
+                        <div><Label>State</Label><Input value={studentForm.state || ''} onChange={(e) => setStudentForm({ ...studentForm, state: e.target.value })} /></div>
+                      </div>
+                    </div>
+
+                    {/* Parents */}
+                    <div>
+                      <h3 className="text-sm font-semibold mb-3 text-primary">Parent / Guardian</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div><Label>Father Name</Label><Input value={studentForm.father_name || ''} onChange={(e) => setStudentForm({ ...studentForm, father_name: e.target.value })} /></div>
+                        <div><Label>Father Phone</Label><Input value={studentForm.father_phone || ''} onChange={(e) => setStudentForm({ ...studentForm, father_phone: e.target.value })} /></div>
+                        <div><Label>Mother Name</Label><Input value={studentForm.mother_name || ''} onChange={(e) => setStudentForm({ ...studentForm, mother_name: e.target.value })} /></div>
+                        <div><Label>Mother Phone</Label><Input value={studentForm.mother_phone || ''} onChange={(e) => setStudentForm({ ...studentForm, mother_phone: e.target.value })} /></div>
+                        <div><Label>Guardian (optional)</Label><Input value={studentForm.guardian_name || ''} onChange={(e) => setStudentForm({ ...studentForm, guardian_name: e.target.value })} /></div>
+                      </div>
+                    </div>
+
+                    {/* Health */}
+                    <div>
+                      <h3 className="text-sm font-semibold mb-3 text-primary">Health Info</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div><Label>Height</Label><Input value={studentForm.height || ''} onChange={(e) => setStudentForm({ ...studentForm, height: e.target.value })} placeholder="e.g. 150 cm" /></div>
+                        <div><Label>Weight</Label><Input value={studentForm.weight || ''} onChange={(e) => setStudentForm({ ...studentForm, weight: e.target.value })} placeholder="e.g. 45 kg" /></div>
+                        <div className="md:col-span-2"><Label>Medical Conditions</Label><Input value={studentForm.medical_conditions || ''} onChange={(e) => setStudentForm({ ...studentForm, medical_conditions: e.target.value })} /></div>
+                        <div className="md:col-span-2"><Label>Allergies</Label><Input value={studentForm.allergies || ''} onChange={(e) => setStudentForm({ ...studentForm, allergies: e.target.value })} /></div>
+                      </div>
+                    </div>
+
+                    {/* Files */}
+                    <div>
+                      <h3 className="text-sm font-semibold mb-3 text-primary">Files</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><Label>Profile Photo URL</Label><Input value={studentForm.photo_url || ''} onChange={(e) => setStudentForm({ ...studentForm, photo_url: e.target.value })} placeholder="https://..." /></div>
+                        <div><Label>Documents URL (Aadhar, TC, etc.)</Label><Input value={studentForm.documents_url || ''} onChange={(e) => setStudentForm({ ...studentForm, documents_url: e.target.value })} placeholder="https://..." /></div>
+                      </div>
+                    </div>
+
                     <div className="flex gap-2">
                       <Button onClick={saveStudent} className="gap-2">
-                        <Save className="h-4 w-4" /> Save
+                        <Save className="h-4 w-4" /> Save Student
                       </Button>
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          setShowStudentForm(false);
-                          setStudentForm({});
-                          setEditingStudentId(null);
-                        }}
-                        className="gap-2"
-                      >
+                      <Button variant="outline" onClick={() => { setShowStudentForm(false); setStudentForm({}); setEditingStudentId(null); }} className="gap-2">
                         <X className="h-4 w-4" /> Cancel
                       </Button>
                     </div>
@@ -707,22 +784,32 @@ const AdminDashboard = () => {
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Roll Number</TableHead>
+                            <TableHead>Student ID</TableHead>
+                            <TableHead>Roll No</TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Class</TableHead>
                             <TableHead>Section</TableHead>
-                            <TableHead>DOB</TableHead>
+                            <TableHead>Father</TableHead>
+                            <TableHead>Phone</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead>Actions</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {students.map((student) => (
                             <TableRow key={student.id}>
+                              <TableCell className="font-mono text-xs">{student.student_id || '—'}</TableCell>
                               <TableCell>{student.roll_number}</TableCell>
                               <TableCell className="font-medium">{student.name}</TableCell>
                               <TableCell>{student.class}</TableCell>
                               <TableCell>{student.section || '—'}</TableCell>
-                              <TableCell>{student.date_of_birth || '—'}</TableCell>
+                              <TableCell>{student.father_name || '—'}</TableCell>
+                              <TableCell>{student.phone || student.father_phone || '—'}</TableCell>
+                              <TableCell>
+                                <span className={`px-2 py-1 rounded text-xs ${student.status === 'inactive' ? 'bg-destructive/10 text-destructive' : 'bg-green-500/10 text-green-700 dark:text-green-400'}`}>
+                                  {student.status || 'active'}
+                                </span>
+                              </TableCell>
                               <TableCell>
                                 <div className="flex gap-2">
                                   <Button

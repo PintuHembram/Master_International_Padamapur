@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { StudentProtectedRoute } from "@/components/StudentProtectedRoute";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -20,6 +21,8 @@ import Gallery from "./pages/Gallery";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import StudentResults from "./pages/StudentResults";
+import StudentLogin from "./pages/StudentLogin";
+import StudentDashboard from "./pages/StudentDashboard";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +47,8 @@ const App = () => (
               <Route path="/results" element={<StudentResults />} />
               <Route path="/admit-cards" element={<AdmitCards />} />
               <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/student/login" element={<StudentLogin />} />
+              <Route path="/student/dashboard" element={<StudentProtectedRoute><StudentDashboard /></StudentProtectedRoute>} />
               <Route path="/admin/admissions" element={<ProtectedRoute><AdminAdmissionsDashboard /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
