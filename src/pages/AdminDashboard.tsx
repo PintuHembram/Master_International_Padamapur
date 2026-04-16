@@ -208,17 +208,40 @@ const AdminDashboard = () => {
     }
 
     try {
+      const payload: any = {
+        name: studentForm.name,
+        roll_number: studentForm.roll_number,
+        class: studentForm.class,
+        section: studentForm.section || 'A',
+        date_of_birth: studentForm.date_of_birth || '2010-01-01',
+        gender: studentForm.gender || null,
+        blood_group: studentForm.blood_group || null,
+        phone: studentForm.phone || null,
+        email: studentForm.email || null,
+        address: studentForm.address || null,
+        city: studentForm.city || null,
+        state: studentForm.state || null,
+        pincode: studentForm.pincode || null,
+        admission_date: studentForm.admission_date || null,
+        session: studentForm.session || '2025-26',
+        father_name: studentForm.father_name || null,
+        father_phone: studentForm.father_phone || null,
+        mother_name: studentForm.mother_name || null,
+        mother_phone: studentForm.mother_phone || null,
+        guardian_name: studentForm.guardian_name || null,
+        height: studentForm.height || null,
+        weight: studentForm.weight || null,
+        medical_conditions: studentForm.medical_conditions || null,
+        allergies: studentForm.allergies || null,
+        photo_url: studentForm.photo_url || null,
+        documents_url: studentForm.documents_url || null,
+        status: studentForm.status || 'active',
+      };
       if (editingStudentId) {
-        const { error } = await supabase.from('students').update(studentForm).eq('id', editingStudentId);
+        const { error } = await supabase.from('students').update(payload).eq('id', editingStudentId);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('students').insert({
-          name: studentForm.name,
-          roll_number: studentForm.roll_number,
-          class: studentForm.class,
-          section: studentForm.section || 'A',
-          date_of_birth: studentForm.date_of_birth || '2010-01-01',
-        });
+        const { error } = await supabase.from('students').insert(payload);
         if (error) throw error;
       }
 
@@ -227,8 +250,8 @@ const AdminDashboard = () => {
       setEditingStudentId(null);
       fetchAllData();
       toast({ title: 'Success', description: 'Student saved successfully' });
-    } catch (error) {
-      toast({ title: 'Error', description: 'Failed to save student', variant: 'destructive' });
+    } catch (error: any) {
+      toast({ title: 'Error', description: error?.message || 'Failed to save student', variant: 'destructive' });
     }
   };
 
