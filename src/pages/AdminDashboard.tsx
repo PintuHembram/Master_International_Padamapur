@@ -75,6 +75,8 @@ interface Student {
   mother_name?: string;
   mother_phone?: string;
   guardian_name?: string;
+  guardian_phone?: string;
+  guardian_relation?: string;
   height?: string;
   weight?: string;
   medical_conditions?: string;
@@ -229,6 +231,8 @@ const AdminDashboard = () => {
         mother_name: studentForm.mother_name || null,
         mother_phone: studentForm.mother_phone || null,
         guardian_name: studentForm.guardian_name || null,
+        guardian_phone: studentForm.guardian_phone || null,
+        guardian_relation: studentForm.guardian_relation || null,
         height: studentForm.height || null,
         weight: studentForm.weight || null,
         medical_conditions: studentForm.medical_conditions || null,
@@ -717,13 +721,22 @@ const AdminDashboard = () => {
 
                     {/* Parents */}
                     <div>
-                      <h3 className="text-sm font-semibold mb-3 text-primary">Parent / Guardian</h3>
+                      <h3 className="text-sm font-semibold mb-3 text-primary">Parent Info</h3>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         <div><Label>Father Name</Label><Input value={studentForm.father_name || ''} onChange={(e) => setStudentForm({ ...studentForm, father_name: e.target.value })} /></div>
                         <div><Label>Father Phone</Label><Input value={studentForm.father_phone || ''} onChange={(e) => setStudentForm({ ...studentForm, father_phone: e.target.value })} /></div>
                         <div><Label>Mother Name</Label><Input value={studentForm.mother_name || ''} onChange={(e) => setStudentForm({ ...studentForm, mother_name: e.target.value })} /></div>
                         <div><Label>Mother Phone</Label><Input value={studentForm.mother_phone || ''} onChange={(e) => setStudentForm({ ...studentForm, mother_phone: e.target.value })} /></div>
-                        <div><Label>Guardian (optional)</Label><Input value={studentForm.guardian_name || ''} onChange={(e) => setStudentForm({ ...studentForm, guardian_name: e.target.value })} /></div>
+                      </div>
+                    </div>
+
+                    {/* Guardian Basic Info */}
+                    <div>
+                      <h3 className="text-sm font-semibold mb-3 text-primary">Guardian Basic Info (optional)</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div><Label>Guardian Name</Label><Input value={studentForm.guardian_name || ''} onChange={(e) => setStudentForm({ ...studentForm, guardian_name: e.target.value })} placeholder="Full name" /></div>
+                        <div><Label>Guardian Phone</Label><Input value={studentForm.guardian_phone || ''} onChange={(e) => setStudentForm({ ...studentForm, guardian_phone: e.target.value })} placeholder="Contact number" /></div>
+                        <div><Label>Relation</Label><Input value={studentForm.guardian_relation || ''} onChange={(e) => setStudentForm({ ...studentForm, guardian_relation: e.target.value })} placeholder="e.g. Uncle, Aunt, Grandparent" /></div>
                       </div>
                     </div>
 

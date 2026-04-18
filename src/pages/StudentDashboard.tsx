@@ -197,12 +197,16 @@ const StudentDashboard = () => {
                   ['State', student.state],
                   ['Pincode', student.pincode],
                 ]} />
-                <Section title="Parent / Guardian" items={[
+                <Section title="Parent Info" items={[
                   ['Father', student.father_name],
                   ['Father Phone', student.father_phone],
                   ['Mother', student.mother_name],
                   ['Mother Phone', student.mother_phone],
+                ]} />
+                <Section title="Guardian Info" items={[
                   ['Guardian', student.guardian_name],
+                  ['Guardian Phone', student.guardian_phone],
+                  ['Relation', student.guardian_relation],
                 ]} />
               </CardContent>
             </Card>
