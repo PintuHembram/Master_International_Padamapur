@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { ExternalLink, Loader2, Save } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
 
 type Application = Tables<"admission_applications">;
@@ -82,16 +83,24 @@ export const ApplicationDetailsDialog = ({ application, open, onOpenChange, onUp
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-3">
-            <span>{application.full_name || "Application"}</span>
-            <Badge variant="outline" className="font-mono">{application.application_number}</Badge>
-          </DialogTitle>
-        </DialogHeader>
+    <>
+      <Helmet>
+        <title>
+          {application?.full_name
+            ? `${application.full_name} | Application Details`
+            : "Application Details"}
+        </title>
+      </Helmet>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3">
+              <span>{application.full_name || "Application"}</span>
+              <Badge variant="outline" className="font-mono">{application.application_number}</Badge>
+            </DialogTitle>
+          </DialogHeader>
 
-        <Tabs defaultValue="profile">
+          <Tabs defaultValue="profile">
           <TabsList className="w-full">
             <TabsTrigger value="profile" className="flex-1">Profile</TabsTrigger>
             <TabsTrigger value="documents" className="flex-1">Documents</TabsTrigger>
@@ -253,7 +262,8 @@ export const ApplicationDetailsDialog = ({ application, open, onOpenChange, onUp
             )}
           </TabsContent>
         </Tabs>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
