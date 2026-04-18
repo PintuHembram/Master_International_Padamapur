@@ -23,6 +23,9 @@ import NotFound from "./pages/NotFound";
 import StudentResults from "./pages/StudentResults";
 import StudentLogin from "./pages/StudentLogin";
 import StudentDashboard from "./pages/StudentDashboard";
+import AdmissionStart from "./pages/admission/AdmissionStart";
+import AdmissionApply from "./pages/admission/AdmissionApply";
+import { ApplicationProtectedRoute } from "./components/admission/ApplicationProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +52,8 @@ const App = () => (
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/student/login" element={<StudentLogin />} />
               <Route path="/student/dashboard" element={<StudentProtectedRoute><StudentDashboard /></StudentProtectedRoute>} />
+              <Route path="/admission/start" element={<AdmissionStart />} />
+              <Route path="/admission/apply" element={<ApplicationProtectedRoute><AdmissionApply /></ApplicationProtectedRoute>} />
               <Route path="/admin/admissions" element={<ProtectedRoute><AdminAdmissionsDashboard /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>

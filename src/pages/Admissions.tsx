@@ -5,9 +5,10 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/lib/supabase/client";
-import { ArrowRight, Calendar, CheckCircle, Download, FileText } from "lucide-react";
+import { ArrowRight, Calendar, CheckCircle, Download, FileText, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 const steps = [
@@ -107,6 +108,30 @@ const Admissions = () => {
               Join the Master International family and give your child access to 
               world-class CBSE education and holistic development opportunities.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* New: 5-step portal CTA */}
+      <section className="py-12 bg-gradient-to-r from-gold/10 via-background to-gold/5 border-y border-gold/20">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+            <div className="flex items-start gap-4">
+              <div className="rounded-full bg-gold/20 p-3">
+                <Sparkles className="h-6 w-6 text-gold" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold md:text-2xl">New: 5-Step Online Application Portal</h3>
+                <p className="mt-1 text-sm text-muted-foreground md:text-base">
+                  Apply, upload documents, track assessment, and complete payment — all in one place. Resume anytime with your Application Number.
+                </p>
+              </div>
+            </div>
+            <Button asChild size="lg" className="shrink-0">
+              <Link to="/admission/start">
+                Start Application <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
