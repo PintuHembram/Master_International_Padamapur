@@ -404,6 +404,8 @@ export type Database = {
           father_phone: string | null
           gender: string | null
           guardian_name: string | null
+          guardian_phone: string | null
+          guardian_relation: string | null
           height: string | null
           id: string
           medical_conditions: string | null
@@ -437,6 +439,8 @@ export type Database = {
           father_phone?: string | null
           gender?: string | null
           guardian_name?: string | null
+          guardian_phone?: string | null
+          guardian_relation?: string | null
           height?: string | null
           id?: string
           medical_conditions?: string | null
@@ -470,6 +474,8 @@ export type Database = {
           father_phone?: string | null
           gender?: string | null
           guardian_name?: string | null
+          guardian_phone?: string | null
+          guardian_relation?: string | null
           height?: string | null
           id?: string
           medical_conditions?: string | null
