@@ -14,6 +14,177 @@ export type Database = {
   }
   public: {
     Tables: {
+      admission_applications: {
+        Row: {
+          aadhaar_number: string | null
+          activities: string[] | null
+          address: string | null
+          admission_number: string | null
+          allergies: string | null
+          application_number: string | null
+          applying_class: string | null
+          assessment_date: string | null
+          assessment_mode: string | null
+          assessment_remarks: string | null
+          assessment_result: string | null
+          blood_group: string | null
+          category: string | null
+          city: string | null
+          created_at: string
+          current_step: number
+          date_of_birth: string | null
+          documents: Json
+          email: string | null
+          enrolled_at: string | null
+          enrolled_student_id: string | null
+          father_name: string | null
+          father_occupation: string | null
+          father_phone: string | null
+          fee_breakdown: Json | null
+          fee_total: number | null
+          full_name: string | null
+          gender: string | null
+          guardian_name: string | null
+          guardian_phone: string | null
+          height: string | null
+          hostel_required: boolean | null
+          id: string
+          medical_conditions: string | null
+          medium: string | null
+          mobile: string | null
+          mother_name: string | null
+          mother_occupation: string | null
+          mother_phone: string | null
+          nationality: string | null
+          payment_date: string | null
+          payment_status: string | null
+          payment_transaction_id: string | null
+          pincode: string | null
+          previous_class: string | null
+          previous_marks: string | null
+          previous_school: string | null
+          religion: string | null
+          resume_dob: string | null
+          state: string | null
+          status: string
+          transport_required: boolean | null
+          updated_at: string
+          weight: string | null
+        }
+        Insert: {
+          aadhaar_number?: string | null
+          activities?: string[] | null
+          address?: string | null
+          admission_number?: string | null
+          allergies?: string | null
+          application_number?: string | null
+          applying_class?: string | null
+          assessment_date?: string | null
+          assessment_mode?: string | null
+          assessment_remarks?: string | null
+          assessment_result?: string | null
+          blood_group?: string | null
+          category?: string | null
+          city?: string | null
+          created_at?: string
+          current_step?: number
+          date_of_birth?: string | null
+          documents?: Json
+          email?: string | null
+          enrolled_at?: string | null
+          enrolled_student_id?: string | null
+          father_name?: string | null
+          father_occupation?: string | null
+          father_phone?: string | null
+          fee_breakdown?: Json | null
+          fee_total?: number | null
+          full_name?: string | null
+          gender?: string | null
+          guardian_name?: string | null
+          guardian_phone?: string | null
+          height?: string | null
+          hostel_required?: boolean | null
+          id?: string
+          medical_conditions?: string | null
+          medium?: string | null
+          mobile?: string | null
+          mother_name?: string | null
+          mother_occupation?: string | null
+          mother_phone?: string | null
+          nationality?: string | null
+          payment_date?: string | null
+          payment_status?: string | null
+          payment_transaction_id?: string | null
+          pincode?: string | null
+          previous_class?: string | null
+          previous_marks?: string | null
+          previous_school?: string | null
+          religion?: string | null
+          resume_dob?: string | null
+          state?: string | null
+          status?: string
+          transport_required?: boolean | null
+          updated_at?: string
+          weight?: string | null
+        }
+        Update: {
+          aadhaar_number?: string | null
+          activities?: string[] | null
+          address?: string | null
+          admission_number?: string | null
+          allergies?: string | null
+          application_number?: string | null
+          applying_class?: string | null
+          assessment_date?: string | null
+          assessment_mode?: string | null
+          assessment_remarks?: string | null
+          assessment_result?: string | null
+          blood_group?: string | null
+          category?: string | null
+          city?: string | null
+          created_at?: string
+          current_step?: number
+          date_of_birth?: string | null
+          documents?: Json
+          email?: string | null
+          enrolled_at?: string | null
+          enrolled_student_id?: string | null
+          father_name?: string | null
+          father_occupation?: string | null
+          father_phone?: string | null
+          fee_breakdown?: Json | null
+          fee_total?: number | null
+          full_name?: string | null
+          gender?: string | null
+          guardian_name?: string | null
+          guardian_phone?: string | null
+          height?: string | null
+          hostel_required?: boolean | null
+          id?: string
+          medical_conditions?: string | null
+          medium?: string | null
+          mobile?: string | null
+          mother_name?: string | null
+          mother_occupation?: string | null
+          mother_phone?: string | null
+          nationality?: string | null
+          payment_date?: string | null
+          payment_status?: string | null
+          payment_transaction_id?: string | null
+          pincode?: string | null
+          previous_class?: string | null
+          previous_marks?: string | null
+          previous_school?: string | null
+          religion?: string | null
+          resume_dob?: string | null
+          state?: string | null
+          status?: string
+          transport_required?: boolean | null
+          updated_at?: string
+          weight?: string | null
+        }
+        Relationships: []
+      }
       admissions: {
         Row: {
           address: string
