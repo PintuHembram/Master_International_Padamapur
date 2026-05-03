@@ -86,7 +86,7 @@ export default function AdmissionApply() {
   return (
     <Layout>
       <Helmet>
-        <title>Admission Application — Step {step} of 5 | Master International School</title>
+        <title>{`Admission Application — Step ${step} of 5 | Master International School`}</title>
         <meta name="description" content="Complete your admission application in 5 steps." />
       </Helmet>
 
