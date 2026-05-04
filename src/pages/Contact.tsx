@@ -11,9 +11,9 @@ import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
 
 const contactInfo = [
-  { icon: MapPin, title: "Address", content: "Master International School,\nMain Road, Padamapur,\nAnandapur, Odisha, India - 768021" },
+  { icon: MapPin, title: "Address", content: "Master International School,\nGate Chak, Padamapur,\nAnandapur, Odisha, India - 768021" },
   { icon: Phone, title: "Phone", content: "+91 70082 82967\n+91 91148 60906" },
-  { icon: Mail, title: "Email", content: "info@masterinternational.edu\nadmissions@masterinternational.edu" },
+  { icon: Mail, title: "Email", content: "masterinternationalschool1@gmail.com\nmispadamapur@hembram.onmicrosoft.com" },
   { icon: Clock, title: "Office Hours", content: "Monday - Friday: 8:00 AM - 4:00 PM\nSaturday: 8:00 AM - 1:00 PM" },
 ];
 
