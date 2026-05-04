@@ -26,6 +26,10 @@ import StudentDashboard from "./pages/StudentDashboard";
 import AdmissionStart from "./pages/admission/AdmissionStart";
 import AdmissionApply from "./pages/admission/AdmissionApply";
 import { ApplicationProtectedRoute } from "./components/admission/ApplicationProtectedRoute";
+import MockTestsAdmin from "./pages/admin/MockTestsAdmin";
+import MockTestsList from "./pages/student/MockTestsList";
+import MockTestAttempt from "./pages/student/MockTestAttempt";
+import MockTestResult from "./pages/student/MockTestResult";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +59,10 @@ const App = () => (
               <Route path="/admission/start" element={<AdmissionStart />} />
               <Route path="/admission/apply" element={<ApplicationProtectedRoute><AdmissionApply /></ApplicationProtectedRoute>} />
               <Route path="/admin/admissions" element={<ProtectedRoute><AdminAdmissionsDashboard /></ProtectedRoute>} />
+              <Route path="/admin/mock-tests" element={<ProtectedRoute><MockTestsAdmin /></ProtectedRoute>} />
+              <Route path="/student/mock-tests" element={<StudentProtectedRoute><MockTestsList /></StudentProtectedRoute>} />
+              <Route path="/student/mock-tests/:testId/attempt" element={<StudentProtectedRoute><MockTestAttempt /></StudentProtectedRoute>} />
+              <Route path="/student/mock-tests/result/:attemptId" element={<StudentProtectedRoute><MockTestResult /></StudentProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
