@@ -498,6 +498,85 @@ app.delete('/api/student_results/:id', (req, res) => {
   res.json({ success: true });
 });
 
+// Student Search endpoint
+app.get('/api/students/search', (req, res) => {
+  const { query, class: filterClass, academic_year } = req.query;
+  const students = readStudents();
+  
+  if (!query) {
+    return res.json(students);
+  }
+
+  const searchTerm = String(query).toLowerCase();
+  const filtered = students.filter((student) => {
+    const matchesSearch =
+      student.name.toLowerCase().includes(searchTerm) ||
+      (student.roll_number && student.roll_number.toLowerCase().includes(searchTerm)) ||
+      (student.admission_number && student.admission_number.toLowerCase().includes(searchTerm)) ||
+      (student.mobile && student.mobile.includes(searchTerm));
+
+    const matchesClass = !filterClass || student.class === filterClass;
+    const matchesYear = !academic_year || student.academic_year === academic_year || !student.academic_year;
+
+    return matchesSearch && matchesClass && matchesYear;
+  });
+
+  res.json(filtered);
+});
+
+// Student Re-enrollment endpoint
+app.post('/api/students/reenroll', (req, res) => {
+  const payload = req.body || {};
+  const required = ['student_id', 'student_name', 'new_class', 'academic_year', 'fee_status'];
+  
+  for (const key of required) {
+    if (!payload[key]) {
+      return res.status(400).json({ error: `${key} is required` });
+    }
+  }
+
+  try {
+    const students = readStudents();
+    const idx = students.findIndex((s) => s.id === payload.student_id);
+    
+    if (idx === -1) {
+      return res.status(404).json({ error: 'Student not found' });
+    }
+
+    // Update student record with new enrollment info
+    const updatedStudent = {
+      ...students[idx],
+      class: payload.new_class,
+      previous_class: students[idx].class,
+      section: payload.section || students[idx].section,
+      academic_year: payload.academic_year,
+      fee_status: payload.fee_status,
+      status: 'active',
+      last_academic_year: payload.academic_year,
+      father_name: payload.father_name || students[idx].father_name,
+      mobile: payload.mobile || students[idx].mobile,
+      enrolled_at: new Date().toISOString(),
+      notes: payload.notes || '',
+    };
+
+    students[idx] = updatedStudent;
+    const ok = writeStudents(students);
+    
+    if (!ok) {
+      return res.status(500).json({ error: 'Failed to save student' });
+    }
+
+    res.json({
+      success: true,
+      message: 'Student successfully re-enrolled',
+      student: updatedStudent,
+    });
+  } catch (error) {
+    console.error('Re-enrollment error:', error);
+    res.status(500).json({ error: 'Failed to process re-enrollment' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Admissions API running on http://localhost:${PORT}`);
 });

@@ -231,6 +231,9 @@ export default function AdminAdmissionsDashboard() {
               <TabsTrigger value="legacy">
                 Quick Admissions ({admissions.length})
               </TabsTrigger>
+              <TabsTrigger value="oldstudent">
+                Old Student
+              </TabsTrigger>
             </TabsList>
 
             {/* === Multi-step applications === */}
@@ -405,6 +408,11 @@ export default function AdminAdmissionsDashboard() {
                   <Button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page >= totalPages} variant="outline" size="sm">Next</Button>
                 </div>
               </div>
+            </TabsContent>
+
+            {/* === Old Student Admission === */}
+            <TabsContent value="oldstudent" className="space-y-4">
+              <OldStudentAdmission />
             </TabsContent>
           </Tabs>
         </div>
