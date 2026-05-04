@@ -448,6 +448,151 @@ export type Database = {
         }
         Relationships: []
       }
+      mock_attempts: {
+        Row: {
+          answers: Json
+          id: string
+          percentage: number
+          score: number
+          started_at: string
+          student_class: string
+          student_name: string
+          student_roll: string
+          submitted_at: string | null
+          test_id: string
+          total: number
+        }
+        Insert: {
+          answers?: Json
+          id?: string
+          percentage?: number
+          score?: number
+          started_at?: string
+          student_class: string
+          student_name: string
+          student_roll: string
+          submitted_at?: string | null
+          test_id: string
+          total?: number
+        }
+        Update: {
+          answers?: Json
+          id?: string
+          percentage?: number
+          score?: number
+          started_at?: string
+          student_class?: string
+          student_name?: string
+          student_roll?: string
+          submitted_at?: string | null
+          test_id?: string
+          total?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mock_attempts_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "mock_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mock_questions: {
+        Row: {
+          correct_option: string
+          created_at: string
+          difficulty: string | null
+          id: string
+          marks: number
+          option_a: string | null
+          option_b: string | null
+          option_c: string | null
+          option_d: string | null
+          position: number
+          question_text: string
+          question_type: string
+          test_id: string
+        }
+        Insert: {
+          correct_option: string
+          created_at?: string
+          difficulty?: string | null
+          id?: string
+          marks?: number
+          option_a?: string | null
+          option_b?: string | null
+          option_c?: string | null
+          option_d?: string | null
+          position?: number
+          question_text: string
+          question_type?: string
+          test_id: string
+        }
+        Update: {
+          correct_option?: string
+          created_at?: string
+          difficulty?: string | null
+          id?: string
+          marks?: number
+          option_a?: string | null
+          option_b?: string | null
+          option_c?: string | null
+          option_d?: string | null
+          position?: number
+          question_text?: string
+          question_type?: string
+          test_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mock_questions_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "mock_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mock_tests: {
+        Row: {
+          class: string
+          created_at: string
+          duration_minutes: number
+          id: string
+          instructions: string | null
+          is_active: boolean
+          subject: string
+          title: string
+          total_marks: number
+          updated_at: string
+        }
+        Insert: {
+          class: string
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          instructions?: string | null
+          is_active?: boolean
+          subject: string
+          title: string
+          total_marks?: number
+          updated_at?: string
+        }
+        Update: {
+          class?: string
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          instructions?: string | null
+          is_active?: boolean
+          subject?: string
+          title?: string
+          total_marks?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       news: {
         Row: {
           author: string

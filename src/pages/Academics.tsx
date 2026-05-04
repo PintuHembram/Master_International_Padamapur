@@ -210,6 +210,19 @@ const Academics = () => {
         </div>
       </section>
 
+      {/* Mock Tests CTA */}
+      <section className="py-16 bg-gradient-to-br from-primary/5 to-gold/5">
+        <div className="container mx-auto px-4 lg:px-8 text-center max-w-2xl">
+          <h2 className="font-display text-3xl font-bold mb-3">Practice with Mock Tests</h2>
+          <p className="text-muted-foreground mb-6">Class 1–8 students can take subject-wise mock tests, get instant results and track progress.</p>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Button variant="navy" size="lg" asChild>
+              <Link to="/student/login">Student Login → Mock Tests</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-20 bg-muted/50">
         <div className="container mx-auto px-4 lg:px-8 text-center">
