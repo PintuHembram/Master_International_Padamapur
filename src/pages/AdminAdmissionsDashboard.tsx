@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { OldStudentAdmission } from "./admin/OldStudentAdmission";
 
 type Admission = {
   id: string;
