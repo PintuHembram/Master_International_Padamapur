@@ -553,7 +553,10 @@ const AdminDashboard = () => {
                 <p className="text-xs opacity-70">Master International School</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-primary-foreground/10" onClick={() => navigate('/admin/mock-tests')}>
+                <BookOpen className="h-4 w-4 mr-2" /> Mock Tests
+              </Button>
               <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-primary-foreground/10" onClick={() => navigate('/')}>
                 <Home className="h-4 w-4 mr-2" /> View Site
               </Button>
