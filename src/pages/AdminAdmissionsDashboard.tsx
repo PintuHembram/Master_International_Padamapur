@@ -1,7 +1,6 @@
-import { cn } from "@/lib/utils";
+import { ApplicationDetailsDialog } from "@/components/admin/ApplicationDetailsDialog";
 import { CreateAdminDialog } from "@/components/admin/CreateAdminDialog";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
-import { ApplicationDetailsDialog } from "@/components/admin/ApplicationDetailsDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { cn } from "@/lib/utils";
 import { Download, Eye, LogOut, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -201,6 +201,12 @@ export default function AdminAdmissionsDashboard() {
             <p className="text-sm text-muted-foreground">{user?.email}</p>
           </div>
           <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => navigate('/admin/question-bank')}>
+              Question Bank
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => navigate('/admin/mock-tests')}>
+              Mock Tests
+            </Button>
             <CreateAdminDialog />
             <DarkModeToggle />
             <Button onClick={handleSignOut} variant="outline" size="sm">

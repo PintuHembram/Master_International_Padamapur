@@ -1,35 +1,36 @@
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { StudentProtectedRoute } from "@/components/StudentProtectedRoute";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { StudentProtectedRoute } from "@/components/StudentProtectedRoute";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ApplicationProtectedRoute } from "./components/admission/ApplicationProtectedRoute";
 import About from "./pages/About";
-import AdmitCards from "./pages/AdmitCards";
 import Academics from "./pages/Academics";
 import AdminAdmissionsDashboard from "./pages/AdminAdmissionsDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import Admissions from "./pages/Admissions";
+import AdmitCards from "./pages/AdmitCards";
 import Contact from "./pages/Contact";
-import FeePayment from "./pages/FeePayment";
 import Events from "./pages/Events";
 import Faculty from "./pages/Faculty";
+import FeePayment from "./pages/FeePayment";
 import Gallery from "./pages/Gallery";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import StudentResults from "./pages/StudentResults";
-import StudentLogin from "./pages/StudentLogin";
 import StudentDashboard from "./pages/StudentDashboard";
-import AdmissionStart from "./pages/admission/AdmissionStart";
-import AdmissionApply from "./pages/admission/AdmissionApply";
-import { ApplicationProtectedRoute } from "./components/admission/ApplicationProtectedRoute";
+import StudentLogin from "./pages/StudentLogin";
+import StudentResults from "./pages/StudentResults";
+import AdminQuestionBank from "./pages/admin/AdminQuestionBank";
 import MockTestsAdmin from "./pages/admin/MockTestsAdmin";
-import MockTestsList from "./pages/student/MockTestsList";
+import AdmissionApply from "./pages/admission/AdmissionApply";
+import AdmissionStart from "./pages/admission/AdmissionStart";
 import MockTestAttempt from "./pages/student/MockTestAttempt";
 import MockTestResult from "./pages/student/MockTestResult";
+import MockTestsList from "./pages/student/MockTestsList";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
               <Route path="/admission/start" element={<AdmissionStart />} />
               <Route path="/admission/apply" element={<ApplicationProtectedRoute><AdmissionApply /></ApplicationProtectedRoute>} />
               <Route path="/admin/admissions" element={<ProtectedRoute><AdminAdmissionsDashboard /></ProtectedRoute>} />
+              <Route path="/admin/question-bank" element={<ProtectedRoute><AdminQuestionBank /></ProtectedRoute>} />
               <Route path="/admin/mock-tests" element={<ProtectedRoute><MockTestsAdmin /></ProtectedRoute>} />
               <Route path="/student/mock-tests" element={<StudentProtectedRoute><MockTestsList /></StudentProtectedRoute>} />
               <Route path="/student/mock-tests/:testId/attempt" element={<StudentProtectedRoute><MockTestAttempt /></StudentProtectedRoute>} />
