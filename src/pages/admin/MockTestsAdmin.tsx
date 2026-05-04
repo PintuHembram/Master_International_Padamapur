@@ -17,7 +17,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { ArrowLeft, Edit, Plus, Trash2, ListChecks, LogOut } from 'lucide-react';
 
 const SUBJECTS = ['English', 'Hindi', 'Odia', 'Mathematics', 'EVS', 'Computer Science', 'SST'];
-const CLASSES = ['1', '2', '3', '4', '5', '6', '7', '8'];
+const CLASSES = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 
 interface MockTest {
   id: string;

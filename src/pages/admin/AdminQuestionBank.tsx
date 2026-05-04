@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
-const CLASSES = ['1', '2', '3', '4', '5', '6', '7', '8'];
+const CLASSES = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 const SUBJECTS = ['English', 'Hindi', 'Odia', 'Mathematics', 'EVS', 'Computer Science', 'SST'];
 
 interface MockTest {
