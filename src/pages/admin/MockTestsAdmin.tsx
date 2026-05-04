@@ -137,7 +137,7 @@ const MockTestsAdmin = () => {
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={() => navigate('/admin/dashboard')}><ArrowLeft className="w-4 h-4 mr-1" /> Back</Button>
+            <Button variant="ghost" size="sm" onClick={() => navigate('/admin/admissions')}><ArrowLeft className="w-4 h-4 mr-1" /> Back</Button>
             <h1 className="font-bold text-lg flex items-center gap-2"><ListChecks className="w-5 h-5" /> Mock Tests Admin</h1>
           </div>
           <Button variant="outline" size="sm" onClick={async () => { await signOut(); navigate('/admin/login'); }}><LogOut className="w-4 h-4 mr-1" /> Logout</Button>
