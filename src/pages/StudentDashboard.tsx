@@ -128,6 +128,9 @@ const StudentDashboard = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <Button variant="default" size="sm" onClick={() => navigate('/student/mock-tests')} className="gap-2">
+              <GraduationCap className="w-4 h-4" /> Mock Tests
+            </Button>
             <DarkModeToggle />
             <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">
               <LogOut className="w-4 h-4" /> Logout
