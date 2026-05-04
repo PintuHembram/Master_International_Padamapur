@@ -290,7 +290,7 @@ export default function AdmitCards() {
   const bulkExamData = exams.find((e) => e.id === bulkExam);
   const bulkSubjects = examSubjects.filter((es) => es.exam_id === bulkExam);
 
-  const classes = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+  const classes = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 
   return (
     <Layout>

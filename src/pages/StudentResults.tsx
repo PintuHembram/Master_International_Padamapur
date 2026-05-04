@@ -178,7 +178,7 @@ export default function StudentResults() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Classes</SelectItem>
-                    {["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"].map((c) => (
+                    {["I", "II", "III", "IV", "V", "VI", "VII", "VIII"].map((c) => (
                       <SelectItem key={c} value={c}>Class {c}</SelectItem>
                     ))}
                   </SelectContent>

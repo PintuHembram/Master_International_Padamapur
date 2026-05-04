@@ -14,7 +14,7 @@ import { toast } from "sonner";
 
 const feeCategories = ["Tuition Fee", "Exam Fee", "Transport Fee", "Hostel Fee"];
 const paymentModes = ["Cash", "UPI", "Bank Transfer", "Cheque", "Online"];
-const classes = ["Nursery", "LKG", "UKG", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+const classes = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 
 interface ReceiptData {
   receipt_number: string;
