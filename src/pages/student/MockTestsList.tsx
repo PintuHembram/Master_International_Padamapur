@@ -1,17 +1,44 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { supabase } from '@/integrations/supabase/client';
+import { ArrowLeft, Clock, ListChecks, Play, Trophy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, Clock, ListChecks, Play, Trophy } from 'lucide-react';
+
+const normalizeClassValue = (value: string | number | null | undefined) => {
+  if (value === null || value === undefined) return null;
+  const raw = String(value).trim();
+  const match = raw.match(/^Class\s*(\d+)$/i);
+  return match ? match[1] : raw;
+};
+
+const buildClassFilter = (value: string | null | undefined) => {
+  const normalized = normalizeClassValue(value);
+  if (!normalized) return null;
+  const variants = new Set<string>();
+  variants.add(normalized);
+  if (/^\d+$/.test(normalized)) {
+    variants.add(`Class ${normalized}`);
+  } else {
+    const numeric = normalized.replace(/^Class\s*/i, '');
+    if (/^\d+$/.test(numeric)) {
+      variants.add(numeric);
+    }
+  }
+  const filter = Array.from(variants)
+    .map((c) => `class.eq.${c}`)
+    .join(',');
+  return filter || null;
+};
 
 const MockTestsList = () => {
   const navigate = useNavigate();
   const [tests, setTests] = useState<any[]>([]);
   const [attempts, setAttempts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
@@ -23,15 +50,34 @@ const MockTestsList = () => {
   }, [navigate]);
 
   const load = async (s: any) => {
-    const { data: stu } = await supabase.from('students').select('class').eq('id', s.id).maybeSingle();
-    const studentClass = stu?.class || s.class;
-    const [testsRes, attemptsRes] = await Promise.all([
-      supabase.from('mock_tests').select('*').eq('is_active', true).eq('class', String(studentClass)).order('created_at', { ascending: false }),
-      supabase.from('mock_attempts').select('*, mock_tests(title, subject)').eq('student_roll', s.roll_number).not('submitted_at', 'is', null).order('submitted_at', { ascending: false }),
-    ]);
-    setTests(testsRes.data || []);
-    setAttempts(attemptsRes.data || []);
-    setLoading(false);
+    try {
+      const { data: stu, error: studentError } = await supabase.from('students').select('class').eq('id', s.id).maybeSingle();
+      if (studentError) throw studentError;
+
+      const studentClass = s.class || stu?.class;
+      const classFilter = buildClassFilter(studentClass);
+      let testsQuery = supabase.from('mock_tests').select('*').eq('is_active', true);
+      if (classFilter) {
+        testsQuery = testsQuery.or(classFilter);
+      }
+
+      const [testsRes, attemptsRes] = await Promise.all([
+        testsQuery.order('created_at', { ascending: false }),
+        supabase.from('mock_attempts').select('*, mock_tests(title, subject)').eq('student_roll', s.roll_number).not('submitted_at', 'is', null).order('submitted_at', { ascending: false }),
+      ]);
+
+      if (testsRes.error) throw testsRes.error;
+      if (attemptsRes.error) throw attemptsRes.error;
+
+      setTests(testsRes.data || []);
+      setAttempts(attemptsRes.data || []);
+    } catch (err: any) {
+      setError(err?.message || 'Unable to load tests.');
+      setTests([]);
+      setAttempts([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" /></div>;
@@ -52,7 +98,11 @@ const MockTestsList = () => {
         <Card>
           <CardHeader><CardTitle>Available Tests</CardTitle></CardHeader>
           <CardContent>
-            {tests.length === 0 ? <p className="text-sm text-muted-foreground text-center py-6">No tests available for your class right now.</p> : (
+            {error ? (
+              <p className="text-sm text-destructive text-center py-6">{error}</p>
+            ) : tests.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-6">No tests available for your class right now.</p>
+            ) : (
               <div className="grid md:grid-cols-2 gap-4">
                 {tests.map(t => (
                   <div key={t.id} className="border rounded-lg p-4 hover:shadow-md transition">

@@ -28,7 +28,7 @@ const StudentLogin = () => {
     try {
       const { data, error } = await supabase
         .from('students')
-        .select('id, name, roll_number, date_of_birth, status')
+        .select('id, name, roll_number, date_of_birth, status, class')
         .eq('roll_number', rollNumber.trim())
         .eq('date_of_birth', dob)
         .maybeSingle();
@@ -43,8 +43,11 @@ const StudentLogin = () => {
         return;
       }
 
-      // Lightweight session in localStorage (lookup-based, not real auth)
-      sessionStorage.setItem('studentSession', JSON.stringify({ id: data.id, name: data.name, roll_number: data.roll_number }));
+      // Lightweight session in sessionStorage (lookup-based, not real auth)
+      sessionStorage.setItem(
+        'studentSession',
+        JSON.stringify({ id: data.id, name: data.name, roll_number: data.roll_number, class: data.class })
+      );
       toast({ title: 'Welcome', description: `Hello ${data.name}!` });
       navigate('/student/dashboard');
     } catch (err: any) {
