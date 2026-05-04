@@ -113,7 +113,7 @@ export function Footer() {
                 <MapPin className="w-5 h-5 text-gold mt-0.5 shrink-0" />
                 <span className="text-white/70 text-sm">
                   Master International School,<br />
-                  Main Road, Padamapur, Anandapur<br />
+                  Gate Chak, Padamapur, Anandapur<br />
                   Odisha, India - 768021
                 </span>
               </li>
