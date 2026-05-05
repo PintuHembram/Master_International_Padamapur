@@ -88,7 +88,7 @@ Deno.serve(async (req) => {
     }
 
     // Validate role
-    const validRoles = ['admin', 'moderator', 'user']
+    const validRoles = ['admin', 'moderator', 'user', 'teacher']
     const assignRole = role && validRoles.includes(role) ? role : 'admin'
 
     // Create user with admin client

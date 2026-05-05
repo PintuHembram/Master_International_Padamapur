@@ -27,7 +27,7 @@ const createUserSchema = z.object({
   fullName: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name too long"),
   email: z.string().trim().email("Invalid email address").max(255, "Email too long"),
   password: z.string().min(6, "Password must be at least 6 characters").max(72, "Password too long"),
-  role: z.enum(["admin", "moderator", "user"]),
+  role: z.enum(["admin", "moderator", "user", "teacher"]),
 });
 
 export function CreateAdminDialog() {
@@ -38,7 +38,7 @@ export function CreateAdminDialog() {
     fullName: "",
     email: "",
     password: "",
-    role: "admin" as "admin" | "moderator" | "user",
+    role: "admin" as "admin" | "moderator" | "user" | "teacher",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -195,7 +195,7 @@ export function CreateAdminDialog() {
             <Label htmlFor="role">Role</Label>
             <Select
               value={formData.role}
-              onValueChange={(value: "admin" | "moderator" | "user") =>
+              onValueChange={(value: "admin" | "moderator" | "user" | "teacher") =>
                 setFormData({ ...formData, role: value })
               }
               disabled={loading}
@@ -205,6 +205,7 @@ export function CreateAdminDialog() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="teacher">Teacher</SelectItem>
                 <SelectItem value="moderator">Moderator</SelectItem>
                 <SelectItem value="user">User</SelectItem>
               </SelectContent>

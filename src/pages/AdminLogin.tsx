@@ -19,14 +19,15 @@ const AdminLogin = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { isAdmin, signIn, loading: authLoading } = useAuth();
+  const { isAdmin, isTeacher, signIn, loading: authLoading } = useAuth();
 
-  // Redirect if already logged in as admin
+  // Redirect if already logged in
   useEffect(() => {
-    if (!authLoading && isAdmin) {
-      navigate('/admin/admissions');
+    if (!authLoading) {
+      if (isAdmin) navigate('/admin/admissions');
+      else if (isTeacher) navigate('/admin/mock-tests');
     }
-  }, [isAdmin, authLoading, navigate]);
+  }, [isAdmin, isTeacher, authLoading, navigate]);
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -7,6 +7,7 @@ export const useAuth = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isTeacher, setIsTeacher] = useState(false);
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -16,14 +17,15 @@ export const useAuth = () => {
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          // Check admin role using the has_role function
-          const { data } = await supabase.rpc('has_role', {
-            _user_id: session.user.id,
-            _role: 'admin',
-          });
-          setIsAdmin(!!data);
+          const [{ data: adminData }, { data: teacherData }] = await Promise.all([
+            supabase.rpc('has_role', { _user_id: session.user.id, _role: 'admin' }),
+            supabase.rpc('has_role', { _user_id: session.user.id, _role: 'teacher' as any }),
+          ]);
+          setIsAdmin(!!adminData);
+          setIsTeacher(!!teacherData);
         } else {
           setIsAdmin(false);
+          setIsTeacher(false);
         }
         setLoading(false);
       }
@@ -35,11 +37,12 @@ export const useAuth = () => {
       setUser(session?.user ?? null);
 
       if (session?.user) {
-        const { data } = await supabase.rpc('has_role', {
-          _user_id: session.user.id,
-          _role: 'admin',
-        });
-        setIsAdmin(!!data);
+        const [{ data: adminData }, { data: teacherData }] = await Promise.all([
+          supabase.rpc('has_role', { _user_id: session.user.id, _role: 'admin' }),
+          supabase.rpc('has_role', { _user_id: session.user.id, _role: 'teacher' as any }),
+        ]);
+        setIsAdmin(!!adminData);
+        setIsTeacher(!!teacherData);
       }
       setLoading(false);
     });
@@ -80,6 +83,7 @@ export const useAuth = () => {
     session,
     loading,
     isAdmin,
+    isTeacher,
     signIn,
     signUp,
     signOut,
