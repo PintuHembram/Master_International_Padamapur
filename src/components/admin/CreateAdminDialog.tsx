@@ -38,7 +38,7 @@ export function CreateAdminDialog() {
     fullName: "",
     email: "",
     password: "",
-    role: "admin" as "admin" | "moderator" | "user",
+    role: "admin" as "admin" | "moderator" | "user" | "teacher",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
