@@ -27,7 +27,7 @@ const createUserSchema = z.object({
   fullName: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name too long"),
   email: z.string().trim().email("Invalid email address").max(255, "Email too long"),
   password: z.string().min(6, "Password must be at least 6 characters").max(72, "Password too long"),
-  role: z.enum(["admin", "moderator", "user"]),
+  role: z.enum(["admin", "moderator", "user", "teacher"]),
 });
 
 export function CreateAdminDialog() {
