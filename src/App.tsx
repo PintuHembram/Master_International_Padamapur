@@ -61,8 +61,8 @@ const App = () => (
               <Route path="/admission/start" element={<AdmissionStart />} />
               <Route path="/admission/apply" element={<ApplicationProtectedRoute><AdmissionApply /></ApplicationProtectedRoute>} />
               <Route path="/admin/admissions" element={<ProtectedRoute><AdminAdmissionsDashboard /></ProtectedRoute>} />
-              <Route path="/admin/question-bank" element={<ProtectedRoute><AdminQuestionBank /></ProtectedRoute>} />
-              <Route path="/admin/mock-tests" element={<ProtectedRoute><MockTestsAdmin /></ProtectedRoute>} />
+              <Route path="/admin/question-bank" element={<TeacherProtectedRoute><AdminQuestionBank /></TeacherProtectedRoute>} />
+              <Route path="/admin/mock-tests" element={<TeacherProtectedRoute><MockTestsAdmin /></TeacherProtectedRoute>} />
               <Route path="/student/mock-tests" element={<StudentProtectedRoute><MockTestsList /></StudentProtectedRoute>} />
               <Route path="/student/mock-tests/:testId/attempt" element={<StudentProtectedRoute><MockTestAttempt /></StudentProtectedRoute>} />
               <Route path="/student/mock-tests/result/:attemptId" element={<StudentProtectedRoute><MockTestResult /></StudentProtectedRoute>} />
