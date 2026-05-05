@@ -195,7 +195,7 @@ export function CreateAdminDialog() {
             <Label htmlFor="role">Role</Label>
             <Select
               value={formData.role}
-              onValueChange={(value: "admin" | "moderator" | "user") =>
+              onValueChange={(value: "admin" | "moderator" | "user" | "teacher") =>
                 setFormData({ ...formData, role: value })
               }
               disabled={loading}
@@ -205,6 +205,7 @@ export function CreateAdminDialog() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="teacher">Teacher</SelectItem>
                 <SelectItem value="moderator">Moderator</SelectItem>
                 <SelectItem value="user">User</SelectItem>
               </SelectContent>
