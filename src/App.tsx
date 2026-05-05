@@ -1,4 +1,5 @@
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { TeacherProtectedRoute } from "@/components/TeacherProtectedRoute";
 import { StudentProtectedRoute } from "@/components/StudentProtectedRoute";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
