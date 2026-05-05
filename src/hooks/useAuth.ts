@@ -17,14 +17,15 @@ export const useAuth = () => {
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          // Check admin role using the has_role function
-          const { data } = await supabase.rpc('has_role', {
-            _user_id: session.user.id,
-            _role: 'admin',
-          });
-          setIsAdmin(!!data);
+          const [{ data: adminData }, { data: teacherData }] = await Promise.all([
+            supabase.rpc('has_role', { _user_id: session.user.id, _role: 'admin' }),
+            supabase.rpc('has_role', { _user_id: session.user.id, _role: 'teacher' as any }),
+          ]);
+          setIsAdmin(!!adminData);
+          setIsTeacher(!!teacherData);
         } else {
           setIsAdmin(false);
+          setIsTeacher(false);
         }
         setLoading(false);
       }
