@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { supabase } from "@/integrations/supabase/client";
 import { UserCheck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -13,17 +14,15 @@ import { toast } from "sonner";
 interface Student {
   id: string;
   name: string;
-  roll_number?: string;
-  admission_number?: string;
+  roll_number?: string | null;
+  student_id?: string | null;
   class: string;
-  section?: string;
-  date_of_birth?: string;
-  father_name?: string;
-  mobile?: string;
-  previous_class?: string;
-  last_academic_year?: string;
-  status?: "active" | "inactive";
-  academic_year?: string;
+  section?: string | null;
+  date_of_birth?: string | null;
+  father_name?: string | null;
+  phone?: string | null;
+  status?: string | null;
+  session?: string | null;
 }
 
 interface ReEnrollFormData {
@@ -38,18 +37,18 @@ interface ReEnrollFormData {
   notes?: string;
 }
 
+const ALL = "__all__";
+
 export function OldStudentAdmission() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Student[]>([]);
   const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [showReEnrollModal, setShowReEnrollModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const [filters, setFilters] = useState({
-    academicYear: "",
-    class: "",
-  });
+  const [filters, setFilters] = useState({ academicYear: ALL, class: ALL });
 
   const [formData, setFormData] = useState<ReEnrollFormData>({
     student_name: "",
@@ -68,26 +67,25 @@ export function OldStudentAdmission() {
       toast.error("Please enter a search query");
       return;
     }
-
     setLoading(true);
+    setHasSearched(true);
     try {
-      const response = await fetch(
-        `/api/students/search?query=${encodeURIComponent(searchQuery)}&class=${encodeURIComponent(
-          filters.class
-        )}&academic_year=${encodeURIComponent(filters.academicYear)}`
-      );
+      const q = searchQuery.trim();
+      let query = supabase
+        .from("students")
+        .select("id,name,roll_number,student_id,class,section,date_of_birth,father_name,phone,status,session")
+        .or(`name.ilike.%${q}%,roll_number.ilike.%${q}%,student_id.ilike.%${q}%,phone.ilike.%${q}%,father_name.ilike.%${q}%`);
 
-      if (!response.ok) throw new Error("Search failed");
+      if (filters.class !== ALL) query = query.eq("class", filters.class);
+      if (filters.academicYear !== ALL) query = query.eq("session", filters.academicYear);
 
-      const data = await response.json();
-      setSearchResults(data);
+      const { data, error } = await query.limit(50);
+      if (error) throw error;
 
-      if (data.length === 0) {
-        toast.info("No students found");
-      }
-    } catch (error) {
-      toast.error("Failed to search students");
-      console.error(error);
+      setSearchResults((data || []) as Student[]);
+      if (!data || data.length === 0) toast.info("No students found");
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to search students");
     } finally {
       setLoading(false);
     }
@@ -98,7 +96,7 @@ export function OldStudentAdmission() {
     setFormData({
       student_name: student.name,
       father_name: student.father_name || "",
-      mobile: student.mobile || "",
+      mobile: student.phone || "",
       previous_class: student.class,
       new_class: "",
       academic_year: new Date().getFullYear().toString(),
@@ -111,28 +109,40 @@ export function OldStudentAdmission() {
 
   const handleReEnrollSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!selectedStudent) return;
-
     if (!formData.new_class) {
       toast.error("Please select a new class");
       return;
     }
-
     setSubmitting(true);
     try {
-      const response = await fetch("/api/students/reenroll", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          student_id: selectedStudent.id,
-          ...formData,
-        }),
-      });
+      const { error: updErr } = await supabase
+        .from("students")
+        .update({
+          class: formData.new_class,
+          section: formData.section || selectedStudent.section || "A",
+          session: formData.academic_year,
+          father_name: formData.father_name || null,
+          phone: formData.mobile || null,
+          status: "active",
+        })
+        .eq("id", selectedStudent.id);
+      if (updErr) throw updErr;
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Re-enrollment failed");
+      if (formData.fee_status) {
+        const receiptNumber = `REC-${Date.now()}`;
+        await supabase.from("fee_payments").insert({
+          receipt_number: receiptNumber,
+          student_name: formData.student_name,
+          student_class: formData.new_class,
+          roll_number: selectedStudent.roll_number || null,
+          father_name: formData.father_name || null,
+          fee_category: "Re-Enrollment",
+          amount: 0,
+          payment_mode: "cash",
+          academic_year: formData.academic_year,
+          remarks: `Re-enrollment status: ${formData.fee_status}. ${formData.notes || ""}`.trim(),
+        });
       }
 
       toast.success("Student successfully re-enrolled");
@@ -140,9 +150,9 @@ export function OldStudentAdmission() {
       setSearchResults([]);
       setSearchQuery("");
       setSelectedStudent(null);
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to re-enroll student");
-      console.error(error);
+      setHasSearched(false);
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to re-enroll student");
     } finally {
       setSubmitting(false);
     }
@@ -150,11 +160,10 @@ export function OldStudentAdmission() {
 
   const classOptions = ["Nursery", "LKG", "UKG", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
   const currentYear = new Date().getFullYear();
-  const yearOptions = Array.from({ length: 5 }, (_, i) => (currentYear - 2 + i).toString());
+  const yearOptions = Array.from({ length: 5 }, (_, i) => `${currentYear - 2 + i}-${(currentYear - 1 + i).toString().slice(-2)}`);
 
   return (
     <div className="space-y-6">
-      {/* === Search Section === */}
       <Card className="p-6">
         <div className="mb-6 flex items-center gap-2">
           <UserCheck className="w-5 h-5" />
@@ -162,70 +171,47 @@ export function OldStudentAdmission() {
         </div>
 
         <div className="space-y-4">
-          {/* Search Query */}
           <div>
-            <Label htmlFor="search-query" className="text-sm font-medium">
-              Search Query
-            </Label>
-            <p className="text-xs text-muted-foreground mb-2">Search by student name, admission number, or mobile</p>
+            <Label htmlFor="search-query" className="text-sm font-medium">Search Query</Label>
+            <p className="text-xs text-muted-foreground mb-2">Search by name, roll number, student ID, mobile or father's name</p>
             <Input
               id="search-query"
-              placeholder="Enter student name, ID, or mobile number..."
+              placeholder="Enter student name, ID, or mobile..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
           </div>
 
-          {/* Filters */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="filter-year" className="text-sm font-medium">
-                Academic Year
-              </Label>
-              <Select value={filters.academicYear} onValueChange={(value) => setFilters({ ...filters, academicYear: value })}>
-                <SelectTrigger id="filter-year">
-                  <SelectValue placeholder="All years" />
-                </SelectTrigger>
+              <Label className="text-sm font-medium">Academic Year (Session)</Label>
+              <Select value={filters.academicYear} onValueChange={(v) => setFilters({ ...filters, academicYear: v })}>
+                <SelectTrigger><SelectValue placeholder="All sessions" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All years</SelectItem>
-                  {yearOptions.map((year) => (
-                    <SelectItem key={year} value={year}>
-                      {year}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value={ALL}>All sessions</SelectItem>
+                  {yearOptions.map((y) => <SelectItem key={y} value={y}>{y}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
-
             <div>
-              <Label htmlFor="filter-class" className="text-sm font-medium">
-                Class
-              </Label>
-              <Select value={filters.class} onValueChange={(value) => setFilters({ ...filters, class: value })}>
-                <SelectTrigger id="filter-class">
-                  <SelectValue placeholder="All classes" />
-                </SelectTrigger>
+              <Label className="text-sm font-medium">Class</Label>
+              <Select value={filters.class} onValueChange={(v) => setFilters({ ...filters, class: v })}>
+                <SelectTrigger><SelectValue placeholder="All classes" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All classes</SelectItem>
-                  {classOptions.map((cls) => (
-                    <SelectItem key={cls} value={cls}>
-                      {cls}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value={ALL}>All classes</SelectItem>
+                  {classOptions.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
           </div>
 
-          {/* Search Button */}
           <Button onClick={handleSearch} disabled={loading} className="w-full md:w-auto">
             {loading ? "Searching..." : "Search Students"}
           </Button>
         </div>
       </Card>
 
-      {/* === Search Results === */}
       {searchResults.length > 0 && (
         <Card className="overflow-x-auto">
           <table className="w-full">
@@ -233,28 +219,24 @@ export function OldStudentAdmission() {
               <tr>
                 <th className="p-4 text-left text-sm font-semibold">Student ID</th>
                 <th className="p-4 text-left text-sm font-semibold">Name</th>
-                <th className="p-4 text-left text-sm font-semibold">Previous Class</th>
-                <th className="p-4 text-left text-sm font-semibold">Last Academic Year</th>
+                <th className="p-4 text-left text-sm font-semibold">Class</th>
+                <th className="p-4 text-left text-sm font-semibold">Session</th>
                 <th className="p-4 text-left text-sm font-semibold">Status</th>
                 <th className="p-4 text-left text-sm font-semibold">Action</th>
               </tr>
             </thead>
             <tbody>
-              {searchResults.map((student) => (
-                <tr key={student.id} className="border-b hover:bg-muted/30 transition">
-                  <td className="p-4 text-sm font-mono">{student.admission_number || student.roll_number || student.id}</td>
-                  <td className="p-4 text-sm font-medium">{student.name}</td>
-                  <td className="p-4 text-sm">{student.previous_class || student.class}</td>
-                  <td className="p-4 text-sm text-muted-foreground">{student.last_academic_year || "—"}</td>
+              {searchResults.map((s) => (
+                <tr key={s.id} className="border-b hover:bg-muted/30 transition">
+                  <td className="p-4 text-sm font-mono">{s.student_id || s.roll_number || s.id.slice(0, 8)}</td>
+                  <td className="p-4 text-sm font-medium">{s.name}</td>
+                  <td className="p-4 text-sm">{s.class}{s.section ? `-${s.section}` : ""}</td>
+                  <td className="p-4 text-sm text-muted-foreground">{s.session || "—"}</td>
                   <td className="p-4 text-sm">
-                    <Badge variant={student.status === "active" ? "default" : "secondary"}>
-                      {student.status || "Active"}
-                    </Badge>
+                    <Badge variant={s.status === "active" ? "default" : "secondary"}>{s.status || "active"}</Badge>
                   </td>
                   <td className="p-4 text-sm">
-                    <Button size="sm" onClick={() => handleReEnrollClick(student)}>
-                      Re-Enroll
-                    </Button>
+                    <Button size="sm" onClick={() => handleReEnrollClick(s)}>Re-Enroll</Button>
                   </td>
                 </tr>
               ))}
@@ -263,133 +245,59 @@ export function OldStudentAdmission() {
         </Card>
       )}
 
-      {searchResults.length === 0 && searchQuery && (
-        <Card className="p-8 text-center text-muted-foreground">
-          {loading ? "Searching..." : "No students found. Try a different search."}
-        </Card>
+      {hasSearched && !loading && searchResults.length === 0 && (
+        <Card className="p-8 text-center text-muted-foreground">No students found. Try a different search.</Card>
       )}
 
-      {/* === Re-Enroll Modal === */}
       <Dialog open={showReEnrollModal} onOpenChange={setShowReEnrollModal}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Re-Enroll Student: {selectedStudent?.name}</DialogTitle>
           </DialogHeader>
 
           <form onSubmit={handleReEnrollSubmit} className="space-y-4">
-            {/* Student Name (readonly) */}
             <div>
-              <Label htmlFor="form-student-name" className="text-sm font-medium">
-                Student Name
-              </Label>
-              <Input
-                id="form-student-name"
-                value={formData.student_name}
-                disabled
-                className="bg-muted"
-              />
+              <Label>Student Name</Label>
+              <Input value={formData.student_name} disabled className="bg-muted" />
             </div>
-
-            {/* Father Name */}
             <div>
-              <Label htmlFor="form-father-name" className="text-sm font-medium">
-                Father Name
-              </Label>
-              <Input
-                id="form-father-name"
-                value={formData.father_name}
-                onChange={(e) => setFormData({ ...formData, father_name: e.target.value })}
-                placeholder="Enter father's name"
-              />
+              <Label>Father Name</Label>
+              <Input value={formData.father_name} onChange={(e) => setFormData({ ...formData, father_name: e.target.value })} placeholder="Enter father's name" />
             </div>
-
-            {/* Mobile */}
             <div>
-              <Label htmlFor="form-mobile" className="text-sm font-medium">
-                Mobile
-              </Label>
-              <Input
-                id="form-mobile"
-                type="tel"
-                value={formData.mobile}
-                onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
-                placeholder="Enter mobile number"
-              />
+              <Label>Mobile</Label>
+              <Input type="tel" value={formData.mobile} onChange={(e) => setFormData({ ...formData, mobile: e.target.value })} placeholder="Enter mobile number" />
             </div>
-
-            {/* Previous Class */}
             <div>
-              <Label htmlFor="form-prev-class" className="text-sm font-medium">
-                Previous Class
-              </Label>
-              <Input
-                id="form-prev-class"
-                value={formData.previous_class}
-                disabled
-                className="bg-muted"
-              />
+              <Label>Previous Class</Label>
+              <Input value={formData.previous_class} disabled className="bg-muted" />
             </div>
-
-            {/* New Class (dropdown) */}
             <div>
-              <Label htmlFor="form-new-class" className="text-sm font-medium">
-                New Class <span className="text-red-500">*</span>
-              </Label>
-              <Select value={formData.new_class} onValueChange={(value) => setFormData({ ...formData, new_class: value })}>
-                <SelectTrigger id="form-new-class">
-                  <SelectValue placeholder="Select new class" />
-                </SelectTrigger>
+              <Label>New Class <span className="text-destructive">*</span></Label>
+              <Select value={formData.new_class} onValueChange={(v) => setFormData({ ...formData, new_class: v })}>
+                <SelectTrigger><SelectValue placeholder="Select new class" /></SelectTrigger>
                 <SelectContent>
-                  {classOptions.map((cls) => (
-                    <SelectItem key={cls} value={cls}>
-                      {cls}
-                    </SelectItem>
-                  ))}
+                  {classOptions.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Academic Year */}
             <div>
-              <Label htmlFor="form-academic-year" className="text-sm font-medium">
-                Academic Year
-              </Label>
-              <Select value={formData.academic_year} onValueChange={(value) => setFormData({ ...formData, academic_year: value })}>
-                <SelectTrigger id="form-academic-year">
-                  <SelectValue placeholder="Select academic year" />
-                </SelectTrigger>
+              <Label>Academic Year</Label>
+              <Select value={formData.academic_year} onValueChange={(v) => setFormData({ ...formData, academic_year: v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {yearOptions.map((year) => (
-                    <SelectItem key={year} value={year}>
-                      {year}
-                    </SelectItem>
-                  ))}
+                  {yearOptions.map((y) => <SelectItem key={y} value={y}>{y}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Section */}
             <div>
-              <Label htmlFor="form-section" className="text-sm font-medium">
-                Section
-              </Label>
-              <Input
-                id="form-section"
-                value={formData.section}
-                onChange={(e) => setFormData({ ...formData, section: e.target.value })}
-                placeholder="Enter section (e.g., A, B, C)"
-              />
+              <Label>Section</Label>
+              <Input value={formData.section} onChange={(e) => setFormData({ ...formData, section: e.target.value })} placeholder="A, B, C..." />
             </div>
-
-            {/* Fee Status */}
             <div>
-              <Label htmlFor="form-fee-status" className="text-sm font-medium">
-                Fee Status
-              </Label>
-              <Select value={formData.fee_status} onValueChange={(value) => setFormData({ ...formData, fee_status: value as any })}>
-                <SelectTrigger id="form-fee-status">
-                  <SelectValue placeholder="Select fee status" />
-                </SelectTrigger>
+              <Label>Fee Status</Label>
+              <Select value={formData.fee_status} onValueChange={(v) => setFormData({ ...formData, fee_status: v as any })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="pending">Pending</SelectItem>
                   <SelectItem value="partial">Partial</SelectItem>
@@ -397,29 +305,14 @@ export function OldStudentAdmission() {
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Notes */}
             <div>
-              <Label htmlFor="form-notes" className="text-sm font-medium">
-                Notes (Optional)
-              </Label>
-              <Textarea
-                id="form-notes"
-                value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="Add any additional notes..."
-                rows={3}
-              />
+              <Label>Notes (Optional)</Label>
+              <Textarea value={formData.notes} onChange={(e) => setFormData({ ...formData, notes: e.target.value })} rows={3} />
             </div>
 
-            {/* Buttons */}
             <div className="flex gap-3 justify-end pt-4">
-              <Button type="button" variant="outline" onClick={() => setShowReEnrollModal(false)}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={submitting}>
-                {submitting ? "Processing..." : "Promote & Enroll"}
-              </Button>
+              <Button type="button" variant="outline" onClick={() => setShowReEnrollModal(false)}>Cancel</Button>
+              <Button type="submit" disabled={submitting}>{submitting ? "Processing..." : "Promote & Enroll"}</Button>
             </div>
           </form>
         </DialogContent>
