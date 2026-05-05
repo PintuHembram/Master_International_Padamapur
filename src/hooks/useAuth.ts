@@ -83,6 +83,7 @@ export const useAuth = () => {
     session,
     loading,
     isAdmin,
+    isTeacher,
     signIn,
     signUp,
     signOut,
