@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CreditCard, Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -21,9 +21,6 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
-
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(!!localStorage.getItem('adminToken'));
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,24 +30,7 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === 'adminToken') {
-        setIsAdminLoggedIn(!!localStorage.getItem('adminToken'));
-      }
-    };
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    setIsAdminLoggedIn(false);
-    navigate('/admin/login');
-  };
-
   const isActive = (href: string) => location.pathname === href;
-  const showAdmin = import.meta.env.DEV || import.meta.env.VITE_SHOW_ADMIN === 'true';
 
   return (
     <header
