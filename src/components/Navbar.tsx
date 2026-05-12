@@ -91,39 +91,11 @@ export function Navbar() {
                 {item.name}
               </Link>
             ))}
-            {(showAdmin || isAdminLoggedIn) && (
-              <>
-                <Link
-                  to="/admin/admissions"
-                  className={cn(
-                    "px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
-                    isActive('/admin/admissions')
-                      ? isScrolled
-                        ? "bg-navy/10 text-navy"
-                        : "bg-white/20 text-white"
-                      : isScrolled
-                      ? "text-foreground/70 hover:text-navy hover:bg-navy/5"
-                      : "text-white/80 hover:text-white hover:bg-white/10"
-                  )}
-                >
-                  Dashboard
-                </Link>
-                {isAdminLoggedIn && (
-                  <button
-                    onClick={handleLogout}
-                    className={cn(
-                      "px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
-                      isScrolled
-                        ? "text-foreground/70 hover:text-red-600 hover:bg-red-50"
-                        : "text-white/80 hover:text-red-200 hover:bg-white/10"
-                    )}
-                  >
-                    Logout
-                  </button>
-                )}
-              </>
-            )}
           </div>
+
+          {/* placeholder removed: admin nav links per security/policy */}
+          <div className="hidden">
+
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
