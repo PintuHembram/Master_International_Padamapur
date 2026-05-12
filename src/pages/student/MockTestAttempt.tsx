@@ -35,7 +35,7 @@ const MockTestAttempt = () => {
     (async () => {
       const [testRes, qRes, stuRes] = await Promise.all([
         supabase.from('mock_tests').select('*').eq('id', testId).maybeSingle(),
-        supabase.from('mock_questions').select('*').eq('test_id', testId).order('position'),
+        (supabase as any).from('mock_questions_public').select('*').eq('test_id', testId).order('position'),
         supabase.from('students').select('class, name').eq('id', session.id).maybeSingle(),
       ]);
       if (!testRes.data) { toast({ title: 'Test not found', variant: 'destructive' }); navigate('/student/mock-tests'); return; }
