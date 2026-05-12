@@ -2,9 +2,9 @@ import misLogo from "@/assets/mis-logo.png";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CreditCard, Menu, Phone, X } from "lucide-react";
+import { CreditCard, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -21,44 +21,20 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
-
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(!!localStorage.getItem('adminToken'));
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === 'adminToken') {
-        setIsAdminLoggedIn(!!localStorage.getItem('adminToken'));
-      }
-    };
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    setIsAdminLoggedIn(false);
-    navigate('/admin/login');
-  };
-
   const isActive = (href: string) => location.pathname === href;
-  const showAdmin = import.meta.env.DEV || import.meta.env.VITE_SHOW_ADMIN === 'true';
 
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg"
-          : "bg-transparent"
+        isScrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-transparent"
       )}
     >
       <nav className="container mx-auto px-4 lg:px-8">
@@ -69,11 +45,7 @@ export function Navbar() {
               "w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 overflow-hidden",
               isScrolled ? "bg-white" : "bg-white/95"
             )}>
-              <img 
-                src={misLogo} 
-                alt="Master International School Logo" 
-                className="w-full h-full object-cover"
-              />
+              <img src={misLogo} alt="Master International School Logo" className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col">
               <span className={cn(
@@ -100,78 +72,27 @@ export function Navbar() {
                 className={cn(
                   "px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
                   isActive(item.href)
-                    ? isScrolled
-                      ? "bg-navy/10 text-navy"
-                      : "bg-white/20 text-white"
+                    ? isScrolled ? "bg-navy/10 text-navy" : "bg-white/20 text-white"
                     : isScrolled
-                    ? "text-foreground/70 hover:text-navy hover:bg-navy/5"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
+                      ? "text-foreground/70 hover:text-navy hover:bg-navy/5"
+                      : "text-white/80 hover:text-white hover:bg-white/10"
                 )}
               >
                 {item.name}
               </Link>
             ))}
-            {(showAdmin || isAdminLoggedIn) && (
-              <>
-                <Link
-                  to="/admin/admissions"
-                  className={cn(
-                    "px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
-                    isActive('/admin/admissions')
-                      ? isScrolled
-                        ? "bg-navy/10 text-navy"
-                        : "bg-white/20 text-white"
-                      : isScrolled
-                      ? "text-foreground/70 hover:text-navy hover:bg-navy/5"
-                      : "text-white/80 hover:text-white hover:bg-white/10"
-                  )}
-                >
-                  Dashboard
-                </Link>
-                {isAdminLoggedIn && (
-                  <button
-                    onClick={handleLogout}
-                    className={cn(
-                      "px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
-                      isScrolled
-                        ? "text-foreground/70 hover:text-red-600 hover:bg-red-50"
-                        : "text-white/80 hover:text-red-200 hover:bg-white/10"
-                    )}
-                  >
-                    Logout
-                  </button>
-                )}
-              </>
-            )}
           </div>
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
             <DarkModeToggle />
-            {!isAdminLoggedIn && (
-              <Button
-                variant={isScrolled ? "outline" : "hero-outline"}
-                size="sm"
-                asChild
-              >
-                <Link to="/admin/login">Admin Login</Link>
-              </Button>
-            )}
-            <Button
-              variant={isScrolled ? "outline" : "hero-outline"}
-              size="sm"
-              asChild
-            >
+            <Button variant={isScrolled ? "outline" : "hero-outline"} size="sm" asChild>
               <Link to="/fee-payment">
                 <CreditCard className="w-4 h-4" />
                 Fee Payment
               </Link>
             </Button>
-            <Button
-              variant={isScrolled ? "gold" : "hero"}
-              size="sm"
-              asChild
-            >
+            <Button variant={isScrolled ? "gold" : "hero"} size="sm" asChild>
               <Link to="/admissions">Apply Now</Link>
             </Button>
           </div>
@@ -181,9 +102,7 @@ export function Navbar() {
             onClick={() => setIsOpen(!isOpen)}
             className={cn(
               "lg:hidden p-2 rounded-md transition-colors",
-              isScrolled
-                ? "text-navy hover:bg-navy/10"
-                : "text-white hover:bg-white/10"
+              isScrolled ? "text-navy hover:bg-navy/10" : "text-white hover:bg-white/10"
             )}
             aria-label="Toggle menu"
           >
@@ -192,12 +111,10 @@ export function Navbar() {
         </div>
 
         {/* Mobile Navigation */}
-        <div
-          className={cn(
-            "lg:hidden overflow-hidden transition-all duration-300",
-            isOpen ? "max-h-[500px] pb-4" : "max-h-0"
-          )}
-        >
+        <div className={cn(
+          "lg:hidden overflow-hidden transition-all duration-300",
+          isOpen ? "max-h-[500px] pb-4" : "max-h-0"
+        )}>
           <div className="bg-white rounded-xl shadow-xl p-4 space-y-1">
             {navigation.map((item) => (
               <Link
@@ -206,38 +123,17 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className={cn(
                   "block px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                  isActive(item.href)
-                    ? "bg-navy text-white"
-                    : "text-foreground hover:bg-muted"
+                  isActive(item.href) ? "bg-navy text-white" : "text-foreground hover:bg-muted"
                 )}
               >
                 {item.name}
               </Link>
             ))}
-            {(showAdmin || isAdminLoggedIn) && (
-              <Link
-                to="/admin/admissions"
-                onClick={() => setIsOpen(false)}
-                className={cn(
-                  "block px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                  isActive('/admin/admissions')
-                    ? "bg-navy text-white"
-                    : "text-foreground hover:bg-muted"
-                )}
-              >
-                Dashboard
-              </Link>
-            )}
             <div className="pt-4 flex flex-col gap-2">
               <div className="flex items-center justify-between px-4 py-3">
                 <span className="text-sm font-medium text-foreground">Dark Mode</span>
                 <DarkModeToggle />
               </div>
-              {!isAdminLoggedIn && (
-                <Button variant="outline" asChild className="w-full">
-                  <Link to="/admin/login">Admin Login</Link>
-                </Button>
-              )}
               <Button variant="gold" asChild className="w-full">
                 <Link to="/admissions">Apply Now</Link>
               </Button>
@@ -247,11 +143,6 @@ export function Navbar() {
                   Fee Payment
                 </Link>
               </Button>
-              {isAdminLoggedIn && (
-                <Button variant="destructive" onClick={() => { handleLogout(); setIsOpen(false); }} className="w-full">
-                  Logout
-                </Button>
-              )}
             </div>
           </div>
         </div>
