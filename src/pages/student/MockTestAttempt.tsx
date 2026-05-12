@@ -35,7 +35,7 @@ const MockTestAttempt = () => {
     (async () => {
       const [testRes, qRes, stuRes] = await Promise.all([
         supabase.from('mock_tests').select('*').eq('id', testId).maybeSingle(),
-        supabase.from('mock_questions').select('*').eq('test_id', testId).order('position'),
+        (supabase as any).from('mock_questions_public').select('*').eq('test_id', testId).order('position'),
         supabase.from('students').select('class, name').eq('id', session.id).maybeSingle(),
       ]);
       if (!testRes.data) { toast({ title: 'Test not found', variant: 'destructive' }); navigate('/student/mock-tests'); return; }
@@ -52,34 +52,21 @@ const MockTestAttempt = () => {
     if (submittedRef.current || !test || !session) return;
     submittedRef.current = true;
     setSubmitting(true);
-    let score = 0;
-    let total = 0;
-    questions.forEach(q => {
-      total += q.marks || 1;
-      const a = (answers[q.id] || '').trim().toLowerCase();
-      const correct = (q.correct_option || '').trim().toLowerCase();
-      if (a && a === correct) score += q.marks || 1;
+    const { data, error } = await (supabase as any).rpc('submit_mock_attempt', {
+      p_test_id: test.id,
+      p_student_roll: session.roll_number,
+      p_student_name: session.name,
+      p_student_class: studentClass || '',
+      p_answers: answers,
     });
-    const percentage = total ? Number(((score / total) * 100).toFixed(2)) : 0;
-    const { data, error } = await supabase.from('mock_attempts').insert({
-      test_id: test.id,
-      student_roll: session.roll_number,
-      student_name: session.name,
-      student_class: studentClass || '',
-      answers,
-      score,
-      total,
-      percentage,
-      submitted_at: new Date().toISOString(),
-    }).select('id').single();
     if (error) {
       toast({ title: 'Submit failed', description: error.message, variant: 'destructive' });
       setSubmitting(false); submittedRef.current = false;
       return;
     }
     if (auto) toast({ title: 'Time up — auto submitted' });
-    navigate(`/student/mock-tests/result/${data.id}`);
-  }, [test, session, questions, answers, studentClass, navigate, toast]);
+    navigate(`/student/mock-tests/result/${data}`);
+  }, [test, session, answers, studentClass, navigate, toast]);
 
   // Timer
   useEffect(() => {
