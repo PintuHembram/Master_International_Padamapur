@@ -32,6 +32,11 @@ import AdmissionStart from "./pages/admission/AdmissionStart";
 import MockTestAttempt from "./pages/student/MockTestAttempt";
 import MockTestResult from "./pages/student/MockTestResult";
 import MockTestsList from "./pages/student/MockTestsList";
+import { ErpLayout } from "./components/erp/ErpLayout";
+import ErpDashboard from "./pages/erp/ErpDashboard";
+import StudentsList from "./pages/erp/students/StudentsList";
+import StudentDetail from "./pages/erp/students/StudentDetail";
+import ModuleStub from "./pages/erp/ModuleStub";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +71,25 @@ const App = () => (
               <Route path="/student/mock-tests" element={<StudentProtectedRoute><MockTestsList /></StudentProtectedRoute>} />
               <Route path="/student/mock-tests/:testId/attempt" element={<StudentProtectedRoute><MockTestAttempt /></StudentProtectedRoute>} />
               <Route path="/student/mock-tests/result/:attemptId" element={<StudentProtectedRoute><MockTestResult /></StudentProtectedRoute>} />
+              {/* ERP (UDISE+ style) — gated inside ErpLayout */}
+              <Route path="/erp" element={<ProtectedRoute><ErpLayout /></ProtectedRoute>}>
+                <Route index element={<ErpDashboard />} />
+                <Route path="students" element={<StudentsList />} />
+                <Route path="students/:id" element={<StudentDetail />} />
+                <Route path="admissions" element={<ModuleStub title="Admissions" description="Multi-step applications & quick admissions" />} />
+                <Route path="attendance" element={<ModuleStub title="Attendance" description="Daily student & staff attendance, reports, alerts" />} />
+                <Route path="exams" element={<ModuleStub title="Exams & Results" description="Marks entry, grade rules, report cards, analytics" />} />
+                <Route path="fees" element={<ModuleStub title="Fees & Payments" description="Fee structures, online payment, receipts, invoices" />} />
+                <Route path="staff" element={<ModuleStub title="Staff & Payroll" description="Staff profiles, salary, leave, timetable" />} />
+                <Route path="hostel" element={<ModuleStub title="Hostel Management" description="Buildings, rooms, allocations, mess, visitor log" />} />
+                <Route path="transport" element={<ModuleStub title="Transport" description="Buses, routes, drivers, GPS tracking, notifications" />} />
+                <Route path="library" element={<ModuleStub title="Library" description="Book inventory, issue/return, fines, barcode" />} />
+                <Route path="parents" element={<ModuleStub title="Parent Portal" description="Linked children, attendance, fees, results, homework" />} />
+                <Route path="notifications" element={<ModuleStub title="Notifications" description="SMS, Email, WhatsApp, Push" />} />
+                <Route path="reports" element={<ModuleStub title="Reports & Analytics" description="Charts, KPIs, exports across all modules" />} />
+                <Route path="security" element={<ModuleStub title="Security & Audit" description="MFA, audit logs, IP allowlist, captcha" />} />
+                <Route path="settings" element={<ModuleStub title="Settings" description="School profile, academic year, multi-school" />} />
+              </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
