@@ -95,6 +95,15 @@ const AdminLogin = () => {
         <title>Admin Login - Master International</title>
       </Helmet>
       
+      <div className="absolute top-4 left-4">
+        <Button variant="ghost" size="sm" asChild>
+          <Link to="/">
+            <ArrowLeft className="w-4 h-4 mr-1" />
+            Back to Home
+          </Link>
+        </Button>
+      </div>
+
       <div className="absolute top-4 right-4">
         <DarkModeToggle />
       </div>
