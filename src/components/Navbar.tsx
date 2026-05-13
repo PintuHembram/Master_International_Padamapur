@@ -146,6 +146,9 @@ export function Navbar() {
                   Fee Payment
                 </Link>
               </Button>
+              <Button variant="ghost" asChild className="w-full">
+                <Link to="/admin/login">Staff Login</Link>
+              </Button>
             </div>
           </div>
         </div>
