@@ -202,6 +202,9 @@ export default function AdminAdmissionsDashboard() {
             <p className="text-sm text-muted-foreground">{user?.email}</p>
           </div>
           <div className="flex items-center gap-2">
+            <Button variant="default" size="sm" onClick={() => navigate('/erp')}>
+              Open ERP →
+            </Button>
             <Button variant="outline" size="sm" onClick={() => navigate('/admin/question-bank')}>
               Question Bank
             </Button>
