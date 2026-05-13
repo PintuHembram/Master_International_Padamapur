@@ -148,6 +148,9 @@ export function Footer() {
               <Link to="/terms" className="text-white/50 hover:text-gold transition-colors">
                 Terms of Service
               </Link>
+              <Link to="/admin/login" className="text-white/50 hover:text-gold transition-colors">
+                Staff Login
+              </Link>
             </div>
           </div>
         </div>
