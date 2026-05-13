@@ -86,6 +86,9 @@ export function Navbar() {
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
             <DarkModeToggle />
+            <Button variant={isScrolled ? "ghost" : "hero-outline"} size="sm" asChild>
+              <Link to="/admin/login">Staff Login</Link>
+            </Button>
             <Button variant={isScrolled ? "outline" : "hero-outline"} size="sm" asChild>
               <Link to="/fee-payment">
                 <CreditCard className="w-4 h-4" />
