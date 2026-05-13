@@ -6,10 +6,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { Eye, EyeOff, Lock, LogIn, Mail } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Lock, LogIn, Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -95,6 +95,15 @@ const AdminLogin = () => {
         <title>Admin Login - Master International</title>
       </Helmet>
       
+      <div className="absolute top-4 left-4">
+        <Button variant="ghost" size="sm" asChild>
+          <Link to="/">
+            <ArrowLeft className="w-4 h-4 mr-1" />
+            Back to Home
+          </Link>
+        </Button>
+      </div>
+
       <div className="absolute top-4 right-4">
         <DarkModeToggle />
       </div>
