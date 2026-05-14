@@ -39,8 +39,12 @@ interface StudentResult {
   exam_type: string;
   academic_year: string;
   rank: number | null;
+  date_of_birth: string | null;
   subjects: SubjectResult[];
 }
+
+const CLASSES = ["Nursery", "LKG", "UKG", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+const EXAM_TYPES = ["Unit Test", "Mid-Term", "Annual", "Semester 1", "Semester 2", "Pre-Board", "Board"];
 
 function getOverallGrade(percentage: number): string {
   if (percentage >= 90) return "A+";
