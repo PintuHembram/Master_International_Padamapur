@@ -55,7 +55,7 @@ export default function StudentsList() {
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={exportCsv}><Download className="h-4 w-4 mr-1" />Export CSV</Button>
-          <Button><UserPlus className="h-4 w-4 mr-1" />Add Student</Button>
+          <Link to="/erp/students/new"><Button><UserPlus className="h-4 w-4 mr-1" />Add Student</Button></Link>
         </div>
       </div>
 
