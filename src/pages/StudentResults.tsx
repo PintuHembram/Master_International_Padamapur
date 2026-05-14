@@ -39,8 +39,12 @@ interface StudentResult {
   exam_type: string;
   academic_year: string;
   rank: number | null;
+  date_of_birth: string | null;
   subjects: SubjectResult[];
 }
+
+const CLASSES = ["Nursery", "LKG", "UKG", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+const EXAM_TYPES = ["Unit Test", "Mid-Term", "Annual", "Semester 1", "Semester 2", "Pre-Board", "Board"];
 
 function getOverallGrade(percentage: number): string {
   if (percentage >= 90) return "A+";
@@ -69,8 +73,10 @@ export default function StudentResults() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedClass, setSelectedClass] = useState("all");
   const [selectedExam, setSelectedExam] = useState("all");
+  const [dob, setDob] = useState("");
   const [foundResult, setFoundResult] = useState<StudentResult | null>(null);
   const [searched, setSearched] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(true);
   const resultRef = useRef<HTMLDivElement>(null);
 
@@ -97,10 +103,13 @@ export default function StudentResults() {
   }
 
   const handleSearch = () => {
-    if (!searchQuery.trim()) return;
-    setSearched(true);
+    if (!searchQuery.trim()) {
+      setErrorMsg("Please enter a roll number or student name.");
+      setSearched(true); setFoundResult(null); return;
+    }
+    setSearched(true); setErrorMsg("");
     const query = searchQuery.toLowerCase().trim();
-    const result = allResults.find((r) => {
+    const matches = allResults.filter((r) => {
       const matchQuery =
         r.roll_number.toLowerCase().includes(query) ||
         r.student_name.toLowerCase().includes(query);
@@ -108,7 +117,17 @@ export default function StudentResults() {
       const matchExam = selectedExam === "all" || r.exam_type === selectedExam;
       return matchQuery && matchClass && matchExam;
     });
+    let result = matches[0] || null;
+    if (result && dob) {
+      const verified = matches.find((m) => m.date_of_birth === dob);
+      if (!verified) {
+        setErrorMsg("Date of birth does not match our records. Please verify and try again.");
+        setFoundResult(null); return;
+      }
+      result = verified;
+    }
     setFoundResult(result || null);
+
   };
 
   const handlePrint = () => {
@@ -162,45 +181,53 @@ export default function StudentResults() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
                 <div className="lg:col-span-2">
+                  <label className="text-xs text-muted-foreground mb-1 block">Roll Number / Student Name</label>
                   <Input
-                    placeholder="Enter Roll Number or Student Name"
+                    placeholder="e.g. MIS-2025-0001 or Aarav Sharma"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                     className="h-11"
                   />
                 </div>
-                <Select value={selectedClass} onValueChange={setSelectedClass}>
-                  <SelectTrigger className="h-11">
-                    <SelectValue placeholder="Class" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Classes</SelectItem>
-                    {["I", "II", "III", "IV", "V", "VI", "VII", "VIII"].map((c) => (
-                      <SelectItem key={c} value={c}>Class {c}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Select value={selectedExam} onValueChange={setSelectedExam}>
-                  <SelectTrigger className="h-11">
-                    <SelectValue placeholder="Exam Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Exams</SelectItem>
-                    <SelectItem value="Unit Test">Unit Test</SelectItem>
-                    <SelectItem value="Mid-Term">Mid-Term</SelectItem>
-                    <SelectItem value="Annual">Annual</SelectItem>
-                    <SelectItem value="Semester 1">Semester 1</SelectItem>
-                    <SelectItem value="Semester 2">Semester 2</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Button onClick={handleSearch} className="h-11" disabled={loading}>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Class</label>
+                  <Select value={selectedClass} onValueChange={setSelectedClass}>
+                    <SelectTrigger className="h-11"><SelectValue placeholder="Class" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Classes</SelectItem>
+                      {CLASSES.map((c) => (
+                        <SelectItem key={c} value={c}>Class {c}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Exam Type</label>
+                  <Select value={selectedExam} onValueChange={setSelectedExam}>
+                    <SelectTrigger className="h-11"><SelectValue placeholder="Exam Type" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Exams</SelectItem>
+                      {EXAM_TYPES.map((e) => (
+                        <SelectItem key={e} value={e}>{e}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">DOB (optional)</label>
+                  <Input type="date" value={dob} onChange={(e) => setDob(e.target.value)} className="h-11" />
+                </div>
+                <Button onClick={handleSearch} className="h-11 self-end" disabled={loading}>
                   <Search className="w-4 h-4 mr-2" />
                   {loading ? "Loading..." : "Search"}
                 </Button>
               </div>
+              {errorMsg && (
+                <p className="text-xs text-destructive mt-3">{errorMsg}</p>
+              )}
               {allResults.length > 0 && (
                 <p className="text-xs text-muted-foreground mt-3">
                   {allResults.length} results available in database. Search by name or roll number.

@@ -667,6 +667,7 @@ export type Database = {
           academic_year: string
           class: string
           created_at: string
+          date_of_birth: string | null
           exam_type: string
           id: string
           rank: number | null
@@ -680,6 +681,7 @@ export type Database = {
           academic_year?: string
           class: string
           created_at?: string
+          date_of_birth?: string | null
           exam_type?: string
           id?: string
           rank?: number | null
@@ -693,6 +695,7 @@ export type Database = {
           academic_year?: string
           class?: string
           created_at?: string
+          date_of_birth?: string | null
           exam_type?: string
           id?: string
           rank?: number | null
