@@ -36,6 +36,7 @@ import { ErpLayout } from "./components/erp/ErpLayout";
 import ErpDashboard from "./pages/erp/ErpDashboard";
 import StudentsList from "./pages/erp/students/StudentsList";
 import StudentDetail from "./pages/erp/students/StudentDetail";
+import StudentNew from "./pages/erp/students/StudentNew";
 import ModuleStub from "./pages/erp/ModuleStub";
 
 const queryClient = new QueryClient();
@@ -75,6 +76,7 @@ const App = () => (
               <Route path="/erp" element={<ProtectedRoute><ErpLayout /></ProtectedRoute>}>
                 <Route index element={<ErpDashboard />} />
                 <Route path="students" element={<StudentsList />} />
+                <Route path="students/new" element={<StudentNew />} />
                 <Route path="students/:id" element={<StudentDetail />} />
                 <Route path="admissions" element={<ModuleStub title="Admissions" description="Multi-step applications & quick admissions" />} />
                 <Route path="attendance" element={<ModuleStub title="Attendance" description="Daily student & staff attendance, reports, alerts" />} />
