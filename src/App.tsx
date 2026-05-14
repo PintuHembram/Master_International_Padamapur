@@ -36,6 +36,7 @@ import { ErpLayout } from "./components/erp/ErpLayout";
 import ErpDashboard from "./pages/erp/ErpDashboard";
 import StudentsList from "./pages/erp/students/StudentsList";
 import StudentDetail from "./pages/erp/students/StudentDetail";
+import StudentNew from "./pages/erp/students/StudentNew";
 import ModuleStub from "./pages/erp/ModuleStub";
 
 const queryClient = new QueryClient();
