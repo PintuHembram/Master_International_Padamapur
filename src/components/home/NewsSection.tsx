@@ -1,6 +1,7 @@
-import { Calendar, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import sprot from "@/assets/md-mahdi-FSNXh_gQ81Q-unsplash.jpg";
 import { Button } from "@/components/ui/button";
+import { ArrowRight, Calendar } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const news = [
   {
@@ -9,7 +10,7 @@ const news = [
     excerpt: "Students showcased their athletic prowess in various track and field events, with house competitions...",
     date: "Dec 1, 2025",
     category: "Sports",
-    image: "https://images.unsplash.com/photo-1461896836934- voices8d8b4d4?w=400&h=250&fit=crop",
+    image: sprot,
   },
   {
     id: 2,

@@ -1,24 +1,27 @@
-import { useState } from "react";
+import pintucomputer from "@/assets/pintucomputer.png";
+import RITU from "@/assets/RITURANIOJHA.png";
+import Sahoo from "@/assets/SAHU.png";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { useState } from "react";
 
 const testimonials = [
   {
     quote: "Master International has transformed my child's approach to learning. The teachers are incredibly supportive and the holistic development programs are outstanding.",
-    name: "Mrs. Sunita Patel",
+    name: "Mr. S Sahoo",
     role: "Parent of Class X Student",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+    image: Sahoo,
   },
   {
     quote: "The school's emphasis on both academics and extracurricular activities helped me become a well-rounded individual. Forever grateful for the foundation laid here.",
-    name: "Rahul Sharma",
+    name: "Riturani Ojha",
     role: "Alumni, Batch 2020",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+    image: RITU,
   },
   {
     quote: "As an educator, I'm proud to be part of an institution that truly values every student's potential and works tirelessly to help them achieve their dreams.",
-    name: "Dr. Priya Mohanty",
+    name: "Er. Pintu Hembram",
     role: "Senior Faculty Member",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop",
+    image: pintucomputer,
   },
 ];
 
