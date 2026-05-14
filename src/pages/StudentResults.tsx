@@ -73,8 +73,10 @@ export default function StudentResults() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedClass, setSelectedClass] = useState("all");
   const [selectedExam, setSelectedExam] = useState("all");
+  const [dob, setDob] = useState("");
   const [foundResult, setFoundResult] = useState<StudentResult | null>(null);
   const [searched, setSearched] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(true);
   const resultRef = useRef<HTMLDivElement>(null);
 
@@ -101,10 +103,13 @@ export default function StudentResults() {
   }
 
   const handleSearch = () => {
-    if (!searchQuery.trim()) return;
-    setSearched(true);
+    if (!searchQuery.trim()) {
+      setErrorMsg("Please enter a roll number or student name.");
+      setSearched(true); setFoundResult(null); return;
+    }
+    setSearched(true); setErrorMsg("");
     const query = searchQuery.toLowerCase().trim();
-    const result = allResults.find((r) => {
+    const matches = allResults.filter((r) => {
       const matchQuery =
         r.roll_number.toLowerCase().includes(query) ||
         r.student_name.toLowerCase().includes(query);
@@ -112,7 +117,17 @@ export default function StudentResults() {
       const matchExam = selectedExam === "all" || r.exam_type === selectedExam;
       return matchQuery && matchClass && matchExam;
     });
+    let result = matches[0] || null;
+    if (result && dob) {
+      const verified = matches.find((m) => m.date_of_birth === dob);
+      if (!verified) {
+        setErrorMsg("Date of birth does not match our records. Please verify and try again.");
+        setFoundResult(null); return;
+      }
+      result = verified;
+    }
     setFoundResult(result || null);
+
   };
 
   const handlePrint = () => {
