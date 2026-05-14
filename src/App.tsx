@@ -38,6 +38,7 @@ import StudentsList from "./pages/erp/students/StudentsList";
 import StudentDetail from "./pages/erp/students/StudentDetail";
 import StudentNew from "./pages/erp/students/StudentNew";
 import ModuleStub from "./pages/erp/ModuleStub";
+import ExamsResults from "./pages/erp/exams/ExamsResults";
 
 const queryClient = new QueryClient();
 
@@ -80,7 +81,7 @@ const App = () => (
                 <Route path="students/:id" element={<StudentDetail />} />
                 <Route path="admissions" element={<ModuleStub title="Admissions" description="Multi-step applications & quick admissions" />} />
                 <Route path="attendance" element={<ModuleStub title="Attendance" description="Daily student & staff attendance, reports, alerts" />} />
-                <Route path="exams" element={<ModuleStub title="Exams & Results" description="Marks entry, grade rules, report cards, analytics" />} />
+                <Route path="exams" element={<ExamsResults />} />
                 <Route path="fees" element={<ModuleStub title="Fees & Payments" description="Fee structures, online payment, receipts, invoices" />} />
                 <Route path="staff" element={<ModuleStub title="Staff & Payroll" description="Staff profiles, salary, leave, timetable" />} />
                 <Route path="hostel" element={<ModuleStub title="Hostel Management" description="Buildings, rooms, allocations, mess, visitor log" />} />
