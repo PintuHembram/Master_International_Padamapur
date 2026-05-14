@@ -76,6 +76,7 @@ const App = () => (
               <Route path="/erp" element={<ProtectedRoute><ErpLayout /></ProtectedRoute>}>
                 <Route index element={<ErpDashboard />} />
                 <Route path="students" element={<StudentsList />} />
+                <Route path="students/new" element={<StudentNew />} />
                 <Route path="students/:id" element={<StudentDetail />} />
                 <Route path="admissions" element={<ModuleStub title="Admissions" description="Multi-step applications & quick admissions" />} />
                 <Route path="attendance" element={<ModuleStub title="Attendance" description="Daily student & staff attendance, reports, alerts" />} />
