@@ -8,7 +8,7 @@ const testimonials = [
   {
     quote: "Master International has transformed my child's approach to learning. The teachers are incredibly supportive and the holistic development programs are outstanding.",
     name: "Mr. S Sahoo",
-    role: "Parent of Class X Student",
+    role: "Parent of Class VII Student",
     image: Sahoo,
   },
   {
