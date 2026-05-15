@@ -134,6 +134,37 @@ export default function StudentResults() {
     window.print();
   };
 
+  const handleDownloadPDF = async () => {
+    if (!resultRef.current || !foundResult) return;
+    const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+      import("html2canvas"),
+      import("jspdf"),
+    ]);
+    const node = resultRef.current;
+    const canvas = await html2canvas(node, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+      useCORS: true,
+    });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({ unit: "pt", format: "a4", orientation: "portrait" });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pageWidth - 40;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 20;
+    pdf.addImage(imgData, "PNG", 20, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight - 40;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight + 20;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 20, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight - 40;
+    }
+    pdf.save(`Marksheet-${foundResult.roll_number}-${foundResult.exam_type}.pdf`);
+  };
+
   const totalMarks = foundResult
     ? foundResult.subjects.reduce((sum, s) => sum + s.maxMarks, 0)
     : 0;
@@ -243,28 +274,30 @@ export default function StudentResults() {
         <section className="py-12">
           <div className="container mx-auto px-4 lg:px-8">
             {foundResult ? (
-              <div ref={resultRef} className="print:shadow-none space-y-6">
-                {/* Student Info Card */}
-                <Card className="shadow-lg border-0 overflow-hidden">
-                  <div className="bg-gradient-to-r from-primary to-primary/80 p-6 text-primary-foreground">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                      <div>
-                        <h2 className="text-2xl font-bold font-display">{foundResult.student_name}</h2>
-                        <p className="text-primary-foreground/80 mt-1">
-                          Roll No: {foundResult.roll_number} • Class {foundResult.class}-{foundResult.section} • {foundResult.exam_type} Exam • {foundResult.academic_year}
-                        </p>
-                      </div>
-                      <div className="flex gap-2 print:hidden">
-                        <Button variant="secondary" size="sm" onClick={handlePrint}>
-                          <Printer className="w-4 h-4 mr-1" /> Print
-                        </Button>
-                        <Button variant="secondary" size="sm" onClick={handlePrint}>
-                          <Download className="w-4 h-4 mr-1" /> Download
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
+              <>
+                <div className="flex justify-end gap-2 mb-4 print:hidden">
+                  <Button variant="outline" size="sm" onClick={handlePrint}>
+                    <Printer className="w-4 h-4 mr-1" /> Print
+                  </Button>
+                  <Button size="sm" onClick={handleDownloadPDF}>
+                    <Download className="w-4 h-4 mr-1" /> Download PDF
+                  </Button>
+                </div>
+              <div ref={resultRef} className="print:shadow-none space-y-6 bg-white p-6 rounded-lg border border-border">
+                {/* School Marksheet Header */}
+                <div className="text-center border-b-2 border-primary pb-4">
+                  <h1 className="text-2xl font-bold text-primary font-display">MASTER INTERNATIONAL SCHOOL</h1>
+                  <p className="text-sm text-muted-foreground">Padamapur • CBSE Affiliated • Academic Year {foundResult.academic_year}</p>
+                  <p className="text-base font-semibold mt-2 uppercase tracking-wider">Statement of Marks — {foundResult.exam_type} Examination</p>
+                </div>
+
+                {/* Student Info Block */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm border border-border rounded-md p-4">
+                  <div><span className="text-muted-foreground">Student Name:</span><div className="font-semibold">{foundResult.student_name}</div></div>
+                  <div><span className="text-muted-foreground">Roll Number:</span><div className="font-semibold">{foundResult.roll_number}</div></div>
+                  <div><span className="text-muted-foreground">Class & Section:</span><div className="font-semibold">{foundResult.class} - {foundResult.section}</div></div>
+                  <div><span className="text-muted-foreground">Date of Birth:</span><div className="font-semibold">{foundResult.date_of_birth || '—'}</div></div>
+                </div>
 
                 {/* Summary Cards */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -350,6 +383,7 @@ export default function StudentResults() {
                   </p>
                 </Card>
               </div>
+              </>
             ) : (
               <Card className="text-center py-16 shadow-lg border-0">
                 <CardContent>
