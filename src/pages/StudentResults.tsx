@@ -134,6 +134,37 @@ export default function StudentResults() {
     window.print();
   };
 
+  const handleDownloadPDF = async () => {
+    if (!resultRef.current || !foundResult) return;
+    const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+      import("html2canvas"),
+      import("jspdf"),
+    ]);
+    const node = resultRef.current;
+    const canvas = await html2canvas(node, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+      useCORS: true,
+    });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({ unit: "pt", format: "a4", orientation: "portrait" });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pageWidth - 40;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 20;
+    pdf.addImage(imgData, "PNG", 20, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight - 40;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight + 20;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 20, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight - 40;
+    }
+    pdf.save(`Marksheet-${foundResult.roll_number}-${foundResult.exam_type}.pdf`);
+  };
+
   const totalMarks = foundResult
     ? foundResult.subjects.reduce((sum, s) => sum + s.maxMarks, 0)
     : 0;
