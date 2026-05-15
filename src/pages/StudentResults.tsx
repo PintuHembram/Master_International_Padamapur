@@ -383,6 +383,7 @@ export default function StudentResults() {
                   </p>
                 </Card>
               </div>
+              </>
             ) : (
               <Card className="text-center py-16 shadow-lg border-0">
                 <CardContent>
