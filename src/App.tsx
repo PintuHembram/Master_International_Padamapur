@@ -40,6 +40,7 @@ import StudentNew from "./pages/erp/students/StudentNew";
 import ModuleStub from "./pages/erp/ModuleStub";
 import ExamsResults from "./pages/erp/exams/ExamsResults";
 import ErpAdmissions from "./pages/erp/admissions/ErpAdmissions";
+import ErpFees from "./pages/erp/fees/ErpFees";
 
 const queryClient = new QueryClient();
 
