@@ -41,6 +41,7 @@ import ModuleStub from "./pages/erp/ModuleStub";
 import ExamsResults from "./pages/erp/exams/ExamsResults";
 import ErpAdmissions from "./pages/erp/admissions/ErpAdmissions";
 import ErpFees from "./pages/erp/fees/ErpFees";
+import ErpNotifications from "./pages/erp/notifications/ErpNotifications";
 
 const queryClient = new QueryClient();
 
@@ -90,7 +91,7 @@ const App = () => (
                 <Route path="transport" element={<ModuleStub title="Transport" description="Buses, routes, drivers, GPS tracking, notifications" />} />
                 <Route path="library" element={<ModuleStub title="Library" description="Book inventory, issue/return, fines, barcode" />} />
                 <Route path="parents" element={<ModuleStub title="Parent Portal" description="Linked children, attendance, fees, results, homework" />} />
-                <Route path="notifications" element={<ModuleStub title="Notifications" description="SMS, Email, WhatsApp, Push" />} />
+                <Route path="notifications" element={<ErpNotifications />} />
                 <Route path="reports" element={<ModuleStub title="Reports & Analytics" description="Charts, KPIs, exports across all modules" />} />
                 <Route path="security" element={<ModuleStub title="Security & Audit" description="MFA, audit logs, IP allowlist, captcha" />} />
                 <Route path="settings" element={<ModuleStub title="Settings" description="School profile, academic year, multi-school" />} />
