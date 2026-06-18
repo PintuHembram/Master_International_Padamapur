@@ -42,6 +42,7 @@ import ExamsResults from "./pages/erp/exams/ExamsResults";
 import ErpAdmissions from "./pages/erp/admissions/ErpAdmissions";
 import ErpFees from "./pages/erp/fees/ErpFees";
 import ErpNotifications from "./pages/erp/notifications/ErpNotifications";
+import PwaInstallBanner from "./components/PwaInstallBanner";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <PwaInstallBanner />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
