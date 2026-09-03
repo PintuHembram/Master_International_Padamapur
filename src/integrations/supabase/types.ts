@@ -239,6 +239,66 @@ export type Database = {
         }
         Relationships: []
       }
+      attendance: {
+        Row: {
+          attendance_date: string
+          class: string | null
+          created_at: string
+          id: string
+          marked_by: string | null
+          person_type: string
+          remarks: string | null
+          section: string | null
+          staff_id: string | null
+          status: string
+          student_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          attendance_date?: string
+          class?: string | null
+          created_at?: string
+          id?: string
+          marked_by?: string | null
+          person_type?: string
+          remarks?: string | null
+          section?: string | null
+          staff_id?: string | null
+          status?: string
+          student_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          attendance_date?: string
+          class?: string | null
+          created_at?: string
+          id?: string
+          marked_by?: string | null
+          person_type?: string
+          remarks?: string | null
+          section?: string | null
+          staff_id?: string | null
+          status?: string
+          student_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attendance_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_messages: {
         Row: {
           created_at: string
@@ -659,6 +719,45 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      staff: {
+        Row: {
+          created_at: string
+          department: string | null
+          designation: string | null
+          email: string | null
+          employee_code: string
+          id: string
+          name: string
+          phone: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          designation?: string | null
+          email?: string | null
+          employee_code: string
+          id?: string
+          name: string
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          designation?: string | null
+          email?: string | null
+          employee_code?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
