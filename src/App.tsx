@@ -39,6 +39,7 @@ import StudentDetail from "./pages/erp/students/StudentDetail";
 import StudentNew from "./pages/erp/students/StudentNew";
 import ModuleStub from "./pages/erp/ModuleStub";
 import ExamsResults from "./pages/erp/exams/ExamsResults";
+import ErpAttendance from "./pages/erp/attendance/ErpAttendance";
 import ErpAdmissions from "./pages/erp/admissions/ErpAdmissions";
 import ErpFees from "./pages/erp/fees/ErpFees";
 import ErpNotifications from "./pages/erp/notifications/ErpNotifications";
