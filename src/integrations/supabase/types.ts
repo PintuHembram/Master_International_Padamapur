@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      academic_years: {
+        Row: {
+          created_at: string
+          end_date: string | null
+          id: string
+          is_current: boolean
+          is_locked: boolean
+          start_date: string | null
+          updated_at: string
+          year_label: string
+        }
+        Insert: {
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          is_current?: boolean
+          is_locked?: boolean
+          start_date?: string | null
+          updated_at?: string
+          year_label: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          is_current?: boolean
+          is_locked?: boolean
+          start_date?: string | null
+          updated_at?: string
+          year_label?: string
+        }
+        Relationships: []
+      }
       admission_applications: {
         Row: {
           aadhaar_number: string | null
@@ -299,6 +332,51 @@ export type Database = {
           },
         ]
       }
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          description: string | null
+          id: string
+          ip_address: string | null
+          metadata: Json
+          module: string | null
+          record_id: string | null
+          severity: string
+          user_agent: string | null
+          user_email: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          module?: string | null
+          record_id?: string | null
+          severity?: string
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          module?: string | null
+          record_id?: string | null
+          severity?: string
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string
@@ -505,6 +583,39 @@ export type Database = {
           id?: string
           image_url?: string
           title?: string
+        }
+        Relationships: []
+      }
+      ip_allowlist: {
+        Row: {
+          created_at: string
+          id: string
+          ip_address: string
+          is_active: boolean
+          label: string
+          notes: string | null
+          scope: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_address: string
+          is_active?: boolean
+          label: string
+          notes?: string | null
+          scope?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_address?: string
+          is_active?: boolean
+          label?: string
+          notes?: string | null
+          scope?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -719,6 +830,126 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      schools: {
+        Row: {
+          address: string | null
+          board: string | null
+          category: string | null
+          city: string | null
+          created_at: string
+          current_academic_year: string
+          email: string | null
+          id: string
+          is_active: boolean
+          is_primary: boolean
+          logo_url: string | null
+          name: string
+          phone: string | null
+          pincode: string | null
+          principal_name: string | null
+          school_code: string | null
+          school_type: string | null
+          state: string | null
+          udise_code: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          board?: string | null
+          category?: string | null
+          city?: string | null
+          created_at?: string
+          current_academic_year?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          is_primary?: boolean
+          logo_url?: string | null
+          name: string
+          phone?: string | null
+          pincode?: string | null
+          principal_name?: string | null
+          school_code?: string | null
+          school_type?: string | null
+          state?: string | null
+          udise_code?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          board?: string | null
+          category?: string | null
+          city?: string | null
+          created_at?: string
+          current_academic_year?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          is_primary?: boolean
+          logo_url?: string | null
+          name?: string
+          phone?: string | null
+          pincode?: string | null
+          principal_name?: string | null
+          school_code?: string | null
+          school_type?: string | null
+          state?: string | null
+          udise_code?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      security_settings: {
+        Row: {
+          audit_retention_days: number
+          captcha_public_forms: boolean
+          created_at: string
+          enforce_ip_allowlist: boolean
+          id: string
+          leaked_password_protection: boolean
+          max_login_attempts: number
+          password_min_length: number
+          password_require_symbols: boolean
+          require_mfa_admins: boolean
+          require_mfa_all: boolean
+          session_timeout_minutes: number
+          updated_at: string
+        }
+        Insert: {
+          audit_retention_days?: number
+          captcha_public_forms?: boolean
+          created_at?: string
+          enforce_ip_allowlist?: boolean
+          id?: string
+          leaked_password_protection?: boolean
+          max_login_attempts?: number
+          password_min_length?: number
+          password_require_symbols?: boolean
+          require_mfa_admins?: boolean
+          require_mfa_all?: boolean
+          session_timeout_minutes?: number
+          updated_at?: string
+        }
+        Update: {
+          audit_retention_days?: number
+          captcha_public_forms?: boolean
+          created_at?: string
+          enforce_ip_allowlist?: boolean
+          id?: string
+          leaked_password_protection?: boolean
+          max_login_attempts?: number
+          password_min_length?: number
+          password_require_symbols?: boolean
+          require_mfa_admins?: boolean
+          require_mfa_all?: boolean
+          session_timeout_minutes?: number
+          updated_at?: string
         }
         Relationships: []
       }
