@@ -1,6 +1,8 @@
 import misLogo from "@/assets/mis-logo.png";
 import { ArrowRight, Facebook, Instagram, Mail, MapPin, Phone, Twitter, Youtube } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/lib/supabase/client";
 
 const quickLinks = [
   { name: "UDISE+", href: "https://udiseplus.gov.in/#/en/home" },
@@ -29,6 +31,81 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const [visitorCount, setVisitorCount] = useState("Loading...");
+  const visitRequestStarted = useRef(false);
+
+  useEffect(() => {
+    if (visitRequestStarted.current) {
+      return;
+    }
+    visitRequestStarted.current = true;
+
+    const visitKey = "mis-visitor-counted";
+    const countKey = "mis-visitor-count";
+
+    const showCachedCount = () => {
+      const cachedCount = Number(sessionStorage.getItem(countKey));
+      if (Number.isSafeInteger(cachedCount) && cachedCount >= 0) {
+        setVisitorCount(cachedCount.toLocaleString());
+        return true;
+      }
+      return false;
+    };
+
+    try {
+      if (sessionStorage.getItem(visitKey) === "true" && showCachedCount()) {
+        return;
+      }
+      sessionStorage.setItem(visitKey, "true");
+    } catch (error) {
+      console.error("Unable to access visitor counter session storage.", error);
+      setVisitorCount("Unavailable");
+      return;
+    }
+
+    const recordVisit = async () => {
+      if (!supabase) {
+        console.error("Visitor counter is unavailable because Supabase is not configured.");
+        setVisitorCount("Unavailable");
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase.rpc("record_website_visit");
+        if (error) {
+          console.error("Unable to record website visit.", error);
+          sessionStorage.removeItem(visitKey);
+          setVisitorCount("Unavailable");
+          return;
+        }
+
+        const count = Number(data);
+        if (!Number.isSafeInteger(count) || count < 0) {
+          console.error("The visitor counter returned an invalid count.", data);
+          setVisitorCount("Unavailable");
+          return;
+        }
+
+        try {
+          sessionStorage.setItem(countKey, String(count));
+        } catch (storageError) {
+          console.error("Unable to cache visitor count for this session.", storageError);
+        }
+        setVisitorCount(count.toLocaleString());
+      } catch (error) {
+        console.error("Unable to record website visit.", error);
+        try {
+          sessionStorage.removeItem(visitKey);
+        } catch (storageError) {
+          console.error("Unable to reset visitor counter session storage.", storageError);
+        }
+        setVisitorCount("Unavailable");
+      }
+    };
+
+    void recordVisit();
+  }, []);
+
   return (
     <footer className="bg-navy text-white">
       {/* Main Footer */}
@@ -140,6 +217,9 @@ export function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-white/50 text-sm text-center md:text-left">
               © {new Date().getFullYear()} <a href="https://hembramit.blogspot.com/" className="hover:text-gold transition-colors">Hembram IT Solutions Pvt. Ltd</a> . All rights reserved.
+            </p>
+            <p className="text-white/50 text-sm" aria-live="polite">
+              Visitors: <span className="text-white/80 font-medium">{visitorCount}</span>
             </p>
             <div className="flex items-center gap-6 text-sm">
               <Link to="/privacy" className="text-white/50 hover:text-gold transition-colors">

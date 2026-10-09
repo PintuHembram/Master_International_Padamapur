@@ -30,7 +30,7 @@ export function HeroSection() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-gold/20 backdrop-blur-sm border border-gold/30 rounded-full px-4 py-2 mb-8 animate-fade-in">
             <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-            <span className="text-gold text-sm font-medium">Admissions Open for 2026-27</span>
+            <span className="text-gold text-sm font-medium">Admissions Open for 2027-28</span>
           </div>
 
           {/* Heading */}
@@ -43,7 +43,7 @@ export function HeroSection() {
 
           {/* Subtext */}
           <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl animate-fade-in-up animation-delay-200ms">
-            Master International, Padamapur offers a holistic CBSE education nurturing 
+            Master International School, Padamapur offers a holistic CBSE education nurturing 
             young minds from Kindergarten to Class VIII in a world-class learning environment.
           </p>
 
