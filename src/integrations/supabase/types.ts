@@ -1166,6 +1166,21 @@ export type Database = {
         }
         Relationships: []
       }
+      website_visit_counter: {
+        Row: {
+          id: boolean
+          total_visits: number
+        }
+        Insert: {
+          id?: boolean
+          total_visits?: number
+        }
+        Update: {
+          id?: boolean
+          total_visits?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       mock_questions_public: {
@@ -1230,6 +1245,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      record_website_visit: { Args: never; Returns: number }
       submit_mock_attempt: {
         Args: {
           p_answers: Json
