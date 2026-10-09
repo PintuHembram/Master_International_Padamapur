@@ -39,9 +39,11 @@ import StudentDetail from "./pages/erp/students/StudentDetail";
 import StudentNew from "./pages/erp/students/StudentNew";
 import ModuleStub from "./pages/erp/ModuleStub";
 import ExamsResults from "./pages/erp/exams/ExamsResults";
+import ErpAttendance from "./pages/erp/attendance/ErpAttendance";
 import ErpAdmissions from "./pages/erp/admissions/ErpAdmissions";
 import ErpFees from "./pages/erp/fees/ErpFees";
 import ErpNotifications from "./pages/erp/notifications/ErpNotifications";
+import PwaInstallBanner from "./components/PwaInstallBanner";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +54,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <PwaInstallBanner />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
@@ -83,7 +86,7 @@ const App = () => (
                 <Route path="students/new" element={<StudentNew />} />
                 <Route path="students/:id" element={<StudentDetail />} />
                 <Route path="admissions" element={<ErpAdmissions />} />
-                <Route path="attendance" element={<ModuleStub title="Attendance" description="Daily student & staff attendance, reports, alerts" />} />
+                <Route path="attendance" element={<ErpAttendance />} />
                 <Route path="exams" element={<ExamsResults />} />
                 <Route path="fees" element={<ErpFees />} />
                 <Route path="staff" element={<ModuleStub title="Staff & Payroll" description="Staff profiles, salary, leave, timetable" />} />

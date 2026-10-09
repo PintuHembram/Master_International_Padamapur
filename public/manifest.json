@@ -1,0 +1,22 @@
+{
+  "name": "AHSU",
+  "short_name": "AHSU",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f0eb",
+  "theme_color": "#8B1A1A",
+  "icons": [
+    {
+      "src": "https://storage.googleapis.com/gpt-engineer-file-uploads/gvZDKAMYtOT06wUcxv49ypux5Ps2/uploads/1764858561823-new logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://storage.googleapis.com/gpt-engineer-file-uploads/gvZDKAMYtOT06wUcxv49ypux5Ps2/uploads/1764858561823-new logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

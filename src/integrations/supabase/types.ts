@@ -10,10 +10,43 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
+      academic_years: {
+        Row: {
+          created_at: string
+          end_date: string | null
+          id: string
+          is_current: boolean
+          is_locked: boolean
+          start_date: string | null
+          updated_at: string
+          year_label: string
+        }
+        Insert: {
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          is_current?: boolean
+          is_locked?: boolean
+          start_date?: string | null
+          updated_at?: string
+          year_label: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          is_current?: boolean
+          is_locked?: boolean
+          start_date?: string | null
+          updated_at?: string
+          year_label?: string
+        }
+        Relationships: []
+      }
       admission_applications: {
         Row: {
           aadhaar_number: string | null
@@ -239,6 +272,111 @@ export type Database = {
         }
         Relationships: []
       }
+      attendance: {
+        Row: {
+          attendance_date: string
+          class: string | null
+          created_at: string
+          id: string
+          marked_by: string | null
+          person_type: string
+          remarks: string | null
+          section: string | null
+          staff_id: string | null
+          status: string
+          student_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          attendance_date?: string
+          class?: string | null
+          created_at?: string
+          id?: string
+          marked_by?: string | null
+          person_type?: string
+          remarks?: string | null
+          section?: string | null
+          staff_id?: string | null
+          status?: string
+          student_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          attendance_date?: string
+          class?: string | null
+          created_at?: string
+          id?: string
+          marked_by?: string | null
+          person_type?: string
+          remarks?: string | null
+          section?: string | null
+          staff_id?: string | null
+          status?: string
+          student_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attendance_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          description: string | null
+          id: string
+          ip_address: string | null
+          metadata: Json
+          module: string | null
+          record_id: string | null
+          severity: string
+          user_agent: string | null
+          user_email: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          module?: string | null
+          record_id?: string | null
+          severity?: string
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          module?: string | null
+          record_id?: string | null
+          severity?: string
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string
@@ -445,6 +583,39 @@ export type Database = {
           id?: string
           image_url?: string
           title?: string
+        }
+        Relationships: []
+      }
+      ip_allowlist: {
+        Row: {
+          created_at: string
+          id: string
+          ip_address: string
+          is_active: boolean
+          label: string
+          notes: string | null
+          scope: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_address: string
+          is_active?: boolean
+          label: string
+          notes?: string | null
+          scope?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_address?: string
+          is_active?: boolean
+          label?: string
+          notes?: string | null
+          scope?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -659,6 +830,165 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      schools: {
+        Row: {
+          address: string | null
+          board: string | null
+          category: string | null
+          city: string | null
+          created_at: string
+          current_academic_year: string
+          email: string | null
+          id: string
+          is_active: boolean
+          is_primary: boolean
+          logo_url: string | null
+          name: string
+          phone: string | null
+          pincode: string | null
+          principal_name: string | null
+          school_code: string | null
+          school_type: string | null
+          state: string | null
+          udise_code: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          board?: string | null
+          category?: string | null
+          city?: string | null
+          created_at?: string
+          current_academic_year?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          is_primary?: boolean
+          logo_url?: string | null
+          name: string
+          phone?: string | null
+          pincode?: string | null
+          principal_name?: string | null
+          school_code?: string | null
+          school_type?: string | null
+          state?: string | null
+          udise_code?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          board?: string | null
+          category?: string | null
+          city?: string | null
+          created_at?: string
+          current_academic_year?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          is_primary?: boolean
+          logo_url?: string | null
+          name?: string
+          phone?: string | null
+          pincode?: string | null
+          principal_name?: string | null
+          school_code?: string | null
+          school_type?: string | null
+          state?: string | null
+          udise_code?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      security_settings: {
+        Row: {
+          audit_retention_days: number
+          captcha_public_forms: boolean
+          created_at: string
+          enforce_ip_allowlist: boolean
+          id: string
+          leaked_password_protection: boolean
+          max_login_attempts: number
+          password_min_length: number
+          password_require_symbols: boolean
+          require_mfa_admins: boolean
+          require_mfa_all: boolean
+          session_timeout_minutes: number
+          updated_at: string
+        }
+        Insert: {
+          audit_retention_days?: number
+          captcha_public_forms?: boolean
+          created_at?: string
+          enforce_ip_allowlist?: boolean
+          id?: string
+          leaked_password_protection?: boolean
+          max_login_attempts?: number
+          password_min_length?: number
+          password_require_symbols?: boolean
+          require_mfa_admins?: boolean
+          require_mfa_all?: boolean
+          session_timeout_minutes?: number
+          updated_at?: string
+        }
+        Update: {
+          audit_retention_days?: number
+          captcha_public_forms?: boolean
+          created_at?: string
+          enforce_ip_allowlist?: boolean
+          id?: string
+          leaked_password_protection?: boolean
+          max_login_attempts?: number
+          password_min_length?: number
+          password_require_symbols?: boolean
+          require_mfa_admins?: boolean
+          require_mfa_all?: boolean
+          session_timeout_minutes?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      staff: {
+        Row: {
+          created_at: string
+          department: string | null
+          designation: string | null
+          email: string | null
+          employee_code: string
+          id: string
+          name: string
+          phone: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          designation?: string | null
+          email?: string | null
+          employee_code: string
+          id?: string
+          name: string
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          designation?: string | null
+          email?: string | null
+          employee_code?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -938,12 +1268,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -967,11 +1297,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -992,11 +1322,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1017,11 +1347,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1034,11 +1364,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
