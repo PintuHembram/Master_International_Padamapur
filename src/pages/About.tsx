@@ -104,7 +104,7 @@ const About = () => {
                 respected institutions in the region.
               </p>
               <p className="text-sm text-muted-foreground">
-                <strong>Qualifications:</strong> P.H.D. in Education, M.Sc.
+                <strong>Qualifications:</strong> B.Sc. in Biology.
               </p>
             </div>
           </div>
