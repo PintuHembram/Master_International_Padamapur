@@ -44,6 +44,15 @@ import ErpAdmissions from "./pages/erp/admissions/ErpAdmissions";
 import ErpFees from "./pages/erp/fees/ErpFees";
 import ErpNotifications from "./pages/erp/notifications/ErpNotifications";
 import PwaInstallBanner from "./components/PwaInstallBanner";
+import {
+  AccessibilityPage,
+  ChildSafetyPolicyPage,
+  DisclaimerPage,
+  GrievanceRedressalPage,
+  PrivacyPolicyPage,
+  RefundPolicyPage,
+  TermsOfServicePage,
+} from "./pages/LegalPages";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +74,15 @@ const App = () => (
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/events" element={<Events />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+              <Route path="/terms" element={<TermsOfServicePage />} />
+              <Route path="/disclaimer" element={<DisclaimerPage />} />
+              <Route path="/child-safety-policy" element={<ChildSafetyPolicyPage />} />
+              <Route path="/accessibility" element={<AccessibilityPage />} />
+              <Route path="/refund-policy" element={<RefundPolicyPage />} />
+              <Route path="/grievance-redressal" element={<GrievanceRedressalPage />} />
               <Route path="/fee-payment" element={<FeePayment />} />
               <Route path="/results" element={<StudentResults />} />
               <Route path="/admit-cards" element={<AdmitCards />} />

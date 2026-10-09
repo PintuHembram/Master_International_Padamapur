@@ -23,6 +23,16 @@ const academicLinks = [
   { name: "Results", href: "/results" },
 ];
 
+const legalLinks = [
+  { name: "Privacy Policy", href: "/privacy-policy" },
+  { name: "Terms of Service", href: "/terms-of-service" },
+  { name: "Disclaimer", href: "/disclaimer" },
+  { name: "Child Safety Policy", href: "/child-safety-policy" },
+  { name: "Accessibility", href: "/accessibility" },
+  { name: "Refund Policy", href: "/refund-policy" },
+  { name: "Grievance Redressal", href: "/grievance-redressal" },
+];
+
 const socialLinks = [
   { icon: Facebook, href: "https://www.facebook.com/MISchool2014", label: "Facebook" },
   { icon: Twitter, href: "https://x.com/internatio50902", label: "Twitter" },
@@ -110,7 +120,7 @@ export function Footer() {
     <footer className="bg-navy text-white">
       {/* Main Footer */}
       <div className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-12">
           {/* School Info */}
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-6">
@@ -182,6 +192,24 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Legal & Policies */}
+          <div>
+            <h3 className="font-display text-lg font-semibold mb-6">Legal & Policies</h3>
+            <ul className="space-y-3">
+              {legalLinks.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.href}
+                    className="text-white/70 hover:text-gold transition-colors flex items-center gap-2 group"
+                  >
+                    <ArrowRight className="w-4 h-4 opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all duration-200" />
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Contact Info */}
           <div>
             <h3 className="font-display text-lg font-semibold mb-6">Contact Us</h3>
@@ -222,10 +250,10 @@ export function Footer() {
               Visitors: <span className="text-white/80 font-medium">{visitorCount}</span>
             </p>
             <div className="flex items-center gap-6 text-sm">
-              <Link to="/privacy" className="text-white/50 hover:text-gold transition-colors">
+              <Link to="/privacy-policy" className="text-white/50 hover:text-gold transition-colors">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-white/50 hover:text-gold transition-colors">
+              <Link to="/terms-of-service" className="text-white/50 hover:text-gold transition-colors">
                 Terms of Service
               </Link>
               <Link to="/admin/login" className="text-white/50 hover:text-gold transition-colors">
