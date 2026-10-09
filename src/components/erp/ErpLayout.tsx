@@ -8,9 +8,11 @@ import { Button } from "@/components/ui/button";
 import { LogOut, Bell, Calendar } from "lucide-react";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 import { Badge } from "@/components/ui/badge";
+import { useErpSettings } from "@/lib/erpSettings";
 
 export function ErpLayout({ children }: { children?: ReactNode }) {
   const { user, isAdmin, isTeacher, loading, signOut } = useAuth();
+  const erpSettings = useErpSettings();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,6 +26,8 @@ export function ErpLayout({ children }: { children?: ReactNode }) {
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-GB");
   const timeStr = today.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+  const activeSchool = erpSettings.schools.find((school) => school.id === erpSettings.activeSchoolId);
+  const academicYear = erpSettings.academicYears.find((year) => year.id === erpSettings.activeAcademicYearId);
 
   return (
     <SidebarProvider>
@@ -38,7 +42,7 @@ export function ErpLayout({ children }: { children?: ReactNode }) {
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-secondary">MIS</div>
                 <div>
-                  <h1 className="text-lg font-bold leading-tight">Master International School</h1>
+                  <h1 className="text-lg font-bold leading-tight">{activeSchool?.name ?? "Master International School"}</h1>
                   <p className="text-xs text-white/70">Student Database Management System</p>
                 </div>
               </div>
@@ -62,11 +66,11 @@ export function ErpLayout({ children }: { children?: ReactNode }) {
             </div>
             {/* Sub-banner with school meta */}
             <div className="bg-[hsl(var(--navy-dark))] px-4 py-2 text-xs flex flex-wrap items-center gap-x-6 gap-y-1">
-              <span><span className="text-white/60">UDISE Code:</span> 21061400252</span>
-              <span><span className="text-white/60">Category:</span> Primary with Upper Primary</span>
-              <span><span className="text-white/60">Type:</span> Co-educational</span>
+              <span><span className="text-white/60">UDISE Code:</span> {activeSchool?.udiseCode || "Not set"}</span>
+              <span><span className="text-white/60">Category:</span> {activeSchool?.category || "Not set"}</span>
+              <span><span className="text-white/60">Type:</span> {activeSchool?.schoolType || "Not set"}</span>
               <span className="ml-auto flex items-center gap-2">
-                <Badge variant="secondary" className="font-normal">Academic Year 2025-26</Badge>
+                <Badge variant="secondary" className="font-normal">Academic Year {academicYear?.label ?? "Not set"}</Badge>
               </span>
             </div>
           </header>
