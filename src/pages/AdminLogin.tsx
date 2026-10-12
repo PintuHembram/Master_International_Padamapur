@@ -1,5 +1,6 @@
 import misLogo from '@/assets/mis-logo.png';
 import { DarkModeToggle } from '@/components/DarkModeToggle';
+import { MathCaptcha } from '@/components/MathCaptcha';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -17,6 +18,8 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [captchaOk, setCaptchaOk] = useState(false);
+  const [captchaReset, setCaptchaReset] = useState(0);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isAdmin, isTeacher, signIn, loading: authLoading } = useAuth();
@@ -52,6 +55,12 @@ const AdminLogin = () => {
       return;
     }
 
+    if (!captchaOk) {
+      setErrors({ submit: 'Please solve the security check before signing in.' });
+      setLoading(false);
+      return;
+    }
+
     try {
       const { error } = await signIn(email.trim(), password.trim());
 
@@ -70,6 +79,7 @@ const AdminLogin = () => {
           variant: 'destructive',
         });
         setErrors({ submit: msg });
+        setCaptchaReset((n) => n + 1);
       } else {
         toast({
           title: 'Login Successful',
@@ -180,6 +190,9 @@ const AdminLogin = () => {
               </div>
               {errors.password && <p className="text-destructive text-sm">{errors.password}</p>}
             </div>
+
+            {/* Captcha */}
+            <MathCaptcha onVerify={setCaptchaOk} resetSignal={captchaReset} disabled={loading} />
 
             {/* Submit Error */}
             {errors.submit && (
