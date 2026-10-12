@@ -44,6 +44,7 @@ import ErpAdmissions from "./pages/erp/admissions/ErpAdmissions";
 import ErpFees from "./pages/erp/fees/ErpFees";
 import ErpNotifications from "./pages/erp/notifications/ErpNotifications";
 import ErpSettingsPage from "./pages/erp/ErpSettings";
+import ErpSecurity from "./pages/erp/security/ErpSecurity";
 import PwaInstallBanner from "./components/PwaInstallBanner";
 import {
   AccessibilityPage,
@@ -115,7 +116,7 @@ const App = () => (
                 <Route path="parents" element={<ModuleStub title="Parent Portal" description="Linked children, attendance, fees, results, homework" />} />
                 <Route path="notifications" element={<ErpNotifications />} />
                 <Route path="reports" element={<ModuleStub title="Reports & Analytics" description="Charts, KPIs, exports across all modules" />} />
-                <Route path="security" element={<ModuleStub title="Security & Audit" description="MFA, audit logs, IP allowlist, captcha" />} />
+                <Route path="security" element={<ErpSecurity />} />
                 <Route path="settings" element={<ErpSettingsPage />} />
               </Route>
               <Route path="*" element={<NotFound />} />
