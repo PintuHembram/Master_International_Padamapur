@@ -1,5 +1,6 @@
 import misLogo from '@/assets/mis-logo.png';
 import { DarkModeToggle } from '@/components/DarkModeToggle';
+import { MathCaptcha } from '@/components/MathCaptcha';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -15,6 +16,8 @@ const StudentLogin = () => {
   const [rollNumber, setRollNumber] = useState('');
   const [dob, setDob] = useState('');
   const [loading, setLoading] = useState(false);
+  const [captchaOk, setCaptchaOk] = useState(false);
+  const [captchaReset, setCaptchaReset] = useState(0);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -22,6 +25,10 @@ const StudentLogin = () => {
     e.preventDefault();
     if (!rollNumber.trim() || !dob) {
       toast({ title: 'Required', description: 'Roll number and date of birth are required.', variant: 'destructive' });
+      return;
+    }
+    if (!captchaOk) {
+      toast({ title: 'Security Check', description: 'Please solve the security check before signing in.', variant: 'destructive' });
       return;
     }
     setLoading(true);
@@ -36,10 +43,12 @@ const StudentLogin = () => {
       if (error) throw error;
       if (!data) {
         toast({ title: 'Login Failed', description: 'Roll number or date of birth is incorrect.', variant: 'destructive' });
+        setCaptchaReset((n) => n + 1);
         return;
       }
       if (data.status === 'inactive') {
         toast({ title: 'Account Inactive', description: 'Please contact the school office.', variant: 'destructive' });
+        setCaptchaReset((n) => n + 1);
         return;
       }
 
@@ -96,6 +105,8 @@ const StudentLogin = () => {
                 <Input id="dob" type="date" value={dob} onChange={(e) => setDob(e.target.value)} className="pl-10" disabled={loading} required />
               </div>
             </div>
+
+            <MathCaptcha onVerify={setCaptchaOk} resetSignal={captchaReset} disabled={loading} />
 
             <Button type="submit" className="w-full mt-4" disabled={loading}>
               {loading ? <span className="animate-spin mr-2">⏳</span> : <LogIn className="w-4 h-4 mr-2" />}
