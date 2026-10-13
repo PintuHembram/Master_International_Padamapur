@@ -57,7 +57,7 @@ const emptyQuestion = {
 
 const AdminQuestionBank = () => {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, isAdmin } = useAuth();
   const { toast } = useToast();
   const [tests, setTests] = useState<MockTest[]>([]);
   const [questions, setQuestions] = useState<MockQuestion[]>([]);
@@ -167,7 +167,7 @@ const AdminQuestionBank = () => {
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={() => navigate('/admin/admissions')}>
+            <Button variant="ghost" size="sm" onClick={() => navigate(isAdmin ? '/admin/admissions' : '/teacher/dashboard')}>
               <ArrowLeft className="w-4 h-4 mr-1" /> Back
             </Button>
             <h1 className="font-bold text-lg flex items-center gap-2">

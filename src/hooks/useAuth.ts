@@ -19,7 +19,7 @@ export const useAuth = () => {
         if (session?.user) {
           const [{ data: adminData }, { data: teacherData }] = await Promise.all([
             supabase.rpc('has_role', { _user_id: session.user.id, _role: 'admin' }),
-            supabase.rpc('has_role', { _user_id: session.user.id, _role: 'teacher' as any }),
+            supabase.rpc('has_role', { _user_id: session.user.id, _role: 'teacher' }),
           ]);
           setIsAdmin(!!adminData);
           setIsTeacher(!!teacherData);
@@ -39,7 +39,7 @@ export const useAuth = () => {
       if (session?.user) {
         const [{ data: adminData }, { data: teacherData }] = await Promise.all([
           supabase.rpc('has_role', { _user_id: session.user.id, _role: 'admin' }),
-          supabase.rpc('has_role', { _user_id: session.user.id, _role: 'teacher' as any }),
+          supabase.rpc('has_role', { _user_id: session.user.id, _role: 'teacher' }),
         ]);
         setIsAdmin(!!adminData);
         setIsTeacher(!!teacherData);
@@ -50,11 +50,29 @@ export const useAuth = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const signIn = useCallback(async (email: string, password: string, expectedRole: 'admin' | 'teacher') => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       return { error: { message: error.message } };
     }
+
+    const { data: hasExpectedRole, error: roleError } = await supabase.rpc('has_role', {
+      _user_id: data.user.id,
+      _role: expectedRole,
+    });
+
+    if (roleError || !hasExpectedRole) {
+      const { error: signOutError } = await supabase.auth.signOut();
+      return {
+        error: {
+          message: [
+            roleError?.message ?? `This account does not have ${expectedRole === 'teacher' ? 'teacher/staff' : 'admin'} access.`,
+            signOutError ? `Sign-out failed: ${signOutError.message}` : null,
+          ].filter(Boolean).join(' '),
+        },
+      };
+    }
+
     return { error: null };
   }, []);
 

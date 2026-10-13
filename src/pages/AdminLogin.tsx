@@ -7,12 +7,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { ArrowLeft, Eye, EyeOff, Lock, LogIn, Mail } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Lock, LogIn, Mail, UsersRound } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
+  const [loginRole, setLoginRole] = useState<'admin' | 'teacher'>('admin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -28,7 +29,7 @@ const AdminLogin = () => {
   useEffect(() => {
     if (!authLoading) {
       if (isAdmin) navigate('/admin/admissions');
-      else if (isTeacher) navigate('/admin/mock-tests');
+      else if (isTeacher) navigate('/teacher/dashboard');
     }
   }, [isAdmin, isTeacher, authLoading, navigate]);
 
@@ -62,7 +63,7 @@ const AdminLogin = () => {
     }
 
     try {
-      const { error } = await signIn(email.trim(), password.trim());
+      const { error } = await signIn(email.trim(), password.trim(), loginRole);
 
       if (error) {
         let msg = 'Invalid email or password';
@@ -123,14 +124,37 @@ const AdminLogin = () => {
           <div className="flex justify-center mb-4">
             <img src={misLogo} alt="Logo" className="h-12 w-auto" />
           </div>
-          <CardTitle className="text-3xl font-bold">Admin Sign In</CardTitle>
+          <CardTitle className="text-3xl font-bold">Admin / Staff Sign In</CardTitle>
           <CardDescription>
-            Enter your email and password to access the admin dashboard
+            Choose your account type, then sign in with your school credentials.
           </CardDescription>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={handleSignIn} className="space-y-4">
+            <div className="space-y-2">
+              <Label>Account type</Label>
+              <div className="grid grid-cols-2 gap-2" role="group" aria-label="Account type">
+                <Button
+                  type="button"
+                  variant={loginRole === 'admin' ? 'default' : 'outline'}
+                  onClick={() => setLoginRole('admin')}
+                  disabled={loading}
+                >
+                  Admin
+                </Button>
+                <Button
+                  type="button"
+                  variant={loginRole === 'teacher' ? 'default' : 'outline'}
+                  onClick={() => setLoginRole('teacher')}
+                  disabled={loading}
+                >
+                  <UsersRound className="w-4 h-4 mr-2" />
+                  Teacher / Staff
+                </Button>
+              </div>
+            </div>
+
             {/* Email Field */}
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium">

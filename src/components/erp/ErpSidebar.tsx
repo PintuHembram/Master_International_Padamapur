@@ -1,6 +1,7 @@
 import {
   LayoutDashboard, Users, GraduationCap, ClipboardCheck, Wallet, FileText,
   UserCog, Bus, BookOpen, Building2, Heart, Bell, BarChart3, Shield, Settings,
+  type LucideIcon,
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
@@ -8,7 +9,7 @@ import {
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar,
 } from "@/components/ui/sidebar";
 
-const groups: { label: string; items: { title: string; url: string; icon: any }[] }[] = [
+const groups: { label: string; items: { title: string; url: string; icon: LucideIcon }[] }[] = [
   {
     label: "Overview",
     items: [
@@ -33,7 +34,7 @@ const groups: { label: string; items: { title: string; url: string; icon: any }[
   {
     label: "Operations",
     items: [
-      { title: "Staff & Payroll", url: "/erp/staff", icon: UserCog },
+      { title: "Staff & Teachers", url: "/erp/staff", icon: UserCog },
       { title: "Hostel", url: "/erp/hostel", icon: Building2 },
       { title: "Transport", url: "/erp/transport", icon: Bus },
       { title: "Library", url: "/erp/library", icon: BookOpen },

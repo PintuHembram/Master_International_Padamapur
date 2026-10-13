@@ -43,6 +43,8 @@ import ErpAttendance from "./pages/erp/attendance/ErpAttendance";
 import ErpAdmissions from "./pages/erp/admissions/ErpAdmissions";
 import ErpFees from "./pages/erp/fees/ErpFees";
 import ErpNotifications from "./pages/erp/notifications/ErpNotifications";
+import ErpStaff from "./pages/erp/staff/ErpStaff";
+import TeacherDashboard from "./pages/TeacherDashboard";
 import ErpSettingsPage from "./pages/erp/ErpSettings";
 import ErpSecurity from "./pages/erp/security/ErpSecurity";
 import PwaInstallBanner from "./components/PwaInstallBanner";
@@ -89,6 +91,7 @@ const App = () => (
               <Route path="/results" element={<StudentResults />} />
               <Route path="/admit-cards" element={<AdmitCards />} />
               <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/teacher/dashboard" element={<TeacherProtectedRoute><TeacherDashboard /></TeacherProtectedRoute>} />
               <Route path="/student/login" element={<StudentLogin />} />
               <Route path="/student/dashboard" element={<StudentProtectedRoute><StudentDashboard /></StudentProtectedRoute>} />
               <Route path="/admission/start" element={<AdmissionStart />} />
@@ -109,7 +112,7 @@ const App = () => (
                 <Route path="attendance" element={<ErpAttendance />} />
                 <Route path="exams" element={<ExamsResults />} />
                 <Route path="fees" element={<ErpFees />} />
-                <Route path="staff" element={<ModuleStub title="Staff & Payroll" description="Staff profiles, salary, leave, timetable" />} />
+                <Route path="staff" element={<ErpStaff />} />
                 <Route path="hostel" element={<ModuleStub title="Hostel Management" description="Buildings, rooms, allocations, mess, visitor log" />} />
                 <Route path="transport" element={<ModuleStub title="Transport" description="Buses, routes, drivers, GPS tracking, notifications" />} />
                 <Route path="library" element={<ModuleStub title="Library" description="Book inventory, issue/return, fines, barcode" />} />
