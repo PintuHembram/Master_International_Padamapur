@@ -1,0 +1,3 @@
+- [ ] Clarify staff sign-in and role-based teacher access in the existing portal.
+- [ ] Add teacher/subject/class details and practical management features to question-bank and mock-test workflows.
+- [ ] Check existing admin dashboard integration and validate changed flows.
