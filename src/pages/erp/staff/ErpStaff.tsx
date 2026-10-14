@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import type { Tables, TablesInsert } from '@/integrations/supabase/types';
+import { createStaffPhotoUrl, staffPhotoPath } from '@/lib/staffPhotos';
 import { Pencil, Plus, Trash2, UserRound } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -72,6 +73,7 @@ const toForm = (record: StaffRecord): StaffForm => ({
 
 export default function ErpStaff() {
   const [staff, setStaff] = useState<StaffRecord[]>([]);
+  const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -99,6 +101,11 @@ export default function ErpStaff() {
       toast.error(`Unable to load staff: ${error.message}`);
     } else {
       setStaff(data ?? []);
+      const photoEntries = await Promise.all((data ?? []).map(async (record) => {
+        const url = await createStaffPhotoUrl(record.photo_url);
+        return url ? [record.id, url] as const : null;
+      }));
+      setPhotoUrls(Object.fromEntries(photoEntries.filter((entry): entry is readonly [string, string] => entry !== null)));
     }
     setLoading(false);
   }, []);
@@ -162,7 +169,7 @@ export default function ErpStaff() {
       department: form.department.trim() || null,
       phone: form.phone.trim() || null,
       joining_year: form.joining_year ? Number(form.joining_year) : null,
-      photo_url: form.photo_url || null,
+      photo_url: staffPhotoPath(form.photo_url),
       subject: form.subject.trim() || null,
       assigned_class: form.assigned_class.trim() || null,
     };
@@ -193,11 +200,9 @@ export default function ErpStaff() {
         return;
       }
 
-      const { data: publicUrlData } = supabase.storage.from(PHOTO_BUCKET).getPublicUrl(path);
-      const photoUrl = `${publicUrlData.publicUrl}?v=${Date.now()}`;
       const { data: updatedStaff, error: photoUpdateError } = await supabase
         .from('staff')
-        .update({ photo_url: photoUrl })
+        .update({ photo_url: path })
         .eq('id', staffId)
         .select()
         .single();
@@ -209,7 +214,6 @@ export default function ErpStaff() {
       }
 
       setEditingStaff(updatedStaff);
-      setForm((current) => ({ ...current, photo_url: photoUrl }));
     }
 
     setSaving(false);
@@ -270,7 +274,7 @@ export default function ErpStaff() {
               <Card key={record.id}>
                 <CardContent className="flex gap-4 p-5">
                   <Avatar className="h-14 w-14">
-                    <AvatarImage src={record.photo_url ?? undefined} alt={record.name} />
+                    <AvatarImage src={photoUrls[record.id]} alt={record.name} />
                     <AvatarFallback>{initials || <UserRound className="h-6 w-6" />}</AvatarFallback>
                   </Avatar>
                   <div className="min-w-0 flex-1">
@@ -305,10 +309,10 @@ export default function ErpStaff() {
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={saveStaff} className="space-y-4">
-            {(photoPreview || form.photo_url) && (
+            {(photoPreview || (editingStaff ? photoUrls[editingStaff.id] : null)) && (
               <div className="flex items-center gap-3">
                 <Avatar className="h-16 w-16">
-                  <AvatarImage src={photoPreview || form.photo_url} alt="Profile preview" />
+                  <AvatarImage src={photoPreview || (editingStaff ? photoUrls[editingStaff.id] : undefined)} alt="Profile preview" />
                   <AvatarFallback><UserRound className="h-6 w-6" /></AvatarFallback>
                 </Avatar>
                 <span className="text-sm text-muted-foreground">Profile photo preview</span>
