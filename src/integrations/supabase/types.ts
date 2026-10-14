@@ -955,6 +955,7 @@ export type Database = {
       }
       staff: {
         Row: {
+          assigned_class: string | null
           created_at: string
           department: string | null
           designation: string | null
@@ -962,15 +963,15 @@ export type Database = {
           employee_code: string
           id: string
           joining_year: number | null
-          photo_url: string | null
-          subject: string | null
-          assigned_class: string | null
           name: string
           phone: string | null
+          photo_url: string | null
           status: string
+          subject: string | null
           updated_at: string
         }
         Insert: {
+          assigned_class?: string | null
           created_at?: string
           department?: string | null
           designation?: string | null
@@ -978,15 +979,15 @@ export type Database = {
           employee_code: string
           id?: string
           joining_year?: number | null
-          photo_url?: string | null
-          subject?: string | null
-          assigned_class?: string | null
           name: string
           phone?: string | null
+          photo_url?: string | null
           status?: string
+          subject?: string | null
           updated_at?: string
         }
         Update: {
+          assigned_class?: string | null
           created_at?: string
           department?: string | null
           designation?: string | null
@@ -994,12 +995,11 @@ export type Database = {
           employee_code?: string
           id?: string
           joining_year?: number | null
-          photo_url?: string | null
-          subject?: string | null
-          assigned_class?: string | null
           name?: string
           phone?: string | null
+          photo_url?: string | null
           status?: string
+          subject?: string | null
           updated_at?: string
         }
         Relationships: []
