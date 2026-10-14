@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import type { Tables } from '@/integrations/supabase/types';
+import { createStaffPhotoUrl } from '@/lib/staffPhotos';
 import { BookOpen, ClipboardList, LogOut, Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -16,6 +17,7 @@ export default function TeacherDashboard() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<StaffProfile | null>(null);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,6 +42,7 @@ export default function TeacherDashboard() {
         toast.error(`Unable to load teacher profile: ${error.message}`);
       } else {
         setProfile(data);
+        setPhotoUrl(await createStaffPhotoUrl(data?.photo_url));
       }
       setLoading(false);
     };
@@ -99,7 +102,7 @@ export default function TeacherDashboard() {
               ) : profile ? (
                 <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
                   <Avatar className="h-24 w-24">
-                    <AvatarImage src={profile.photo_url ?? undefined} alt={profile.name} />
+                    <AvatarImage src={photoUrl ?? undefined} alt={profile.name} />
                     <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
