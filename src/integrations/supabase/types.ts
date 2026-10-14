@@ -961,10 +961,6 @@ export type Database = {
           email: string | null
           employee_code: string
           id: string
-          joining_year: number | null
-          photo_url: string | null
-          subject: string | null
-          assigned_class: string | null
           name: string
           phone: string | null
           status: string
@@ -977,10 +973,6 @@ export type Database = {
           email?: string | null
           employee_code: string
           id?: string
-          joining_year?: number | null
-          photo_url?: string | null
-          subject?: string | null
-          assigned_class?: string | null
           name: string
           phone?: string | null
           status?: string
@@ -993,10 +985,6 @@ export type Database = {
           email?: string | null
           employee_code?: string
           id?: string
-          joining_year?: number | null
-          photo_url?: string | null
-          subject?: string | null
-          assigned_class?: string | null
           name?: string
           phone?: string | null
           status?: string
