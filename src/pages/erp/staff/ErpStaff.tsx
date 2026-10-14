@@ -27,8 +27,8 @@ const PHOTO_EXTENSIONS: Record<string, string> = {
 };
 
 const staffSaveErrorMessage = (message: string) =>
-  message.includes('schema cache') && message.includes('staff')
-    ? `${message}. Apply the pending Supabase staff profile migration, then retry.`
+  (message.includes('schema cache') || message.includes('column')) && message.includes('staff')
+    ? 'Staff profile fields are still syncing. Refresh the page and try again.'
     : message;
 
 type StaffForm = {
@@ -124,7 +124,7 @@ export default function ErpStaff() {
   const selectPhoto = (file: File | undefined) => {
     setPhotoFile(null);
     if (!file) return;
-    if (!Object.hasOwn(PHOTO_EXTENSIONS, file.type)) {
+    if (!Object.prototype.hasOwnProperty.call(PHOTO_EXTENSIONS, file.type)) {
       toast.error('Choose a JPG, PNG, or WebP image.');
       if (photoInputRef.current) photoInputRef.current.value = '';
       return;
