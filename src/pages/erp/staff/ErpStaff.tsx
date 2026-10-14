@@ -26,6 +26,11 @@ const PHOTO_EXTENSIONS: Record<string, string> = {
   'image/webp': 'webp',
 };
 
+const staffSaveErrorMessage = (message: string) =>
+  message.includes('schema cache') && message.includes('staff')
+    ? `${message}. Apply the pending Supabase staff profile migration, then retry.`
+    : message;
+
 type StaffForm = {
   name: string;
   email: string;
@@ -169,7 +174,7 @@ export default function ErpStaff() {
 
     if (error) {
       setSaving(false);
-      toast.error(`Unable to save staff profile: ${error.message}`);
+      toast.error(`Unable to save staff profile: ${staffSaveErrorMessage(error.message)}`);
       return;
     }
 
